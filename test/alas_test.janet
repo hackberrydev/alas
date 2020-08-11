@@ -1,5 +1,5 @@
 (import tester :prefix "")
-(import alas)
+(import src/alas :as "alas")
 
 (deftest
   (test "hello world test"

@@ -5,4 +5,4 @@
 
 (declare-executable
  :name "alas"
- :entry "alas.janet")
+ :entry "src/alas.janet")
