@@ -1,7 +1,8 @@
 (import tester :prefix "")
-(import src/file-repository :as "file-repository")
+(import src/file_repository :as "file-repository")
 
 (deftest
   (test "Reading a file"
-        (let [lines (file-repository/read-file "text/examples/todo.md")]
+        (let [result (file-repository/read-file "test/examples/todo.md")
+              lines (result :lines)]
           (= (length lines) 7))))
