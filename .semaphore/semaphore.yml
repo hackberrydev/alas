@@ -1,0 +1,24 @@
+version: v1.0
+name: Initial Pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Install Janet
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - 'wget https://github.com/janet-lang/janet/archive/v1.11.3.tar.gz'
+            - tar xvf v1.11.3.tar.gz
+            - cd janet-1.11.3
+  - name: Test
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - cd alas
+            - jpm deps
+            - jpm test
