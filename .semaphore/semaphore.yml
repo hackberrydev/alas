@@ -18,5 +18,5 @@ blocks:
             - sudo make install
             - cd
             - checkout
-            - jpm deps
+            - sudo jpm deps
             - jpm test
