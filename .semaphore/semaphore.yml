@@ -13,6 +13,9 @@ blocks:
             - 'wget https://github.com/janet-lang/janet/archive/v1.11.3.tar.gz'
             - tar xvf v1.11.3.tar.gz
             - cd janet-1.11.3
+            - make
+            - make test
+            - sudo make install
   - name: Test
     task:
       jobs:
