@@ -5,7 +5,7 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: Install Janet
+  - name: Test
     task:
       jobs:
         - name: 'Job #1'
@@ -16,11 +16,7 @@ blocks:
             - make
             - make test
             - sudo make install
-  - name: Test
-    task:
-      jobs:
-        - name: 'Job #1'
-          commands:
+            - cd
             - checkout
             - jpm deps
             - jpm test
