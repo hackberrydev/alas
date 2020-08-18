@@ -19,6 +19,5 @@ blocks:
         - name: 'Job #1'
           commands:
             - checkout
-            - cd alas
             - jpm deps
             - jpm test
