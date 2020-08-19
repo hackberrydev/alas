@@ -6,7 +6,7 @@
   (test "Reading a file"
         (let [result (file-repository/read-file "test/examples/todo.md")
               lines (result :lines)]
-          (= (length lines) 7)))
+          (= (length lines) 12)))
 
   (test "Reading from a file that doesn't exist"
         (let [result (file-repository/read-file "missing_file.md")]
