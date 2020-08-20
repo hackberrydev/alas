@@ -1,4 +1,4 @@
-(defn read-file
+(defn read-lines
   ```
   Read a file from the file path.
   Returns a struct:
