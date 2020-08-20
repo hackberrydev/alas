@@ -1,6 +1,11 @@
+(defn- build-day [days line]
+  (if (string/find "## " line)
+    (array/push days {:date (string/slice line 3)}))
+  days)
+
 (defn read-lines
   ```
-  Read a file from the file path.
+  Read lines from the file on the file path.
   Returns a struct:
 
     {:lines lines}   - When the file was successfully read.
@@ -13,3 +18,22 @@
     (let [file (file/read (file/open path) :all)
           lines (string/split "\n" file)]
       {:lines lines})))
+
+(defn read-schedule
+  ```
+  Read a schedule from a file.
+  Returs a struct:
+
+    {:days [
+      {:date "2020-08-01" :tasks ["- [  ] Develop photos" "- [ ] Pay bills"]}
+      {:date "2020-07-31" :tasks ["- [  ] Review bugs"]}
+    ]}
+
+  Or an error struct:
+
+    {:error message} - When the file was not successfully read.
+  ```
+  [path]
+  (let [content (read-lines path)
+        days (reduce build-day (array) (content :lines))]
+    {:days days}))
