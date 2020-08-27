@@ -34,6 +34,7 @@
     {:error message} - When the file was not successfully read.
   ```
   [path]
-  (let [content (read-lines path)
-        days (reduce build-day (array) (content :lines))]
-    {:days days}))
+  (let [result (read-lines path)]
+    (if (result :error)
+      result
+      {:days (reduce build-day (array) (result :lines))})))

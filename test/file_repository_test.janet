@@ -1,7 +1,7 @@
 (import tester :prefix "")
 (import src/file_repository :as "file-repository")
 
-# Test file-repository/read-lines
+(print "Test file-repository/read-lines")
 (deftest
   (test "Reading a file"
         (let [result (file-repository/read-lines "test/examples/todo.md")
@@ -12,7 +12,7 @@
         (let [result (file-repository/read-lines "missing_file.md")]
           (= (result :error) "File does not exist."))))
 
-# Test file-repository/read-schedule
+(print "Test file-repository/read-schedule")
 (deftest
   (test "Reading days from a file"
         (let [schedule (file-repository/read-schedule "test/examples/todo.md")]
