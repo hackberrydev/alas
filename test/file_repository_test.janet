@@ -23,7 +23,11 @@
               day-1 (get (schedule :days) 0)
               day-2 (get (schedule :days) 1)]
           (= (day-1 :date) "2020-08-01")
-          (= (day-2 :date) "2020-07-31")))
+          (= (get (day-1 :tasks) 0) "- [ ] Develop photos for the grandmother")
+          (= (get (day-1 :tasks) 1) "- [X] Pay bills")
+          (= (day-2 :date) "2020-07-31")
+          (= (get (day-2 :tasks) 0) "- [X] Review open pull requests")
+          (= (get (day-2 :tasks) 1) "- [X] Fix flaky test")))
 
   (test "Reading from a file that doesn't exist"
         (let [result (file-repository/read-schedule "missing_file.md")]
