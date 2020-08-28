@@ -1,8 +1,10 @@
 (defn- build-day [date]
   @{:date date :tasks (array)})
 
+(defn- day-title? [line] (string/find "## " line))
+
 (defn- process-line [days line]
-  (if (string/find "## " line)
+  (if (day-title? line)
     (array/push days (build-day (string/slice line 3))))
   (if (string/find "- [" line)
     (let [day (array/peek days)
