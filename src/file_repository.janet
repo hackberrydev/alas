@@ -1,4 +1,4 @@
-(defn- build-day [days line]
+(defn- process-line [days line]
   (if (string/find "## " line)
     (array/push days @{:date (string/slice line 3) :tasks (array)}))
   (if (string/find "- [" line)
@@ -41,4 +41,4 @@
   (let [result (read-lines path)]
     (if (result :error)
       result
-      {:days (reduce build-day (array) (result :lines))})))
+      {:days (reduce process-line (array) (result :lines))})))
