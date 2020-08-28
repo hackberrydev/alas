@@ -3,4 +3,9 @@
 ## 2020-08-01
 
 - [ ] Develop photos for the grandmother
-- [ ] Pay bills
+- [X] Pay bills
+
+## 2020-07-31
+
+- [X] Review open pull requests
+- [X] Fix flaky test
