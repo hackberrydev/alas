@@ -8,13 +8,14 @@
 (defn- add-new-day [days line]
   (array/push days (build-day (string/slice line 3))))
 
+(defn- add-new-task [day line]
+  (array/push (day :tasks) line))
+
 (defn- process-line [days line]
   (if (day-title? line)
     (add-new-day days line))
   (if (task? line)
-    (let [day (array/peek days)
-          tasks (day :tasks)]
-      (array/push tasks line)))
+    (add-new-task (array/peek days) line))
   days)
 
 (defn read-lines
