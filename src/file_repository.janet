@@ -3,10 +3,12 @@
 
 (defn- day-title? [line] (string/find "## " line))
 
+(defn- task? [line] (string/find "- [" line))
+
 (defn- process-line [days line]
   (if (day-title? line)
     (array/push days (build-day (string/slice line 3))))
-  (if (string/find "- [" line)
+  (if (task? line)
     (let [day (array/peek days)
           tasks (day :tasks)]
       (array/push tasks line)))
