@@ -13,4 +13,6 @@
     (test "Days stats"
           (is (= 2 (stats :days))))
     (test "Completed tasks stats"
-          (is (= 3 (stats :completed-tasks))))))
+          (is (= 3 (stats :completed-tasks))))
+    (test "Pending tasks stats"
+          (is (= 1 (stats :pending-tasks))))))
