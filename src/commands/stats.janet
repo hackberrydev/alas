@@ -23,3 +23,9 @@
         error-message (result :error)]
       (or error-message
           (format-stats (stats/schedule-stats todo)))))
+
+(defn insert-date
+  ```
+  Inserts the date to the correct location in the file.
+  ```
+  [date file-path])
