@@ -1,6 +1,9 @@
+(import src/commands :as "commands")
+
 (defn main [& args]
-  (let [file (file/read (file/open "test/examples/todo.md") :all)
-        lines (string/split "\n" file)]
-    (print "The file has " (length lines) " lines.")
-    (print "Lines:")
-    (each line lines (print line))))
+  (if (= (length args) 3)
+    (let [command (get args 1)
+          file-path (get args 2)]
+      (if (= command "stats")
+        (print (commands/stats file-path))))
+    (print "Invalid arguments")))
