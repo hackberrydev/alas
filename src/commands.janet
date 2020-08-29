@@ -18,5 +18,7 @@
   It returns stats for the TODO file.
   ```
   [file-path]
-  (let [result (file-repository/read-schedule file-path)]
-    (format-stats (stats/schedule-stats (result :days)))))
+  (let [result (file-repository/read-schedule file-path)
+        error-message (result :error)]
+      (or error-message
+          (format-stats (stats/schedule-stats (result :days))))))
