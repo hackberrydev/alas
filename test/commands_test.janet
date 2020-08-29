@@ -8,5 +8,5 @@
              (commands/stats "test/examples/todo.md"))))
   (test "TODO file does not exist"
         (is (=
-             "File does not exist."
+             "File does not exist"
              (commands/stats "missing_file.md")))))

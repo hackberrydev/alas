@@ -29,7 +29,7 @@
   ```
   [path]
   (if (= (os/stat path) nil)
-    {:error "File does not exist."}
+    {:error "File does not exist"}
     (let [file (file/read (file/open path) :all)
           lines (string/split "\n" file)]
       {:lines lines})))

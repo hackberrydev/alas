@@ -10,7 +10,7 @@
 
   (test "Reading from a file that doesn't exist"
         (let [result (file-repository/read-lines "missing_file.md")]
-          (is (= "File does not exist." (result :error))))))
+          (is (= "File does not exist" (result :error))))))
 
 (print "Test file-repository/read-schedule")
 (deftest
@@ -31,4 +31,4 @@
 
   (test "Reading from a file that doesn't exist"
         (let [result (file-repository/read-schedule "missing_file.md")]
-          (is (= "File does not exist." (result :error))))))
+          (is (= "File does not exist" (result :error))))))
