@@ -33,21 +33,16 @@
     (commands/insert-date "## 2020-08-02, Sunday" example-file)
     (test "Insert date at the top"
           (is (=
-               ```
-               # Main TODO
-
-               ## 2020-08-02, Sunday
-
-               ## 2020-08-01, Saturday
-
-               - [ ] Develop photos for the grandmother
-               - [X] Pay bills
-
-               ## 2020-07-31, Friday
-
-               - [X] Review open pull requests
-               - [X] Fix flaky test
-               ```
-               (file/read (file/open example-file) :all))))
+               (string/join
+                 ["# Main TODO\n"
+                  "## 2020-08-02, Sunday\n"
+                  "## 2020-08-01, Saturday\n"
+                  "- [ ] Develop photos for the grandmother"
+                  "- [X] Pay bills\n"
+                  "## 2020-07-31, Friday\n"
+                  "- [X] Review open pull requests"
+                  "- [X] Fix flaky test\n"]
+                 "\n")
+               (string (file/read (file/open example-file) :all)))))
     (test/restore-file example-file)))
 >>>>>>> 4584e18... Add spec for commands/insert-date:test/commands_test.janet
