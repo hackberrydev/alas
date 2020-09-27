@@ -29,9 +29,6 @@
   Inserts the date to the correct location in the file.
   ```
   [date file-path]
-  (let [schedule-file (file-repository/read-lines file-path)
-        input-error (schedule-file :error)]
-    (or input-error
-        (file/write
-          (file/open file-path :w)
-          (string/join (schedule-file :lines) "\n")))))
+  (let [schedule (file-repository/read-lines file-path)]
+    (or (schedule :error)
+        (file-repository/write-lines (schedule :lines) file-path))))

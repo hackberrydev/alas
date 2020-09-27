@@ -23,6 +23,13 @@
 # ——————————————————————————————————————————————————————————————————————————————
 # Public interface.
 
+(defn write-lines
+  ```
+  Write lines to the file on the file path.
+  ```
+  [lines path]
+  (file/write (file/open path :w) (string/join lines "\n")))
+
 (defn read-lines
   ```
   Read lines from the file on the file path.
