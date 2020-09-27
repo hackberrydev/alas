@@ -28,7 +28,9 @@
   Write lines to the file on the file path.
   ```
   [lines path]
-  (file/write (file/open path :w) (string/join lines "\n")))
+  (let [file (file/open path :w)]
+    (file/write file (string/join lines "\n"))
+    (file/close file)))
 
 (defn read-lines
   ```
