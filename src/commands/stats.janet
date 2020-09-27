@@ -33,5 +33,5 @@
         lines (schedule :lines)]
     (or (schedule :error)
         (do
-          (array/insert (schedule :lines) 2 date)
+          (array/insert (schedule :lines) 2 (string date "\n"))
           (file-repository/write-lines lines file-path)))))
