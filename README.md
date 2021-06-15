@@ -1,5 +1,7 @@
 # alas
 
+**Note:** This repository is deprecated in favor of [alas](https://github.com/hackberrydev/alas).
+
 Alas is a command line utility for managing TODO list in a single Markdown file.
 
 Example TODO list:
