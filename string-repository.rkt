@@ -91,9 +91,7 @@
                                 "## 2020-07-31, Friday\n\n"
                                 "- [x] Review open pull requests\n"
                                 "- [x] Fix the flaky test")]
-           [days (list (day (date 2020 8 2) (list) 3 #t)
-                       (day (date 2020 8 1) (list) 3 #f)
-                       (day (date 2020 7 31) (list) 8 #f))])
+           [days (list (day (date 2020 8 2) (list) 3 #t) )])
       (check-equal? (serialize days todo)
                     (string-append "# Main TODO\n\n"
                                    "## 2020-08-02, Sunday\n\n"
