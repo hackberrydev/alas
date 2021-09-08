@@ -1,4 +1,4 @@
-(import src/commands :as "commands")
+(import ./commands :as "commands")
 
 (defn main [& args]
   (if (= (length args) 3)

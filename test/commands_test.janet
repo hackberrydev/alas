@@ -1,5 +1,5 @@
 (import tester :prefix "" :exit true)
-(import src/commands :as "commands")
+(import ../src/commands :as "commands")
 
 (deftest
   (test "Stats command"

@@ -1,2 +1,2 @@
 (import tester :prefix "")
-(import src/alas :as "alas")
+(import ../src/alas :as "alas")

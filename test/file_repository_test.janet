@@ -1,5 +1,5 @@
 (import tester :prefix "" :exit true)
-(import src/file_repository :as "file-repository")
+(import ../src/file_repository :as "file-repository")
 
 (print "Test file-repository/read-lines")
 (deftest
