@@ -1,12 +1,11 @@
-(defn- build-day [date]
-  @{:date date :tasks (array)})
+(import ./entities :as e)
 
 (defn- day-title? [line] (string/find "## " line))
 
 (defn- task? [line] (string/find "- [" line))
 
 (defn- add-new-day [days line]
-  (array/push days (build-day (string/slice line 3))))
+  (array/push days (e/build-day (string/slice line 3))))
 
 (defn- add-new-task [day line]
   (array/push (day :tasks) line))
