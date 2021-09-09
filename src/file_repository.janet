@@ -1,3 +1,6 @@
+# ——————————————————————————————————————————————————————————————————————————————
+# This module implements the file repository.
+
 (import ./entities :as e)
 
 (defn- day-title? [line] (string/find "## " line))
@@ -16,6 +19,9 @@
   (if (task? line)
     (add-new-task (array/peek days) line))
   days)
+
+# ——————————————————————————————————————————————————————————————————————————————
+# Public interface.
 
 (defn read-lines
   ```
