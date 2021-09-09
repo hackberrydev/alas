@@ -1,5 +1,5 @@
-(import ./file_repository :as "file-repository")
-(import ./stats :as "stats")
+(import ../file_repository :as "file-repository")
+(import ../stats :as "stats")
 
 (defn- pluralize [n word]
   (if (= n 1)
