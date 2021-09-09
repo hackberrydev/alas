@@ -39,7 +39,7 @@
           lines (string/split "\n" file)]
       {:lines lines})))
 
-(defn read-schedule
+(defn load-todo
   ```
   Read a schedule from a file.
   Returs a struct:

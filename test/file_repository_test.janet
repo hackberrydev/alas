@@ -12,14 +12,14 @@
         (let [result (file-repository/read-lines "missing_file.md")]
           (is (= "File does not exist" (result :error))))))
 
-(print "Test file-repository/read-schedule")
+(print "Test file-repository/load-todo")
 (deftest
   (test "Reading days from a file"
-        (let [schedule (file-repository/read-schedule "test/examples/todo.md")]
+        (let [schedule (file-repository/load-todo "test/examples/todo.md")]
           (is (= 2 (length  (schedule :days))))))
 
   (test "Reading schedule details from a file"
-        (let [schedule (file-repository/read-schedule "test/examples/todo.md")
+        (let [schedule (file-repository/load-todo "test/examples/todo.md")
               day-1 (get (schedule :days) 0)
               day-2 (get (schedule :days) 1)]
           (is (= "2020-08-01, Saturday" (day-1 :date)))
@@ -30,5 +30,5 @@
           (is (= "- [X] Fix flaky test"(get  (day-2 :tasks) 1)))))
 
   (test "Reading from a file that doesn't exist"
-        (let [result (file-repository/read-schedule "missing_file.md")]
+        (let [result (file-repository/load-todo "missing_file.md")]
           (is (= "File does not exist" (result :error))))))
