@@ -5,4 +5,6 @@
 (deftest
   (test "Date structure"
         (let [today (date/today)]
-          (is (= (sort @[:year :month :day]) (sort (keys today)))))))
+          (is (today :year))
+          (is (today :month))
+          (is (today :day)))))
