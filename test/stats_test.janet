@@ -1,5 +1,5 @@
 (import tester :prefix "" :exit true)
-(import ../src/stats :as "stats")
+(import ../src/stats :as stats)
 
 (def schedule
   [{:date "2020-08-01"
