@@ -1,5 +1,5 @@
 (import tester :prefix "" :exit true)
-(import test/utils :as "test")
+(import ../utils :as "test")
 (import ../../src/commands/stats :prefix "")
 
 (def example-file "test/examples/todo.md")
