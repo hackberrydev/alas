@@ -1,10 +1,8 @@
-(import tester :prefix "" :exit true)
+(import testament :prefix "" :exit true)
 (import ../src/date :as date)
 
-(print "Test date/today")
-(deftest
-  (test "Date structure"
-        (let [today (date/today)]
-          (is (today :year))
-          (is (today :month))
-          (is (today :day)))))
+(deftest today-structure
+  (let [today (date/today)]
+    (is (today :year))
+    (is (today :month))
+    (is (today :day))))
