@@ -1,6 +1,7 @@
 (import tester :prefix "" :exit true)
 (import ../../src/commands/stats :prefix "")
 
+(print "Test commands/stats")
 (deftest
   (test "Stats command"
         (is (=
