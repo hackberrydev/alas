@@ -1,6 +1,4 @@
-# alas
-
-**Note:** This repository is deprecated in favor of [alas](https://github.com/hackberrydev/alas).
+# Alas
 
 Alas is a command line utility for managing TODO list in a single Markdown file.
 
@@ -22,13 +20,13 @@ Example TODO list:
 
 ## Commands
 
-### `alas stats`
+### `--stats`
 
-`alas stats` command will print the number of days in your TODO list, the number
+`alas --stats` command will print the number of days in your TODO list, the number
 of completed tasks and the number of pending tasks:
 
 ```bash
-$ alas stats ~/todo.md
+$ alas --stats ~/todo.md
 2 days
 3 completed tasks
 1 pending task

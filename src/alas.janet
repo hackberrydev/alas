@@ -1,9 +1,14 @@
+(import argparse :prefix "")
 (import ./commands/stats :prefix "")
 
+(def argparse-params
+  ["A command line utility for planning your days"
+   "stats" {:kind :flag
+            :help "Show stats for the plan file."}
+   :default {:kind :option}])
+
 (defn main [& args]
-  (if (= (length args) 3)
-    (let [command (get args 1)
-          file-path (get args 2)]
-      (if (= command "stats")
-        (print (stats file-path))))
-    (print "Invalid arguments")))
+  (let [arguments (argparse ;argparse-params)
+        file-path (arguments :default)]
+    (cond
+      (arguments "stats") (print (stats file-path)))))
