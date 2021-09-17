@@ -1,5 +1,12 @@
-## —————————————————————————————————————————————————————————————————————————————
-## This module implements date utilities.
+### ————————————————————————————————————————————————————————————————————————————
+### This module implements date utilities.
+
+(defn date
+  ```
+  Builds the date struct.
+  ```
+  [year month day]
+  {:year year :month month :day day})
 
 (defn today
   ```
