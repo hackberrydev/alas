@@ -28,3 +28,5 @@
 (deftest load-todo-from-file-that-does-not-exist
   (let [result (file-repository/load-todo "missing_file.md")]
     (is (= "File does not exist" (result :error)))))
+
+(run-tests!)

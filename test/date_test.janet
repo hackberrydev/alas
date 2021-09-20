@@ -6,3 +6,5 @@
     (is (today :year))
     (is (today :month))
     (is (today :day))))
+
+(run-tests!)

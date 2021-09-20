@@ -21,3 +21,5 @@
            "\n")
          (string (file/read (file/open example-file) :all))))
     (test/restore-file example-file)))
+
+(run-tests!)
