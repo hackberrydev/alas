@@ -10,3 +10,5 @@
   (is (=
        "File does not exist"
        (stats "missing_file.md"))))
+
+(run-tests!)

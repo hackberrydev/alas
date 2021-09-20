@@ -17,3 +17,5 @@
 
 (deftest pending-tasns-stats
   (is (= 1 (stats :pending-tasks))))
+
+(run-tests!)
