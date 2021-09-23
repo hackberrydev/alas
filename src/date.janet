@@ -8,6 +8,13 @@
   [year month day]
   {:year year :month month :day day})
 
+(defn parse
+  ```
+  Builds the date struct from a string.
+  ```
+  [date-string]
+  (date (splice (map scan-number (string/split "-" date-string)))))
+
 (defn today
   ```
   Returns today's day in the following format:
