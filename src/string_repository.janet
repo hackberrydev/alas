@@ -26,9 +26,25 @@
                     line-number)
         (parse-line todo-lines days line-number)))))
 
+(defn- insert-days [days todo-lines &opt new-todo-lines current-line]
+  (default new-todo-lines @[])
+  (default current-line 0)
+  "")
+
+## —————————————————————————————————————————————————————————————————————————————
+## Public Interface
+
 (defn load
   ```
   Loads days and tasks from a string to an array.
   ```
   [todo]
   (parse-line (reverse (string/split "\n" todo)) @[]))
+
+(defn save
+  ```
+  Serializes days and tasks from an array into a string.
+  ```
+  [days todo]
+  (insert-days days (string/split "\n" todo)))
+
