@@ -33,29 +33,30 @@
     (is (= false ((days 1) :changed)))))
 
 (deftest save-entities-into-string
-  (def days @[(e/build-day (date 2020 8 3))
-              (e/build-day (date 2020 8 2))])
-  (is (= (repo/save days todo)
-         ```
-         # Main TODO
+  (def days @[(e/build-day (date 2020 8 3) 6)
+              (e/build-day (date 2020 8 2) 6)])
+  (def new-todo
+       ```
+       # Main TODO
 
-         ## Inbox
+       ## Inbox
 
-         - [ ] Fix the lamp
+       - [ ] Fix the lamp
 
-         ## 2020-08-02, Monday
+       ## 2020-08-03, Monday
 
-         ## 2020-08-02, Sunday
+       ## 2020-08-02, Sunday
 
-         ## 2020-08-01, Saturday
+       ## 2020-08-01, Saturday
 
-         - [ ] Develop photos
-         - [x] Pay bills
+       - [ ] Develop photos
+       - [x] Pay bills
 
-         ## 2020-07-31, Friday
+       ## 2020-07-31, Friday
 
-         - [x] Review open pull requests
-         - [x] Fix the flaky test
-         ```)))
+       - [x] Review open pull requests
+       - [x] Fix the flaky test
+      ```)
+  (is (= new-todo (repo/save days todo))))
 
 (run-tests!)

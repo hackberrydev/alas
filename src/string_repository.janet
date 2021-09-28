@@ -8,6 +8,10 @@
 (defn- day-title? [day]
   (string/has-prefix? "## 2" day))
 
+(defn- day-title [day]
+  (def date (day :date))
+  (string/format "## %d-%d-%d" (date :year) (date :month) (date :day)))
+
 (defn- build-day [line line-number]
   {:date (date/parse (string/trim ((string/split " " line) 1) ","))
    :line-number line-number
@@ -26,11 +30,6 @@
                     line-number)
         (parse-line todo-lines days line-number)))))
 
-(defn- insert-days [days todo-lines &opt new-todo-lines current-line]
-  (default new-todo-lines @[])
-  (default current-line 0)
-  "")
-
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -46,5 +45,15 @@
   Serializes days and tasks from an array into a string.
   ```
   [days todo]
-  (insert-days days (string/split "\n" todo)))
-
+  (def days (reverse days)) # This way `days` can be used as an array.
+  (def todo-lines (string/split "\n" todo))
+  (def new-todo-lines @[])
+  (var day (array/pop days))
+  (var current-line 0)
+  (each line todo-lines
+        (while (and day (= (day :line-number) current-line))
+          (array/push new-todo-lines (day-title day))
+          (set day (array/pop days)))
+        (array/push new-todo-lines line)
+        (++ current-line))
+  (string/join new-todo-lines "\n"))
