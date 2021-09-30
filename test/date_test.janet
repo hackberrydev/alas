@@ -13,4 +13,7 @@
 (deftest parse-date
   (is (= {:year 2021 :month 8 :day 31} (date/parse "2021-08-31"))))
 
+(deftest format-date
+  (is (= "2021-08-09" (date/format {:year 2021 :month 8 :day 9}))))
+
 (run-tests!)
