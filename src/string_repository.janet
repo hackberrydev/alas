@@ -9,7 +9,7 @@
   (string/has-prefix? "## 2" day))
 
 (defn- day-title [day]
-  (string "## " (date/format (day :date))))
+  (string "## " (date/format (day :date)) "\n"))
 
 (defn- build-day [line line-number]
   {:date (date/parse (string/trim ((string/split " " line) 1) ","))
