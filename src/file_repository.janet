@@ -8,7 +8,7 @@
 (defn- task? [line] (string/find "- [" line))
 
 (defn- add-new-day [days line]
-  (array/push days (e/build-day (string/slice line 3))))
+  (array/push days (e/build-day (string/slice line 3) 0)))
 
 (defn- add-new-task [day line]
   (array/push (day :tasks) line))
