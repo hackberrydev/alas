@@ -16,19 +16,6 @@
    :line-number line-number
    :changed false})
 
-(defn- parse-line
-  [todo-lines days &opt line-number]
-  (default line-number -1)
-  (if (empty? todo-lines)
-    days
-    (let [line (array/pop todo-lines)
-          line-number (+ 1 line-number)]
-      (if (day-title? line)
-        (parse-line todo-lines
-                    (array/insert days -1 (build-day line line-number))
-                    line-number)
-        (parse-line todo-lines days line-number)))))
-
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -37,7 +24,14 @@
   Loads days and tasks from a string to an array.
   ```
   [todo]
-  (parse-line (reverse (string/split "\n" todo)) @[]))
+  (def lines (string/split "\n" todo))
+  (def days @[])
+  (var line-number 0)
+  (loop [line :in lines
+         :after (++ line-number)]
+    (if (day-title? line)
+      (array/push days (build-day line line-number))))
+  days)
 
 (defn save
   ```
