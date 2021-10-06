@@ -47,23 +47,3 @@
     (let [file (file/read (file/open path) :all)
           lines (string/split "\n" file)]
       {:lines lines})))
-
-(defn load-todo
-  ```
-  Read a schedule from a file.
-  Returs a struct:
-
-    {:days [
-      {:date "2020-08-01" :tasks ["- [  ] Develop photos" "- [ ] Pay bills"]}
-      {:date "2020-07-31" :tasks ["- [  ] Review bugs"]}
-    ]}
-
-  Or an error struct:
-
-    {:error message} - When the file was not successfully read.
-  ```
-  [path]
-  (let [result (read-lines path)]
-    (if (result :error)
-      result
-      {:days (reduce process-line (array) (result :lines))})))
