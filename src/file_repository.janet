@@ -32,18 +32,16 @@
     (file/write file (string/join lines "\n"))
     (file/close file)))
 
-(defn read-lines
+(defn load-todo
   ```
-  Read lines from the file on the file path.
+  Read todo from the file on the file path.
   Returns a struct:
 
-    {:lines lines}   - When the file was successfully read.
-    {:error message} - When the file was not successfully read.
+    {todo todo-string} - When the file was successfully read.
+    {:error message}   - When the file was not successfully read.
 
   ```
   [path]
   (if (= (os/stat path) nil)
     {:error "File does not exist"}
-    (let [file (file/read (file/open path) :all)
-          lines (string/split "\n" file)]
-      {:lines lines})))
+    {:todo (file/read (file/open path) :all)}))

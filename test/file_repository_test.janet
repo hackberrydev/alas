@@ -1,13 +1,13 @@
 (import testament :prefix "" :exit true)
 (import ../src/file_repository :as "file-repository")
 
-(deftest read-lines-from-file
-  (let [result (file-repository/read-lines "test/examples/todo.md")
-        lines (result :lines)]
-    (is (= 12 (length lines)))))
+(deftest load-todo-from-file
+  (let [result (file-repository/load-todo "test/examples/todo.md")
+        todo (result :todo)]
+    (is (= 12 (length (string/split "\n" todo))))))
 
-(deftest read-lines-from-file-that-does-not-exist
-  (let [result (file-repository/read-lines "missing_file.md")]
+(deftest load-todo-from-file-that-does-not-exist
+  (let [result (file-repository/load-todo "missing_file.md")]
     (is (= "File does not exist" (result :error)))))
 
 (run-tests!)
