@@ -18,6 +18,14 @@
         5 "Friday"
         6 "Saturday"))
 
+(defn- to-os-date-struct
+  ```
+  Turns an Alas date struct into the Janet date struct.
+  ```
+  [date]
+  {:year (date :year)
+   :month (- (date :month) 1)
+   :month-day (- (date :day) 1)})
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public interface
@@ -60,3 +68,11 @@
       :month (+ (today :month) 1)
       :day (+ (today :month-day) 1)
       :week-day (week-day-string (today :week-day))}))
+
+(defn before?
+  ```
+  Returns true if d1 is before d2.
+  ```
+  [d1 d2]
+  (< (os/mktime (to-os-date-struct d1))
+     (os/mktime (to-os-date-struct d2))))
