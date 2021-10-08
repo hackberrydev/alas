@@ -1,16 +1,13 @@
 ### ————————————————————————————————————————————————————————————————————————————
 ### This module implements stats command.
 
-(defn- pluralize [n word]
-  (if (= n 1)
-    (string n " " word)
-    (string n " " word "s")))
+(import ../utils :as "u")
 
 (defn- format-stats [stats]
   (string/join
-    @[(pluralize (stats :days) "day")
-      (pluralize (stats :completed-tasks) "completed task")
-      (pluralize (stats :pending-tasks) "pending task")]
+    @[(u/pluralize (stats :days) "day")
+      (u/pluralize (stats :completed-tasks) "completed task")
+      (u/pluralize (stats :pending-tasks) "pending task")]
     "\n"))
 
 (defn- all-tasks [todo]
