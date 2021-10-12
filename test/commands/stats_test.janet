@@ -1,14 +1,27 @@
 (import testament :prefix "" :exit true)
-(import ../../src/commands/stats :prefix "")
+(import ../../src/commands/stats :as "stats")
 
-(deftest stats-command-for-file
-  (is (=
-       "2 days\n3 completed tasks\n1 pending task"
-       (stats "test/examples/todo.md"))))
+(def todo
+  [{:date "2020-08-01"
+    :tasks @["- [ ] Develop photos for the grandmother"
+             "- [X] Pay bills"]}
+   {:date "2020-07-31"
+    :tasks @["- [X] Review open pull requests"
+             "- [X] Fix flaky test"]}])
 
-(deftest stats-command-for-file-that-does-not-exist
-  (is (=
-       "File does not exist"
-       (stats "missing_file.md"))))
+(def stats (stats/stats todo))
+
+(deftest days-stats
+  (is (= 2 (stats :days))))
+
+(deftest completed-tasks-stats
+  (is (= 3 (stats :completed-tasks))))
+
+(deftest pending-tasks-stats
+  (is (= 1 (stats :pending-tasks))))
+
+(deftest formatted-stats
+  (is (= (stats/formatted-stats todo)
+         "2 days\n3 completed tasks\n1 pending task")))
 
 (run-tests!)

@@ -2,6 +2,7 @@
 (import ../src/date :prefix "")
 (import ../src/entities :as "e")
 (import ../src/string_repository :as "repo")
+(import ../src/file_repository)
 
 (def todo
   ```
@@ -31,6 +32,13 @@
     (is (= (date 2020 7 31) ((days 1) :date)))
     (is (= 11 ((days 1) :line-number)))
     (is (= false ((days 1) :changed)))))
+
+(deftest load-file-into-entities
+  (def load-result (file_repository/load-todo "test/examples/todo.md"))
+  (def days (repo/load (load-result :todo)))
+  (is (= 2 (length days)))
+  (is (= (date 2020 8 1) ((days 0) :date)))
+  (is (= (date 2020 7 31) ((days 1) :date))))
 
 (deftest save-entities-into-string
   (def days @[(e/build-day (date 2020 8 3) 6)

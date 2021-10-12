@@ -12,9 +12,8 @@
   (string "## " (date/format (day :date)) "\n"))
 
 (defn- build-day [line line-number]
-  {:date (date/parse (string/trim ((string/split " " line) 1) ","))
-   :line-number line-number
-   :changed false})
+  (def date (date/parse (string/trim ((string/split " " line) 1) ",")))
+  (e/build-day date line-number))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
