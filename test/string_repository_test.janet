@@ -43,14 +43,14 @@
   (def tasks-2 (day-2 :tasks))
   (is (= 2 (length tasks-1)))
   (is (= "Develop photos" ((tasks-1 0) :title)))
-  (is (not ((:tasks-1 0) :done)))
-  (is ((:tasks-1 1) :done))
+  (is (not ((tasks-1 0) :done)))
+  (is ((tasks-1 1) :done))
   (is (= "Pay bills" ((tasks-1 1) :title)))
   (is (= 2 (length tasks-2)))
   (is (= "Review open pull requests" ((tasks-2 0) :title)))
   (is (= "Fix the flaky test" ((tasks-2 1) :title)))
-  (is ((:tasks-2 0) :done))
-  (is ((:tasks-2 1) :done)))
+  (is ((tasks-2 0) :done))
+  (is ((tasks-2 1) :done)))
 
 (deftest load-file-into-entities
   (def load-result (file_repository/load-todo "test/examples/todo.md"))

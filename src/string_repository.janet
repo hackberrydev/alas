@@ -15,6 +15,23 @@
   (def date (date/parse (string/trim ((string/split " " line) 1) ",")))
   (e/build-day date line-number))
 
+(defn- add-day [days line line-number]
+  (array/push days (build-day line line-number)))
+
+(defn- task? [line]
+  (string/has-prefix? "- [" line))
+
+(defn- build-task [line line-number]
+  (def title (string/slice line 6))
+  (def done (string/has-prefix? "- [x]" (string/ascii-lower line)))
+  (e/build-task title done line-number))
+
+(defn- add-task [days line line-number]
+  (def day (array/peek days))
+  (def task (build-task line line-number))
+  (if day
+    (array/push (day :tasks) task)))
+
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -28,8 +45,9 @@
   (var line-number 0)
   (loop [line :in lines
          :after (++ line-number)]
-    (if (day-title? line)
-      (array/push days (build-day line line-number))))
+    (cond
+      (day-title? line) (add-day days line line-number)
+      (task? line)      (add-task days line line-number)))
   days)
 
 (defn save
