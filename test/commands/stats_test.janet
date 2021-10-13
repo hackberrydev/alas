@@ -3,11 +3,11 @@
 
 (def todo
   [{:date "2020-08-01"
-    :tasks @["- [ ] Develop photos for the grandmother"
-             "- [X] Pay bills"]}
+    :tasks @[{:title "Develop photos for the grandmother" :done false}
+             {:title "Pay bills" :done true}]}
    {:date "2020-07-31"
-    :tasks @["- [X] Review open pull requests"
-             "- [X] Fix flaky test"]}])
+    :tasks @[{:title "Review open pull requests" :done true}
+             {:title "Fix flaky test" :done true}]}])
 
 (def stats (stats/stats todo))
 

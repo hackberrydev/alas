@@ -13,17 +13,11 @@
 (defn- all-tasks [todo]
   (array/concat @[] (splice (map (fn [day] (day :tasks)) todo))))
 
-(defn- completed-task? [task]
-  (string/find "[X]" task))
-
-(defn- pending-task? [task]
-  (string/find "[ ]" task))
-
 (defn- completed-tasks [todo]
-  (filter completed-task? (all-tasks todo)))
+  (filter (fn [t] (t :done)) (all-tasks todo)))
 
 (defn- pending-tasks [todo]
-  (filter pending-task? (all-tasks todo)))
+  (filter (fn [t] (not (t :done))) (all-tasks todo)))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
