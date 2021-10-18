@@ -1,6 +1,8 @@
 ### ————————————————————————————————————————————————————————————————————————————
 ### This module implements date utilities.
 
+(def seconds-in-day (* 60 60 24))
+
 (defn- prepend-with-0
   [s]
   (if (= 1 (length s))
@@ -88,11 +90,10 @@
   [d1 d2]
   (< (to-time d1) (to-time d2)))
 
-(defn next-day
-  ```
-  Returns the next day.
-  ```
-  [date]
-  (def next-day-time (+ (to-time date)
-                        (* 60 60 24)))
+(defn next-day [date]
+  (def next-day-time (+ (to-time date) seconds-in-day))
   (from-os-date-struct (os/date next-day-time)))
+
+(defn previous-day [date]
+  (def previous-day-time (- (to-time date) seconds-in-day))
+  (from-os-date-struct (os/date previous-day-time)))

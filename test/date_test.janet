@@ -30,4 +30,8 @@
   (is (= (d/next-day (d/date 2021 7 1)) (d/date 2021 7 2)))
   (is (= (d/next-day (d/date 2021 7 31)) (d/date 2021 8 1))))
 
+(deftest previous-day
+  (is (= (d/previous-day (d/date 2021 7 2)) (d/date 2021 7 1)))
+  (is (= (d/previous-day (d/date 2021 7 1)) (d/date 2021 6 30))))
+
 (run-tests!)
