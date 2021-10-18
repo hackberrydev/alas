@@ -13,4 +13,14 @@
   (is (= 3 (day-1 :line-number)))
   (is (day-1 :changed)))
 
+(deftest insert-three-days-at-top
+  (def todo @[(e/build-day (d/date 2020 8 3) 3)
+              (e/build-day (d/date 2020 8 2) 6)])
+  (def new-todo (c/insert-days todo (d/date 2020 8 6)))
+  (def day-1 (first new-todo))
+  (is (= 5 (length new-todo)))
+  (is (= (d/date 2020 8 6) (day-1 :date)))
+  (is (= 3 (day-1 :line-number)))
+  (is (day-1 :changed)))
+
 (run-tests!)
