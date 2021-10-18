@@ -18,6 +18,9 @@
         5 "Friday"
         6 "Saturday"))
 
+(defn- week-day [date-struct]
+  (week-day-string ((os/date (os/mktime date-struct)) :week-day)))
+
 (defn- to-os-date-struct
   ```
   Turns an Alas date struct into the Janet date struct.
@@ -26,6 +29,16 @@
   {:year (date :year)
    :month (- (date :month) 1)
    :month-day (- (date :day) 1)})
+
+(defn- from-os-date-struct
+  [date]
+  {:year (date :year)
+   :month (+ 1 (date :month))
+   :day (+ 1 (date :month-day))
+   :week-day (week-day date)})
+
+(defn- to-time [date]
+  (os/mktime (to-os-date-struct date)))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public interface
@@ -36,8 +49,7 @@
   ```
   [year month day]
   (def date-struct {:year year :month (- month 1) :month-day (- day 1)})
-  (def week-day ((os/date (os/mktime date-struct)) :week-day))
-  {:year year :month month :day day :week-day (week-day-string week-day)})
+  {:year year :month month :day day :week-day (week-day date-struct)})
 
 (defn parse
   ```
@@ -74,5 +86,13 @@
   Returns true if d1 is before d2.
   ```
   [d1 d2]
-  (< (os/mktime (to-os-date-struct d1))
-     (os/mktime (to-os-date-struct d2))))
+  (< (to-time d1) (to-time d2)))
+
+(defn next-day
+  ```
+  Returns the next day.
+  ```
+  [date]
+  (def next-day-time (+ (to-time date)
+                        (* 60 60 24)))
+  (from-os-date-struct (os/date next-day-time)))

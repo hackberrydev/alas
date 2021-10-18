@@ -1,8 +1,8 @@
 ### ————————————————————————————————————————————————————————————————————————————
 ### This module implements command for inserting new days in a TODO.
 
-(import ../date :as "d")
-(import ../entities :as "e")
+(import ../date :as d)
+(import ../entities :as e)
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
