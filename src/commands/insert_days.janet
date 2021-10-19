@@ -20,6 +20,7 @@
   (var new-todo (reverse todo))
   (var line-number ((array/peek new-todo) :line-number))
   (var current-date (d/next-day ((array/peek new-todo) :date)))
+  (var days-at-top @[])
   (while (d/before-or-eq? current-date date)
     (array/push new-todo
                 (e/build-day current-date line-number true))

@@ -94,6 +94,13 @@
   [d1 d2]
   (<= (to-time d1) (to-time d2)))
 
+(defn after?
+  ```
+  Returns true if d1 is after d2.
+  ```
+  [d1 d2]
+  (> (to-time d1) (to-time d2)))
+
 (defn next-day [date]
   (def next-day-time (+ (to-time date) seconds-in-day))
   (from-os-date-struct (os/date next-day-time)))
