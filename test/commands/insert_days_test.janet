@@ -3,7 +3,7 @@
 (import ../../src/date :as "d")
 (import ../../src/commands/insert_days :as "c")
 
-(deftest insert-days-at-top
+(deftest insert-day-at-top
   (def todo @[(e/build-day (d/date 2020 8 3) 3)
               (e/build-day (d/date 2020 8 2) 6)])
   (def new-todo (c/insert-days todo (d/date 2020 8 4)))
