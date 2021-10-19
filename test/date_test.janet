@@ -26,6 +26,12 @@
   (is (not (d/before? (d/date 2021 7 1) (d/date 2021 6 15))))
   (is (not (d/before? (d/date 2021 7 1) (d/date 2021 7 1)))))
 
+(deftest before-or-eq?
+  (is (d/before-or-eq? (d/date 2021 7 1) (d/date 2021 7 2)))
+  (is (d/before-or-eq? (d/date 2021 7 1) (d/date 2021 7 10)))
+  (is (d/before-or-eq? (d/date 2021 7 1) (d/date 2021 7 1)))
+  (is (not (d/before-or-eq? (d/date 2021 7 1) (d/date 2021 6 15)))))
+
 (deftest next-day
   (is (= (d/next-day (d/date 2021 7 1)) (d/date 2021 7 2)))
   (is (= (d/next-day (d/date 2021 7 31)) (d/date 2021 8 1))))
