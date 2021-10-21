@@ -28,7 +28,7 @@
   (var current-date (d/next-day ((array/peek new-todo) :date)))
 
   (while (d/before-or-eq? current-date date)
-    (def new-day (if (and (any? days-after-today) (= current-date (array/peek days-after-today) :date))
+    (def new-day (if (and (any? days-after-today) (= current-date ((array/peek days-after-today) :date)))
                   (array/pop days-after-today)
                   (e/build-day current-date line-number true)))
     (array/push new-todo new-day)
