@@ -4,18 +4,9 @@
 (import ../date :as d)
 (import ../entities :as e)
 
-## —————————————————————————————————————————————————————————————————————————————
-## Public Interface
-
-(defn insert-days
+(defn insert-days-in-list
   ```
-  Inserts new days into the array of day entities.
-
-  (insert-days days date today)
-
-  days  - The list of day entities.
-  date  - The date up to which new days will be generated.
-  today - Date.
+  todo must be non-empty.
   ```
   [todo date today]
   (var new-todo (reverse todo))
@@ -38,3 +29,21 @@
   (while (any? days-after-today)
     (array/push new-todo (array/pop days-after-today)))
   (reverse new-todo))
+
+## —————————————————————————————————————————————————————————————————————————————
+## Public Interface
+
+(defn insert-days
+  ```
+  Inserts new days into the array of day entities.
+
+  (insert-days days date today)
+
+  days  - The list of day entities.
+  date  - The date up to which new days will be generated.
+  today - Date.
+  ```
+  [todo date today]
+  (if (any? todo)
+    (insert-days-in-list todo date today)
+    @[(e/build-day today 1 true)]))

@@ -41,4 +41,10 @@
   (is (= (d/date 2020 8 5) (day-2 :date)))
   (is (= 6 (day-2 :line-number))))
 
+(deftest insert-days-with-empty-todo
+  (def todo (c/insert-days @[] (d/date 2020 8 4) (d/date 2020 8 4)))
+  (is (= 1 (length todo)))
+  (is (= (d/date 2020 8 4) ((first todo) :date)))
+  (is (= 1 ((first todo) :line-number))))
+
 (run-tests!)
