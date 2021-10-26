@@ -12,11 +12,16 @@
   (var new-todo (reverse todo))
   (var days-after-today @[])
 
-  (while (d/after? ((array/peek new-todo) :date) today)
+  (while (and (any? new-todo) (d/after? ((array/peek new-todo) :date) today))
     (array/push days-after-today (array/pop new-todo)))
 
-  (var line-number ((array/peek new-todo) :line-number))
-  (var current-date (d/next-day ((array/peek new-todo) :date)))
+  (var line-number (if (any? new-todo)
+                       ((array/peek new-todo) :line-number)
+                       (if (any? days-after-today)
+                           ((array/peek days-after-today) :line-number)
+                           1)))
+
+  (var current-date (if (any? new-todo) (d/next-day ((array/peek new-todo) :date)) today))
 
   (while (d/before-or-eq? current-date date)
     (def new-day (if (and (any? days-after-today) (= current-date ((array/peek days-after-today) :date)))

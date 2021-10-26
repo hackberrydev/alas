@@ -48,6 +48,7 @@
   (is (= 1 ((first todo) :line-number))))
 
 (deftest insert-days-with-one-day-in-future
+  (print "Test insert-days-with-one-day-in-future")
   (def todo @[(e/build-day (d/date 2020 8 6) 3)])
   (def new-todo (c/insert-days todo (d/date 2020 8 5) (d/date 2020 8 4)))
   (def day-2 (new-todo 1))
