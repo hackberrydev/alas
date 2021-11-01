@@ -29,10 +29,8 @@
   (def day-2 (days 1))
   (is (= 2 (length days)))
   (is (= (date 2020 8 1) (day-1 :date)))
-  (is (= 6 (day-1 :line-number)))
   (is (= false (day-1 :changed)))
   (is (= (date 2020 7 31) (day-2 :date)))
-  (is (= 11 (day-2 :line-number)))
   (is (= false (day-2 :changed))))
 
 (deftest load-tasks-from-string-into-entities
@@ -62,8 +60,8 @@
   (is (= 2 (length ((days 1) :tasks)))))
 
 (deftest save-entities-into-string
-  (def days @[(e/build-day (date 2020 8 3) 6)
-              (e/build-day (date 2020 8 2) 6)])
+  (def days @[(e/build-day (date 2020 8 3))
+              (e/build-day (date 2020 8 2))])
   (def new-todo
        ```
        # Main TODO

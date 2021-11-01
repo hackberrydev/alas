@@ -11,24 +11,24 @@
 (defn- day-title [day]
   (string "## " (date/format (day :date)) "\n"))
 
-(defn- build-day [line line-number]
+(defn- build-day [line]
   (def date (date/parse (string/trim ((string/split " " line) 1) ",")))
-  (e/build-day date line-number))
+  (e/build-day date))
 
-(defn- add-day [days line line-number]
-  (array/push days (build-day line line-number)))
+(defn- add-day [days line]
+  (array/push days (build-day line)))
 
 (defn- task? [line]
   (string/has-prefix? "- [" line))
 
-(defn- build-task [line line-number]
+(defn- build-task [line]
   (def title (string/slice line 6))
   (def done (string/has-prefix? "- [x]" (string/ascii-lower line)))
-  (e/build-task title done line-number))
+  (e/build-task title done))
 
-(defn- add-task [days line line-number]
+(defn- add-task [days line]
   (def day (array/peek days))
-  (def task (build-task line line-number))
+  (def task (build-task line))
   (if day
     (array/push (day :tasks) task)))
 
@@ -42,12 +42,10 @@
   [todo]
   (def lines (string/split "\n" todo))
   (def days @[])
-  (var line-number 0)
-  (loop [line :in lines
-         :after (++ line-number)]
+  (loop [line :in lines]
     (cond
-      (day-title? line) (add-day days line line-number)
-      (task? line)      (add-task days line line-number)))
+      (day-title? line) (add-day days line)
+      (task? line)      (add-task days line)))
   days)
 
 (defn save
@@ -59,10 +57,8 @@
   (def todo-lines (string/split "\n" todo))
   (def new-todo-lines @[])
   (var day (array/pop days))
-  (var line-number 0)
-  (loop [line :in todo-lines
-         :after (++ line-number)]
-    (while (and day (= (day :line-number) line-number))
+  (loop [line :in todo-lines]
+    (while day
       (array/push new-todo-lines (day-title day))
       (set day (array/pop days)))
     (array/push new-todo-lines line))
