@@ -1,6 +1,8 @@
 ### ————————————————————————————————————————————————————————————————————————————
 ### This module implements date utilities.
 
+(def seconds-in-day (* 60 60 24))
+
 (defn- prepend-with-0
   [s]
   (if (= 1 (length s))
@@ -18,6 +20,27 @@
         5 "Friday"
         6 "Saturday"))
 
+(defn- week-day [date-struct]
+  (week-day-string ((os/date (os/mktime date-struct)) :week-day)))
+
+(defn- to-os-date-struct
+  ```
+  Turns an Alas date struct into the Janet date struct.
+  ```
+  [date]
+  {:year (date :year)
+   :month (- (date :month) 1)
+   :month-day (- (date :day) 1)})
+
+(defn- from-os-date-struct
+  [date]
+  {:year (date :year)
+   :month (+ 1 (date :month))
+   :day (+ 1 (date :month-day))
+   :week-day (week-day date)})
+
+(defn- to-time [date]
+  (os/mktime (to-os-date-struct date)))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public interface
@@ -28,8 +51,7 @@
   ```
   [year month day]
   (def date-struct {:year year :month (- month 1) :month-day (- day 1)})
-  (def week-day ((os/date (os/mktime date-struct)) :week-day))
-  {:year year :month month :day day :week-day (week-day-string week-day)})
+  {:year year :month month :day day :week-day (week-day date-struct)})
 
 (defn parse
   ```
@@ -60,3 +82,33 @@
       :month (+ (today :month) 1)
       :day (+ (today :month-day) 1)
       :week-day (week-day-string (today :week-day))}))
+
+(defn before?
+  ```
+  Returns true if d1 is before d2.
+  ```
+  [d1 d2]
+  (< (to-time d1) (to-time d2)))
+
+(defn before-or-eq?
+  [d1 d2]
+  (<= (to-time d1) (to-time d2)))
+
+(defn after?
+  ```
+  Returns true if d1 is after d2.
+  ```
+  [d1 d2]
+  (> (to-time d1) (to-time d2)))
+
+(defn after-or-eq?
+ [d1 d2]
+ (>= (to-time d1) (to-time d2)))
+
+(defn next-day [date]
+  (def next-day-time (+ (to-time date) seconds-in-day))
+  (from-os-date-struct (os/date next-day-time)))
+
+(defn previous-day [date]
+  (def previous-day-time (- (to-time date) seconds-in-day))
+  (from-os-date-struct (os/date previous-day-time)))
