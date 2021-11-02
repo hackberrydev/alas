@@ -4,7 +4,7 @@
 (import ../src/string_repository :as "repo")
 (import ../src/file_repository)
 
-(def todo
+(def todo-string
   ```
   # Main TODO
 
@@ -24,7 +24,8 @@
   ```)
 
 (deftest load-string-into-entities
-  (def days (repo/load todo))
+  (def todo (repo/load todo-string))
+  (def days (todo :days))
   (def day-1 (days 0))
   (def day-2 (days 1))
   (is (= 2 (length days)))
@@ -34,7 +35,8 @@
   (is (= false (day-2 :changed))))
 
 (deftest load-tasks-from-string-into-entities
-  (def days (repo/load todo))
+  (def todo (repo/load todo-string))
+  (def days (todo :days))
   (def day-1 (days 0))
   (def day-2 (days 1))
   (def tasks-1 (day-1 :tasks))
@@ -52,7 +54,8 @@
 
 (deftest load-file-into-entities
   (def load-result (file_repository/load-todo "test/examples/todo.md"))
-  (def days (repo/load (load-result :todo)))
+  (def todo (repo/load (load-result :todo)))
+  (def days (todo :days))
   (is (= 2 (length days)))
   (is (= (date 2020 8 1) ((days 0) :date)))
   (is (= (date 2020 7 31) ((days 1) :date)))
@@ -84,6 +87,6 @@
        - [x] Review open pull requests
        - [x] Fix the flaky test
       ```)
-  (is (= new-todo (repo/save days todo))))
+  (is (= new-todo (repo/save days todo-string))))
 
 (run-tests!)

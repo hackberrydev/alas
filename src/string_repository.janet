@@ -39,14 +39,15 @@
   ```
   Loads days and tasks from a string to an array.
   ```
-  [todo]
-  (def lines (string/split "\n" todo))
+  [todo-string]
+  (def lines (string/split "\n" todo-string))
+  (def header @[])
   (def days @[])
   (loop [line :in lines]
     (cond
       (day-title? line) (add-day days line)
       (task? line)      (add-task days line)))
-  days)
+  (e/build-todo header days))
 
 (defn save
   ```
