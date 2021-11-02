@@ -34,6 +34,18 @@
   (is (= (date 2020 7 31) (day-2 :date)))
   (is (= false (day-2 :changed))))
 
+(deftest load-header-from-string-into-entities
+  (def todo (repo/load todo-string))
+  (def header
+    ```
+    # Main TODO
+
+    ## Inbox
+
+    - [ ] Fix the lamp
+    ```)
+  (is (= header (string/join (todo :header) "\n"))))
+
 (deftest load-tasks-from-string-into-entities
   (def todo (repo/load todo-string))
   (def days (todo :days))
