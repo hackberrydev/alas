@@ -6,7 +6,7 @@
 
 (def plan-grammar
   ~{:main (replace (* :title :inbox :days) ,e/build-plan)
-    :title (replace (* "# " (capture :sentence)) ,string/trim)
+    :title (* "# " :sentence)
     :inbox (* :inbox-title "\n" :tasks)
     :inbox-title (* "## Inbox\n")
     :days (replace (any :day) ,array)
@@ -14,12 +14,12 @@
     :day-title (* "## " :date ", " :week-day "\n")
     :date (* :d :d :d :d "-" :d :d "-" :d :d)
     :week-day (+ "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
-    :tasks (replace (any :task) ,array)
-    :task (drop (* "- " :checkbox " " :sentence))
+    :tasks (group (any :task))
+    :task (replace (* "- " (constant :done) :checkbox " " (constant :title) :sentence) ,struct)
     :checkbox (+ :checkbox-done :checkbox-pending)
     :checkbox-done (* (constant true) (+ "[x]" "[X]"))
     :checkbox-pending (* (constant false) "[ ]")
-    :sentence (some (+ :w+ :s+))})
+    :sentence (replace (capture (some (+ :w+ :s+))) ,string/trim)})
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface

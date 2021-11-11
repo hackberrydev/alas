@@ -22,6 +22,9 @@
     - [x] Fix the flaky test
     ```)
   (def plan (first (parse plan-string)))
-  (is (= (plan :title) "Main TODO")))
+  (def inbox (plan :inbox))
+  (is (= "Main TODO" (plan :title)))
+  (is (= {:title "Fix the lamp" :done false} (inbox 0)))
+  (is (= {:title "Update Rust" :done false} (inbox 1))))
 
 (run-tests!)
