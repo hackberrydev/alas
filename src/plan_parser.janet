@@ -2,6 +2,7 @@
 ### This module implements a PEG parser that parses plan as a string into
 ### entities.
 
+(import ./date :as d)
 (import ./entities :as e)
 
 (def plan-grammar
@@ -9,10 +10,10 @@
     :title (* "# " :sentence)
     :inbox (* :inbox-title "\n" :tasks)
     :inbox-title (* "## Inbox\n")
-    :days (replace (any :day) ,array)
-    :day (drop (* :day-title "\n" :tasks))
-    :day-title (* "## " :date ", " :week-day "\n")
-    :date (* :d :d :d :d "-" :d :d "-" :d :d)
+    :days (group (any :day))
+    :day (replace (* :day-title "\n" :tasks) ,e/build-day)
+    :day-title (* "## " (replace :date ,d/parse) ", " :week-day "\n")
+    :date (capture (* :d :d :d :d "-" :d :d "-" :d :d))
     :week-day (+ "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
     :tasks (group (any :task))
     :task (replace (* "- " (constant :done) :checkbox " " (constant :title) :sentence) ,struct)
