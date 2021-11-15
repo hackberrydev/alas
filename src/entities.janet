@@ -4,7 +4,8 @@
 (defn build-plan [title inbox-tasks days]
   {:title title :inbox inbox-tasks :days days})
 
-(defn build-day [date tasks]
+(defn build-day [date &opt tasks]
+  (default tasks @[])
   {:date date :tasks tasks})
 
 (defn build-task [title done]
