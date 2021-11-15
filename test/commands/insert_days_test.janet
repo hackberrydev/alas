@@ -9,8 +9,7 @@
   (def new-todo (c/insert-days todo (d/date 2020 8 4) (d/date 2020 8 4)))
   (def day-1 (first new-todo))
   (is (= 3 (length new-todo)))
-  (is (= (d/date 2020 8 4) (day-1 :date)))
-  (is (day-1 :changed)))
+  (is (= (d/date 2020 8 4) (day-1 :date))))
 
 (deftest insert-three-days-at-top
   (def todo @[(e/build-day (d/date 2020 8 3))
@@ -18,8 +17,7 @@
   (def new-todo (c/insert-days todo (d/date 2020 8 6) (d/date 2020 8 4)))
   (def day-1 (first new-todo))
   (is (= 5 (length new-todo)))
-  (is (= (d/date 2020 8 6) (day-1 :date)))
-  (is (day-1 :changed)))
+  (is (= (d/date 2020 8 6) (day-1 :date))))
 
 (deftest insert-days-in-middle
   (def todo @[(e/build-day (d/date 2020 8 6))
