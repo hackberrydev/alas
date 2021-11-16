@@ -1,27 +1,43 @@
 ### ————————————————————————————————————————————————————————————————————————————
-### This module implements functions for parsing a TODO string to entities and
-### serializing entities to a string.
+### This module implements serializing a plan into a string.
 
 (import ./date :as date)
 
+(defn- plan-title [plan]
+  (string "# " (plan :title) "\n"))
+
+(defn- inbox-title []
+  "## Inbox\n")
+
+(defn- checkbox [done]
+  (if done "[X]" "[ ]"))
+
+(defn- serialize-task [task]
+  (string "- " (checkbox (task :done)) " " (task :title)))
+
+(defn- serialize-tasks [tasks]
+  (map serialize-task tasks))
+
 (defn- day-title [day]
-  (string "## " (date/format (day :date)) "\n"))
+  (string "\n## " (date/format (day :date)) "\n"))
+
+(defn- serialize-day [day]
+  (array/concat @[(day-title day)] (serialize-tasks (day :tasks))))
+
+(defn- serialize-days [days]
+  (flatten (map serialize-day days)))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
-(defn save
+(defn serialize
   ```
-  Serializes days and tasks from an array into a string.
+  Serializes plan into a string.
   ```
-  [days todo]
-  (def days (reverse days)) # This way `days` can be used as a stack.
-  (def todo-lines (string/split "\n" todo))
-  (def new-todo-lines @[])
-  (var day (array/pop days))
-  (loop [line :in todo-lines]
-    (while day
-      (array/push new-todo-lines (day-title day))
-      (set day (array/pop days)))
-    (array/push new-todo-lines line))
-  (string/join new-todo-lines "\n"))
+  [plan]
+  (def plan-lines @[])
+  (array/push plan-lines (plan-title plan))
+  (array/push plan-lines (inbox-title))
+  (array/concat plan-lines (serialize-tasks (plan :inbox)))
+  (array/concat plan-lines (serialize-days (plan :days)))
+  (string/join plan-lines "\n"))
