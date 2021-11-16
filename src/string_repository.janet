@@ -3,51 +3,12 @@
 ### serializing entities to a string.
 
 (import ./date :as date)
-(import ./entities :as e)
-
-(defn- day-title? [day]
-  (string/has-prefix? "## 2" day))
 
 (defn- day-title [day]
   (string "## " (date/format (day :date)) "\n"))
 
-(defn- build-day [line]
-  (def date (date/parse (string/trim ((string/split " " line) 1) ",")))
-  (e/build-day date))
-
-(defn- add-day [days line]
-  (array/push days (build-day line)))
-
-(defn- task? [line]
-  (string/has-prefix? "- [" line))
-
-(defn- build-task [line]
-  (def title (string/slice line 6))
-  (def done (string/has-prefix? "- [x]" (string/ascii-lower line)))
-  (e/build-task title done))
-
-(defn- add-task [days line]
-  (def day (array/peek days))
-  (def task (build-task line))
-  (if day
-    (array/push (day :tasks) task)))
-
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
-
-(defn load
-  ```
-  Loads days and tasks from a string to an array.
-  ```
-  [todo-string]
-  (def lines (string/split "\n" todo-string))
-  (def header @[])
-  (def days @[])
-  (loop [line :in lines]
-    (cond
-      (day-title? line) (add-day days line)
-      (task? line)      (add-task days line)))
-  (e/build-todo header days))
 
 (defn save
   ```

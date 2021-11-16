@@ -23,57 +23,6 @@
   - [x] Fix the flaky test
   ```)
 
-(deftest load-string-into-entities
-  (def todo (repo/load todo-string))
-  (def days (todo :days))
-  (def day-1 (days 0))
-  (def day-2 (days 1))
-  (is (= 2 (length days)))
-  (is (= (date 2020 8 1) (day-1 :date)))
-  (is (= false (day-1 :changed)))
-  (is (= (date 2020 7 31) (day-2 :date)))
-  (is (= false (day-2 :changed))))
-
-(deftest load-header-from-string-into-entities
-  (def todo (repo/load todo-string))
-  (def header
-    ```
-    # Main TODO
-
-    ## Inbox
-
-    - [ ] Fix the lamp
-    ```)
-  (is (= header (string/join (todo :header) "\n"))))
-
-(deftest load-tasks-from-string-into-entities
-  (def todo (repo/load todo-string))
-  (def days (todo :days))
-  (def day-1 (days 0))
-  (def day-2 (days 1))
-  (def tasks-1 (day-1 :tasks))
-  (def tasks-2 (day-2 :tasks))
-  (is (= 2 (length tasks-1)))
-  (is (= "Develop photos" ((tasks-1 0) :title)))
-  (is (not ((tasks-1 0) :done)))
-  (is ((tasks-1 1) :done))
-  (is (= "Pay bills" ((tasks-1 1) :title)))
-  (is (= 2 (length tasks-2)))
-  (is (= "Review open pull requests" ((tasks-2 0) :title)))
-  (is (= "Fix the flaky test" ((tasks-2 1) :title)))
-  (is ((tasks-2 0) :done))
-  (is ((tasks-2 1) :done)))
-
-(deftest load-file-into-entities
-  (def load-result (file_repository/load-todo "test/examples/todo.md"))
-  (def todo (repo/load (load-result :todo)))
-  (def days (todo :days))
-  (is (= 2 (length days)))
-  (is (= (date 2020 8 1) ((days 0) :date)))
-  (is (= (date 2020 7 31) ((days 1) :date)))
-  (is (= 2 (length ((days 0) :tasks))))
-  (is (= 2 (length ((days 1) :tasks)))))
-
 (deftest save-entities-into-string
   (def days @[(e/build-day (date 2020 8 3))
               (e/build-day (date 2020 8 2))])
