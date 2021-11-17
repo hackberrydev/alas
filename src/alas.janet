@@ -1,7 +1,8 @@
 (import argparse :prefix "")
 (import ./commands/stats :prefix "")
 (import ./file_repository)
-(import ./string_repository)
+(import ./plan_serializer :as serializer)
+(import ./plan_parser :as parser)
 
 (def argparse-params
   ["A command line utility for planning your days"
@@ -16,6 +17,9 @@
   (def error (load-file-result :error))
   (if error
     (print error)
-    (let [todo (string_repository/load (load-file-result :todo))]
-      (cond
-        (arguments "stats") (print (formatted-stats todo))))))
+    (let [parse-result (parser/parse (load-file-result :todo))]
+      (if parse-result
+        (let [plan (first parse-result)]
+          (cond
+            (arguments "stats") (print (formatted-stats (plan :days)))))
+        (print "Plan could not be parsed.")))))
