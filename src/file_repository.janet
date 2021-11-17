@@ -4,29 +4,29 @@
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public interface
 
-(defn save-todo
+(defn save-plan
   ```
-  Save todo to supplied path.
+  Save plan to supplied path.
   ```
-  [todo path]
+  [plan path]
   (def copy-path (string path ".copy"))
   (let [file (file/open copy-path :w)]
-    (file/write file todo)
+    (file/write file plan)
     (file/close file))
   (if (os/stat path)
     (os/rm path))
   (os/rename copy-path path))
 
-(defn load-todo
+(defn load-plan
   ```
-  Read todo from the file on the file path.
+  Read plan from the file on the file path.
   Returns a struct:
 
-    {todo todo-string} - When the file was successfully read.
+    {:plan plan-string} - When the file was successfully read.
     {:error message}   - When the file was not successfully read.
 
   ```
   [path]
   (if (= (os/stat path) nil)
     {:error "File does not exist"}
-    {:todo (string (file/read (file/open path) :all))}))
+    {:plan (string (file/read (file/open path) :all))}))

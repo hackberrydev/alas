@@ -13,11 +13,11 @@
 (defn main [& args]
   (def arguments (argparse ;argparse-params))
   (def file-path (arguments :default))
-  (def load-file-result (file_repository/load-todo file-path))
+  (def load-file-result (file_repository/load-plan file-path))
   (def error (load-file-result :error))
   (if error
     (print error)
-    (let [parse-result (parser/parse (load-file-result :todo))]
+    (let [parse-result (parser/parse (load-file-result :plan))]
       (if parse-result
         (let [plan (first parse-result)]
           (cond
