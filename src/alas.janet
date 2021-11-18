@@ -8,6 +8,8 @@
   ["A command line utility for planning your days"
    "stats" {:kind :flag
             :help "Show stats for the plan file."}
+   "insert-days" {:kind :option
+                  :help "Insert the following number of days into the plan."}
    :default {:kind :option}])
 
 (defn main [& args]
@@ -21,5 +23,6 @@
       (if parse-result
         (let [plan (first parse-result)]
           (cond
-            (arguments "stats") (print (formatted-stats (plan :days)))))
+            (arguments "stats") (print (formatted-stats (plan :days)))
+            (arguments "insert-days") (print "Inserting days...")))
         (print "Plan could not be parsed.")))))
