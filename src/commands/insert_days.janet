@@ -6,27 +6,27 @@
 
 (defn insert-days-in-list
   ```
-  todo must be non-empty.
+  days must be non-empty.
   ```
-  [todo date today]
-  (var new-todo (reverse todo))
+  [days date today]
+  (var new-days (reverse days))
   (var days-after-today @[])
 
-  (while (and (any? new-todo) (d/after? ((array/peek new-todo) :date) today))
-    (array/push days-after-today (array/pop new-todo)))
+  (while (and (any? new-days) (d/after? ((array/peek new-days) :date) today))
+    (array/push days-after-today (array/pop new-days)))
 
-  (var current-date (if (any? new-todo) (d/next-day ((array/peek new-todo) :date)) today))
+  (var current-date (if (any? new-days) (d/next-day ((array/peek new-days) :date)) today))
 
   (while (d/before-or-eq? current-date date)
     (def new-day (if (and (any? days-after-today) (= current-date ((array/peek days-after-today) :date)))
                   (array/pop days-after-today)
                   (e/build-day current-date true)))
-    (array/push new-todo new-day)
+    (array/push new-days new-day)
     (set current-date (d/next-day current-date)))
 
   (while (any? days-after-today)
-    (array/push new-todo (array/pop days-after-today)))
-  (reverse new-todo))
+    (array/push new-days (array/pop days-after-today)))
+  (reverse new-days))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
