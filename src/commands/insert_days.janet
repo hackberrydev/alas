@@ -33,15 +33,17 @@
 
 (defn insert-days
   ```
-  Inserts new days into the array of day entities.
+  Inserts new days into the plan.
 
-  (insert-days days date today)
+  (insert-days plan date today)
 
-  days  - The list of day entities.
+  plan  - The plan entity.
   date  - The date up to which new days will be generated.
   today - Date.
   ```
-  [todo date today]
-  (if (any? todo)
-    (insert-days-in-list todo date today)
-    @[(e/build-day today true)]))
+  [plan date today]
+  (def days (plan :days))
+  (def new-days (if (any? days)
+                 (insert-days-in-list days date today)
+                 @[(e/build-day today)]))
+  (e/build-plan (plan :title) (plan :inbox) new-days))
