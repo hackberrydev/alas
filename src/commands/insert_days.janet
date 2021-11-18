@@ -15,21 +15,14 @@
   (while (and (any? new-todo) (d/after? ((array/peek new-todo) :date) today))
     (array/push days-after-today (array/pop new-todo)))
 
-  (var line-number (if (any? new-todo)
-                       ((array/peek new-todo) :line-number)
-                       (if (any? days-after-today)
-                           ((array/peek days-after-today) :line-number)
-                           1)))
-
   (var current-date (if (any? new-todo) (d/next-day ((array/peek new-todo) :date)) today))
 
   (while (d/before-or-eq? current-date date)
     (def new-day (if (and (any? days-after-today) (= current-date ((array/peek days-after-today) :date)))
                   (array/pop days-after-today)
-                  (e/build-day current-date line-number true)))
+                  (e/build-day current-date true)))
     (array/push new-todo new-day)
-    (set current-date (d/next-day current-date))
-    (set line-number ((array/peek new-todo) :line-number)))
+    (set current-date (d/next-day current-date)))
 
   (while (any? days-after-today)
     (array/push new-todo (array/pop days-after-today)))
@@ -51,4 +44,4 @@
   [todo date today]
   (if (any? todo)
     (insert-days-in-list todo date today)
-    @[(e/build-day today 1 true)]))
+    @[(e/build-day today true)]))

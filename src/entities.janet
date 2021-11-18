@@ -1,9 +1,12 @@
 ### ————————————————————————————————————————————————————————————————————————————
 ### This module implements all entities and related functions.
 
-(defn build-day [date line-number &opt changed]
-  (default changed false)
-  {:date date :tasks (array) :changed changed :line-number line-number})
+(defn build-plan [title inbox-tasks days]
+  {:title title :inbox inbox-tasks :days days})
 
-(defn build-task [title done line-number]
-  {:title title :done done :line-number line-number})
+(defn build-day [date &opt tasks]
+  (default tasks @[])
+  {:date date :tasks tasks})
+
+(defn build-task [title done]
+  {:title title :done done})

@@ -1,18 +1,18 @@
 (import testament :prefix "" :exit true)
 (import ../src/file_repository :as "file-repository")
 
-(deftest load-todo-from-file
-  (let [result (file-repository/load-todo "test/examples/todo.md")
-        todo (result :todo)]
-    (is (= 12 (length (string/split "\n" todo))))))
+(deftest load-plan-from-file
+  (let [result (file-repository/load-plan "test/examples/todo.md")
+        plan (result :plan)]
+    (is (= 14 (length (string/split "\n" plan))))))
 
-(deftest load-todo-from-file-that-does-not-exist
-  (let [result (file-repository/load-todo "missing_file.md")]
+(deftest load-plan-from-file-that-does-not-exist
+  (let [result (file-repository/load-plan "missing_file.md")]
     (is (= "File does not exist" (result :error)))))
 
-(deftest save-todo
-  (def new-todo-path "test/examples/new_todo.md")
-  (def todo
+(deftest save-plan
+  (def new-plan-path "test/examples/new_plan.md")
+  (def plan
 
        ```
        # Main TODO
@@ -35,8 +35,8 @@
        - [x] Review open pull requests
        - [x] Fix the flaky test
       ```)
-  (file-repository/save-todo todo new-todo-path)
-  (is (= todo ((file-repository/load-todo new-todo-path) :todo)))
-  (os/rm new-todo-path))
+  (file-repository/save-plan plan new-plan-path)
+  (is (= plan ((file-repository/load-plan new-plan-path) :plan)))
+  (os/rm new-plan-path))
 
 (run-tests!)
