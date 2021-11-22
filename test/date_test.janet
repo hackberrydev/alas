@@ -52,4 +52,8 @@
   (is (= (d/previous-day (d/date 2021 7 2)) (d/date 2021 7 1)))
   (is (= (d/previous-day (d/date 2021 7 1)) (d/date 2021 6 30))))
 
+(deftest days-from-now
+  (is (= (d/days-from-now 1) (d/next-day (d/today))))
+  (is (= (d/days-from-now 2) (d/next-day (d/next-day (d/today))))))
+
 (run-tests!)
