@@ -20,7 +20,7 @@
   (while (d/before-or-eq? current-date date)
     (def new-day (if (and (any? days-after-today) (= current-date ((array/peek days-after-today) :date)))
                   (array/pop days-after-today)
-                  (e/build-day current-date true)))
+                  (e/build-day current-date)))
     (array/push new-days new-day)
     (set current-date (d/next-day current-date)))
 

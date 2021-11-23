@@ -12,7 +12,8 @@
   (def new-plan (c/insert-days plan (d/date 2020 8 4) (d/date 2020 8 4)))
   (def day-1 (first (new-plan :days)))
   (is (= 3 (length (new-plan :days))))
-  (is (= (d/date 2020 8 4) (day-1 :date))))
+  (is (= (d/date 2020 8 4) (day-1 :date)))
+  (is (empty? (day-1 :tasks))))
 
 (deftest insert-three-days-at-top
   (def plan (build-test-plan @[(e/build-day (d/date 2020 8 3))
