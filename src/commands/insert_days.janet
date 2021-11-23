@@ -10,22 +10,22 @@
   ```
   [days date today]
   (var new-days (reverse days))
-  (var days-after-today @[])
+  (var today-or-future @[])
+  (var current-date today)
 
-  (while (and (any? new-days) (d/after? ((array/peek new-days) :date) today))
-    (array/push days-after-today (array/pop new-days)))
-
-  (var current-date (if (any? new-days) (d/next-day ((array/peek new-days) :date)) today))
+  (while (and (any? new-days) (d/after-or-eq? ((array/peek new-days) :date) today))
+    (array/push today-or-future (array/pop new-days)))
 
   (while (d/before-or-eq? current-date date)
-    (def new-day (if (and (any? days-after-today) (= current-date ((array/peek days-after-today) :date)))
-                  (array/pop days-after-today)
+    (def new-day (if (and (any? today-or-future)
+                          (= current-date ((array/peek today-or-future) :date)))
+                  (array/pop today-or-future)
                   (e/build-day current-date)))
     (array/push new-days new-day)
     (set current-date (d/next-day current-date)))
 
-  (while (any? days-after-today)
-    (array/push new-days (array/pop days-after-today)))
+  (while (any? today-or-future)
+    (array/push new-days (array/pop today-or-future)))
   (reverse new-days))
 
 ## —————————————————————————————————————————————————————————————————————————————

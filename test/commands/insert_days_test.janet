@@ -16,19 +16,20 @@
   (is (empty? (day-1 :tasks))))
 
 (deftest insert-three-days-at-top
+  (print "insert-three-days-at-top")
   (def plan (build-test-plan @[(e/build-day (d/date 2020 8 3))
                                (e/build-day (d/date 2020 8 2))]))
-  (def new-plan (c/insert-days plan (d/date 2020 8 6) (d/date 2020 8 4)))
+  (def new-plan (c/insert-days plan (d/date 2020 8 7) (d/date 2020 8 5)))
   (def day-1 (first (new-plan :days)))
   (is (= 5 (length (new-plan :days))))
-  (is (= (d/date 2020 8 6) (day-1 :date))))
+  (is (= (d/date 2020 8 7) (day-1 :date))))
 
 (deftest insert-days-in-middle
   (def plan (build-test-plan @[(e/build-day (d/date 2020 8 6))
                                (e/build-day (d/date 2020 8 2))]))
   (def new-plan (c/insert-days plan (d/date 2020 8 4) (d/date 2020 8 4)))
   (def day-2 ((new-plan :days) 1))
-  (is (= 4 (length (new-plan :days))))
+  (is (= 3 (length (new-plan :days))))
   (is (= (d/date 2020 8 4) (day-2 :date))))
 
 (deftest insert-days-when-today-already-exists
