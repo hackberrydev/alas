@@ -34,6 +34,6 @@
             (arguments "insert-days") (run-command plan
                                                    file-path
                                                    insert-days
-                                                   (d/days-from-now (parse (arguments "insert-days")))
+                                                   (d/days-from-now (- (parse (arguments "insert-days")) 1))
                                                    (d/today))))
         (print "Plan could not be parsed.")))))
