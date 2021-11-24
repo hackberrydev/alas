@@ -6,42 +6,44 @@
 
 (defn insert-days-in-list
   ```
-  todo must be non-empty.
+  days must be non-empty.
   ```
-  [todo date today]
-  (var new-todo (reverse todo))
-  (var days-after-today @[])
+  [days date today]
+  (var new-days (reverse days))
+  (var today-or-future @[])
+  (var current-date today)
 
-  (while (and (any? new-todo) (d/after? ((array/peek new-todo) :date) today))
-    (array/push days-after-today (array/pop new-todo)))
-
-  (var current-date (if (any? new-todo) (d/next-day ((array/peek new-todo) :date)) today))
+  (while (and (any? new-days) (d/after-or-eq? ((array/peek new-days) :date) today))
+    (array/push today-or-future (array/pop new-days)))
 
   (while (d/before-or-eq? current-date date)
-    (def new-day (if (and (any? days-after-today) (= current-date ((array/peek days-after-today) :date)))
-                  (array/pop days-after-today)
-                  (e/build-day current-date true)))
-    (array/push new-todo new-day)
+    (def new-day (if (and (any? today-or-future)
+                          (= current-date ((array/peek today-or-future) :date)))
+                  (array/pop today-or-future)
+                  (e/build-day current-date)))
+    (array/push new-days new-day)
     (set current-date (d/next-day current-date)))
 
-  (while (any? days-after-today)
-    (array/push new-todo (array/pop days-after-today)))
-  (reverse new-todo))
+  (while (any? today-or-future)
+    (array/push new-days (array/pop today-or-future)))
+  (reverse new-days))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn insert-days
   ```
-  Inserts new days into the array of day entities.
+  Inserts new days into the plan.
 
-  (insert-days days date today)
+  (insert-days plan date today)
 
-  days  - The list of day entities.
+  plan  - The plan entity.
   date  - The date up to which new days will be generated.
   today - Date.
   ```
-  [todo date today]
-  (if (any? todo)
-    (insert-days-in-list todo date today)
-    @[(e/build-day today true)]))
+  [plan date today]
+  (def days (plan :days))
+  (def new-days (if (any? days)
+                 (insert-days-in-list days date today)
+                 @[(e/build-day today)]))
+  (e/build-plan (plan :title) (plan :inbox) new-days))

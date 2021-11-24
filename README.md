@@ -1,11 +1,11 @@
 # Alas
 
-Alas is a command line utility for managing TODO list in a single Markdown file.
+Alas is a command line utility for managing a plan in a single Markdown file.
 
-Example TODO list:
+An example plan:
 
 ```markdown
-# Main TODO
+# My Plan
 
 ## 2020-08-01, Saturday
 
@@ -22,7 +22,7 @@ Example TODO list:
 
 ### `--stats`
 
-`alas --stats` command will print the number of days in your TODO list, the number
+`alas --stats` command will print the number of days in your plan, the number
 of completed tasks and the number of pending tasks:
 
 ```bash
@@ -31,3 +31,8 @@ $ alas --stats ~/todo.md
 3 completed tasks
 1 pending task
 ```
+
+### `--insert-days`
+
+`alas --insert-days 3` will insert 3 new days (starting from today) in your plan
+file.

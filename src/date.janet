@@ -112,3 +112,7 @@
 (defn previous-day [date]
   (def previous-day-time (- (to-time date) seconds-in-day))
   (from-os-date-struct (os/date previous-day-time)))
+
+(defn days-from-now [n]
+  (def time (+ (to-time (today)) (* n seconds-in-day)))
+  (from-os-date-struct (os/date time)))
