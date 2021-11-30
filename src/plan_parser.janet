@@ -20,8 +20,8 @@
     :task (replace (* (constant :done) :task-begin " " (constant :title) :task-body) ,struct)
     :task-begin (* "- " :checkbox)
     :checkbox (+ :checkbox-done :checkbox-pending)
-    :checkbox-done (* (constant true) (+ "[x]" "[X]"))
-    :checkbox-pending (* (constant false) "[ ]")
+    :checkbox-done (* (+ "[x]" "[X]") (constant true))
+    :checkbox-pending (* "[ ]" (constant false))
     :task-body (replace (capture (some (if-not (+ :day-title :task-begin) 1))) ,string/trim)})
 
 ## —————————————————————————————————————————————————————————————————————————————
