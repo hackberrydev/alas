@@ -12,6 +12,9 @@
 (defn- checkbox [done]
   (if done "[X]" "[ ]"))
 
+(defn- serialize-event [event]
+  (string "- " (event :text)))
+
 (defn- serialize-task [task]
   (string "- " (checkbox (task :done)) " " (task :title)))
 
@@ -22,7 +25,9 @@
   (string "\n## " (date/format (day :date)) "\n"))
 
 (defn- serialize-day [day]
-  (array/concat @[(day-title day)] (serialize-tasks (day :tasks))))
+  (array/concat @[(day-title day)]
+                (map serialize-event (day :events))
+                (serialize-tasks (day :tasks))))
 
 (defn- serialize-days [days]
   (flatten (map serialize-day days)))
