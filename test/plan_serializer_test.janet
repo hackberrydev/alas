@@ -10,9 +10,11 @@
                   @[(e/build-day (d/date 2020 8 3))
                     (e/build-day (d/date 2020 8 2))
                     (e/build-day (d/date 2020 8 1)
+                                 @[(e/build-event "Talked to Mike")]
                                  @[(e/build-task "Develop photos" false)
                                    (e/build-task "Pay bills" true)])
                     (e/build-day (d/date 2020 7 31)
+                                 @[]
                                  @[(e/build-task "Review open pull requests" true)
                                    (e/build-task "Fix the flaky test" true)])]))
   (def plan-string
@@ -31,6 +33,7 @@
 
        ## 2020-08-01, Saturday
 
+       - Talked to Mike
        - [ ] Develop photos
        - [X] Pay bills
 
