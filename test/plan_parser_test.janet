@@ -19,7 +19,7 @@
 
     ## 2020-07-31, Friday
 
-    - Talked to Mike
+    - Talked to Mike & Molly
     - [x] #work - Review open pull requests
     - [x] #work - Fix the flaky test
     ```)
@@ -34,7 +34,7 @@
   (is (= {:title "Develop photos" :done false} ((day-1 :tasks) 0)))
   (is (= {:title "Pay bills" :done true} ((day-1 :tasks) 1)))
   (is (= (d/date 2020 7 31) (day-2 :date)))
-  (is (= {:text "Talked to Mike"} ((day-2 :events) 0)))
+  (is (= {:text "Talked to Mike & Molly"} ((day-2 :events) 0)))
   (is (= {:title "#work - Review open pull requests" :done true} ((day-2 :tasks) 0)))
   (is (= {:title "#work - Fix the flaky test" :done true} ((day-2 :tasks) 1))))
 
