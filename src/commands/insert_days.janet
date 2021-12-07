@@ -3,6 +3,7 @@
 
 (import ../date :as d)
 (import ../entities :as e)
+(import ../day)
 
 (defn insert-days-in-list
   ```
@@ -20,7 +21,7 @@
     (def new-day (if (and (any? today-or-future)
                           (= current-date ((array/peek today-or-future) :date)))
                   (array/pop today-or-future)
-                  (e/build-day current-date)))
+                  (day/build-day current-date)))
     (array/push new-days new-day)
     (set current-date (d/next-day current-date)))
 
@@ -45,5 +46,5 @@
   (def days (plan :days))
   (def new-days (if (any? days)
                  (insert-days-in-list days date today)
-                 @[(e/build-day today)]))
+                 @[(day/build-day today)]))
   (e/build-plan (plan :title) (plan :inbox) new-days))

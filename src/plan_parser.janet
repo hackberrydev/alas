@@ -4,6 +4,7 @@
 
 (import ./date :as d)
 (import ./entities :as e)
+(import ./day)
 
 (def plan-grammar
   ~{:main (replace (* :title :inbox :days) ,e/build-plan)
@@ -12,7 +13,7 @@
     :inbox (* :inbox-title "\n" :tasks)
     :inbox-title (* "## Inbox\n")
     :days (group (any :day))
-    :day (replace (* :day-title "\n" :events :tasks) ,e/build-day)
+    :day (replace (* :day-title "\n" :events :tasks) ,day/build-day)
     :day-title (* "## " (replace :date ,d/parse) ", " :week-day "\n")
     :date (capture (* :d :d :d :d "-" :d :d "-" :d :d))
     :week-day (+ "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
