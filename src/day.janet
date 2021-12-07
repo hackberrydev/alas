@@ -5,3 +5,6 @@
   (default events @[])
   (default tasks @[])
   {:date date :events events :tasks tasks})
+
+(defn generate-days [date today]
+  @[])
