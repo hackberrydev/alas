@@ -2,10 +2,11 @@
 (import ../../src/entities :as "e")
 (import ../../src/date :as "d")
 (import ../../src/day)
+(import ../../src/plan)
 (import ../../src/commands/insert_days :as "c")
 
 (defn- build-test-plan [days]
-  (e/build-plan "Plan" @[] days))
+  (plan/build-plan "Plan" @[] days))
 
 (deftest insert-day-at-top
   (def plan (build-test-plan @[(day/build-day (d/date 2020 8 3))

@@ -5,9 +5,10 @@
 (import ./date :as d)
 (import ./entities :as e)
 (import ./day)
+(import ./plan)
 
 (def plan-grammar
-  ~{:main (replace (* :title :inbox :days) ,e/build-plan)
+  ~{:main (replace (* :title :inbox :days) ,plan/build-plan)
     :title (* "# " :sentence)
     :sentence (replace (capture (some (+ :w+ :s+))) ,string/trim)
     :inbox (* :inbox-title "\n" :tasks)

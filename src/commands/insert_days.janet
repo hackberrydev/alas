@@ -2,6 +2,7 @@
 ### This module implements command for inserting new days in a TODO.
 
 (import ../date :as d)
+(import ../plan)
 (import ../entities :as e)
 (import ../day)
 
@@ -47,4 +48,4 @@
   (def new-days (if (any? days)
                  (insert-days-in-list days date today)
                  @[(day/build-day today)]))
-  (e/build-plan (plan :title) (plan :inbox) new-days))
+  (plan/build-plan (plan :title) (plan :inbox) new-days))

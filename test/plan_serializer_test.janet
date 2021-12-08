@@ -3,21 +3,22 @@
 (import ../src/date :as d)
 (import ../src/entities :as e)
 (import ../src/day)
+(import ../src/plan)
 
 (deftest serialize-plan
   (def plan
-    (e/build-plan "Main TODO"
-                  @[(e/build-task "Fix the lamp" false)]
-                  @[(day/build-day (d/date 2020 8 3))
-                    (day/build-day (d/date 2020 8 2))
-                    (day/build-day (d/date 2020 8 1)
-                                   @[(e/build-event "Talked to Mike")]
-                                   @[(e/build-task "Develop photos" false)
-                                     (e/build-task "Pay bills" true)])
-                    (day/build-day (d/date 2020 7 31)
-                                   @[]
-                                   @[(e/build-task "Review open pull requests" true)
-                                     (e/build-task "Fix the flaky test" true)])]))
+    (plan/build-plan "Main TODO"
+                     @[(e/build-task "Fix the lamp" false)]
+                     @[(day/build-day (d/date 2020 8 3))
+                       (day/build-day (d/date 2020 8 2))
+                       (day/build-day (d/date 2020 8 1)
+                                      @[(e/build-event "Talked to Mike")]
+                                      @[(e/build-task "Develop photos" false)
+                                        (e/build-task "Pay bills" true)])
+                       (day/build-day (d/date 2020 7 31)
+                                      @[]
+                                      @[(e/build-task "Review open pull requests" true)
+                                        (e/build-task "Fix the flaky test" true)])]))
   (def plan-string
        ```
        # Main TODO
