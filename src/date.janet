@@ -39,11 +39,11 @@
    :day (+ 1 (date :month-day))
    :week-day (week-day date)})
 
-(defn- to-time [date]
-  (os/mktime (to-os-date-struct date)))
-
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public interface
+
+(defn to-time [date]
+  (os/mktime (to-os-date-struct date)))
 
 (defn date
   ```

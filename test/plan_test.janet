@@ -25,6 +25,15 @@
   (is (= (d/date 2020 8 1) ((new-days 0) :date)))
   (is (= (d/date 2020 7 31) ((new-days 1) :date))))
 
+(deftest sort-days
+  (def plan (plan/build-plan "My Plan"
+                             @[]
+                             @[(day/build-day (d/date 2020 7 31))
+                               (day/build-day (d/date 2020 8 1))]))
+  (def new-plan (plan/sort-days plan))
+  (is (= (d/date 2020 8 1) (((new-plan :days) 0) :date)))
+  (is (= (d/date 2020 7 31) (((new-plan :days) 1) :date))))
+
 (deftest has-day
   (def plan (plan/build-plan "My Plan"
                              @[]
