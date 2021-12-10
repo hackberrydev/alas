@@ -23,3 +23,12 @@
          :when (not (has-day? plan (day :date)))]
     (array/push (plan :days) day))
   (sort-days plan))
+
+(defn all-tasks [plan]
+  (array/concat @[] (splice (map (fn [day] (day :tasks)) plan))))
+
+(defn completed-tasks [plan]
+  (filter (fn [t] (t :done)) (all-tasks plan)))
+
+(defn pending-tasks [plan]
+  (filter (fn [t] (not (t :done))) (all-tasks plan)))
