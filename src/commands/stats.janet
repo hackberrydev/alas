@@ -2,6 +2,7 @@
 ### This module implements stats command.
 
 (import ../utils :as "u")
+(import ../plan)
 
 (defn- format-stats [stats]
   (string/join
@@ -9,15 +10,6 @@
       (u/pluralize (stats :completed-tasks) "completed task")
       (u/pluralize (stats :pending-tasks) "pending task")]
     "\n"))
-
-(defn- all-tasks [todo]
-  (array/concat @[] (splice (map (fn [day] (day :tasks)) todo))))
-
-(defn- completed-tasks [todo]
-  (filter (fn [t] (t :done)) (all-tasks todo)))
-
-(defn- pending-tasks [todo]
-  (filter (fn [t] (not (t :done))) (all-tasks todo)))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
@@ -31,11 +23,11 @@
     :pending-tasks 5
   }
   ```
-  [todo]
-  {:days (length todo)
-   :completed-tasks (length (completed-tasks todo))
-   :pending-tasks (length (pending-tasks todo))})
+  [plan]
+  {:days (length plan)
+   :completed-tasks (length (plan/completed-tasks plan))
+   :pending-tasks (length (plan/pending-tasks plan))})
 
 (defn formatted-stats
-  [todo]
-  (format-stats (stats todo)))
+  [plan]
+  (format-stats (stats plan)))
