@@ -42,4 +42,4 @@
   (array/push plan-lines (inbox-title))
   (array/concat plan-lines (map serialize-task (plan :inbox)))
   (array/concat plan-lines (serialize-days (plan :days)))
-  (string/join plan-lines "\n"))
+  (string (string/join plan-lines "\n") "\n"))

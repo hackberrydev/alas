@@ -43,6 +43,7 @@
 
        - [X] Review open pull requests
        - [X] Fix the flaky test
+
       ```)
   (is (= plan-string (serialize plan))))
 
