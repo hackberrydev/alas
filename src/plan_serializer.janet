@@ -18,13 +18,17 @@
 (defn- serialize-task [task]
   (string "- " (checkbox (task :done)) " " (task :title)))
 
-(defn- day-title [day]
-  (string "\n## " (date/format (day :date)) "\n"))
+(defn- day-title [day new-line]
+  (def title (string "\n## " (date/format (day :date))))
+  (if new-line
+    (string title "\n")
+    title))
 
 (defn- serialize-day [day]
-  (array/concat @[(day-title day)]
-                (map serialize-event (day :events))
-                (map serialize-task (day :tasks))))
+  (def events (map serialize-event (day :events)))
+  (def tasks (map serialize-task (day :tasks)))
+  (def new-line (or (any? events) (any? tasks)))
+  (array/concat @[(day-title day new-line)] events tasks))
 
 (defn- serialize-days [days]
   (flatten (map serialize-day days)))
@@ -42,4 +46,4 @@
   (array/push plan-lines (inbox-title))
   (array/concat plan-lines (map serialize-task (plan :inbox)))
   (array/concat plan-lines (serialize-days (plan :days)))
-  (string/join plan-lines "\n"))
+  (string (string/join plan-lines "\n") "\n"))

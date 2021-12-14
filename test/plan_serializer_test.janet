@@ -29,9 +29,7 @@
 
        ## 2020-08-03, Monday
 
-
        ## 2020-08-02, Sunday
-
 
        ## 2020-08-01, Saturday
 
@@ -43,6 +41,7 @@
 
        - [X] Review open pull requests
        - [X] Fix the flaky test
+
       ```)
   (is (= plan-string (serialize plan))))
 
