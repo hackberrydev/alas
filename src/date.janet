@@ -83,6 +83,10 @@
       :day (+ (today :month-day) 1)
       :week-day (week-day-string (today :week-day))}))
 
+(defn equal?
+  [d1 d2]
+  (= (to-time d1) (to-time d2)))
+
 (defn before?
   ```
   Returns true if d1 is before d2.
