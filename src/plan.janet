@@ -11,7 +11,7 @@
   {:title title :inbox inbox-tasks :days days})
 
 (defn has-day? [plan date]
-  (find (fn [day] (= date (day :date)))
+  (find (fn [day] (date/equal? date (day :date)))
         (plan :days)))
 
 (defn sort-days [plan]
