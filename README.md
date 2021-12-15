@@ -7,15 +7,21 @@ An example plan:
 ```markdown
 # My Plan
 
+## Inbox
+
+- [ ] #home - Fix the lamp
+- [ ] Update Rust
+
 ## 2020-08-01, Saturday
 
-- [ ] Develop photos for the grandmother
+- [ ] Develop photos
 - [X] Pay bills
 
 ## 2020-07-31, Friday
 
-- [X] Review open pull requests
-- [X] Fix flaky test
+- Met with Mike and Molly
+- [X] #work - Review open pull requests
+- [X] #work - Fix the flaky test
 ```
 
 ## Commands
