@@ -3,8 +3,8 @@
 ### entities.
 
 (import ./date :as d)
-(import ./entities :as e)
 (import ./day)
+(import ./event)
 (import ./plan)
 
 (def plan-grammar
@@ -19,7 +19,7 @@
     :date (capture (* :d :d :d :d "-" :d :d "-" :d :d))
     :week-day (+ "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
     :events (group (any :event))
-    :event (replace (* :event-begin :event-body) ,e/build-event)
+    :event (replace (* :event-begin :event-body) ,event/build-event)
     :event-begin (* "- " (if-not "[" 0))
     :event-body (replace (capture (some (if-not (+ :event-begin :task-begin) 1))) ,string/trim)
     :tasks (group (any :task))

@@ -1,5 +1,4 @@
 (import testament :prefix "" :exit true)
-(import ../../src/entities :as "e")
 (import ../../src/date :as "d")
 (import ../../src/day)
 (import ../../src/plan)

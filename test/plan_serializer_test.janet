@@ -1,8 +1,8 @@
 (import testament :prefix "" :exit true)
 (import ../src/plan_serializer :prefix "")
 (import ../src/date :as d)
-(import ../src/entities :as e)
 (import ../src/day)
+(import ../src/event)
 (import ../src/plan)
 (import ../src/task)
 
@@ -13,7 +13,7 @@
                      @[(day/build-day (d/date 2020 8 3))
                        (day/build-day (d/date 2020 8 2))
                        (day/build-day (d/date 2020 8 1)
-                                      @[(e/build-event "Talked to Mike")]
+                                      @[(event/build-event "Talked to Mike")]
                                       @[(task/build-task "Develop photos" false)
                                         (task/build-task "Pay bills" true)])
                        (day/build-day (d/date 2020 7 31)
