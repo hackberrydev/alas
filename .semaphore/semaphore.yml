@@ -1,5 +1,5 @@
 version: v1.0
-name: Initial Pipeline
+name: Alas Tests
 agent:
   machine:
     type: e1-standard-2
@@ -8,11 +8,11 @@ blocks:
   - name: Test
     task:
       jobs:
-        - name: 'Job #1'
+        - name: 'Tests'
           commands:
-            - 'wget https://github.com/janet-lang/janet/archive/v1.11.3.tar.gz'
-            - tar xvf v1.11.3.tar.gz
-            - cd janet-1.11.3
+            - 'wget https://github.com/janet-lang/janet/archive/refs/tags/v1.19.2.tar.gz'
+            - tar xvf v1.19.2.tar.gz
+            - cd janet-1.19.2
             - make
             - make test
             - sudo make install
