@@ -1,5 +1,5 @@
 ### ————————————————————————————————————————————————————————————————————————————
-### This module implements all entities and related functions.
+### This module implements task entity and related functions.
 
-(defn build-event [text]
-  {:text text})
+(defn build-task [title done]
+  {:title title :done done})
