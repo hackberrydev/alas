@@ -15,7 +15,7 @@
         (plan :days)))
 
 (defn empty-days [plan]
-  (plan :days))
+  (filter day/empty-day? (plan :days)))
 
 (defn sort-days [plan]
   (def new-days (reverse (sort-by day/get-time (plan :days))))
