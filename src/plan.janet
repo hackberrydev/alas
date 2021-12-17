@@ -14,6 +14,9 @@
   (find (fn [day] (date/equal? date (day :date)))
         (plan :days)))
 
+(defn empty-days [plan]
+  (plan :days))
+
 (defn sort-days [plan]
   (def new-days (reverse (sort-by day/get-time (plan :days))))
   (build-plan (plan :title) (plan :inbox) new-days))
