@@ -1,0 +1,12 @@
+### ————————————————————————————————————————————————————————————————————————————
+### This module implements command for inserting new days in a TODO.
+
+## —————————————————————————————————————————————————————————————————————————————
+## Public Interface
+
+(defn remove-empty-days
+  ```
+  Removes empty days from plan that are before today.
+  ```
+  [plan today]
+  plan)
