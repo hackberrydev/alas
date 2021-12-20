@@ -10,7 +10,7 @@
 (defn build-plan [title inbox-tasks days]
   {:title title :inbox inbox-tasks :days days})
 
-(defn has-day? [plan date]
+(defn has-day-with-date? [plan date]
   (find (fn [day] (date/equal? date (day :date)))
         (plan :days)))
 
@@ -23,7 +23,7 @@
 
 (defn insert-days [plan days]
   (loop [day :in days
-         :when (not (has-day? plan (day :date)))]
+         :when (not (has-day-with-date? plan (day :date)))]
     (array/push (plan :days) day))
   (sort-days plan))
 

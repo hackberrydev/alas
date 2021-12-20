@@ -6,14 +6,14 @@
 (import ../src/date :as d)
 
 ## -----------------------------------------------------------------------------
-## Test has-day
+## Test has-day-with-date?
 
-(deftest has-day
+(deftest has-day-with-date?
   (def plan (plan/build-plan "My Plan"
                              @[]
                              @[(day/build-day (d/date 2020 7 31))]))
-  (is (plan/has-day? plan (d/date 2020 7 31)))
-  (is (not (plan/has-day? plan (d/date 2020 8 1)))))
+  (is (plan/has-day-with-date? plan (d/date 2020 7 31)))
+  (is (not (plan/has-day-with-date? plan (d/date 2020 8 1)))))
 
 ## -----------------------------------------------------------------------------
 ## Test empty-days
