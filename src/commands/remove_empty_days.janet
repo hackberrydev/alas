@@ -12,4 +12,4 @@
   ```
   [plan today]
   (def empty-days (plan/empty-days plan))
-  (plan/remove-days empty-days))
+  (plan/remove-days plan empty-days))

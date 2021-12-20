@@ -27,6 +27,10 @@
     (array/push (plan :days) day))
   (sort-days plan))
 
+(defn remove-days [plan days]
+  (def new-days (filter (fn [day] (not (index-of day days))) (plan :days)))
+  (build-plan (plan :title) (plan :inbox) new-days))
+
 (defn all-tasks [plan]
   (array/concat @[] (splice (map (fn [day] (day :tasks)) plan))))
 
