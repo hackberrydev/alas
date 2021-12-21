@@ -1,6 +1,7 @@
 ### ————————————————————————————————————————————————————————————————————————————
 ### This module implements command for inserting new days in a TODO.
 
+(import ../date)
 (import ../plan)
 
 ## —————————————————————————————————————————————————————————————————————————————
@@ -11,5 +12,6 @@
   Removes empty days from plan that are before today.
   ```
   [plan today]
-  (def empty-days (plan/empty-days plan))
+  (def empty-days (filter (fn [day] (date/before? (day :date) today))
+                          (plan/empty-days plan)))
   (plan/remove-days plan empty-days))
