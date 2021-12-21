@@ -18,8 +18,9 @@
   (filter day/empty-day? (plan :days)))
 
 (defn sort-days [plan]
-  (def new-days (reverse (sort-by day/get-time (plan :days))))
-  (build-plan (plan :title) (plan :inbox) new-days))
+  (build-plan (plan :title)
+              (plan :inbox)
+              (reverse (sort-by day/get-time (plan :days)))))
 
 (defn insert-days [plan days]
   (loop [day :in days
@@ -28,8 +29,10 @@
   (sort-days plan))
 
 (defn remove-days [plan days]
-  (def new-days (filter (fn [day] (not (index-of day days))) (plan :days)))
-  (build-plan (plan :title) (plan :inbox) new-days))
+  (defn keep-day? [day] (not (index-of day days)))
+  (build-plan (plan :title)
+              (plan :inbox)
+              (filter keep-day? (plan :days))))
 
 (defn all-tasks [plan]
   (array/concat @[] (splice (map (fn [day] (day :tasks)) plan))))
