@@ -16,5 +16,9 @@
     (set date (date/next-day date)))
   (reverse days))
 
+(defn empty-day? [day]
+  (and (empty? (day :events))
+       (empty? (day :tasks))))
+
 (defn get-time [day]
   (date/to-time (day :date)))

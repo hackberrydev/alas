@@ -1,10 +1,13 @@
 (import argparse :prefix "")
-(import ./commands/stats :prefix "")
+
 (import ./commands/insert_days :prefix "")
+(import ./commands/remove_empty_days :prefix "")
+(import ./commands/stats :prefix "")
+
 (import ./date :as d)
 (import ./file_repository)
-(import ./plan_serializer :as serializer)
 (import ./plan_parser :as parser)
+(import ./plan_serializer :as serializer)
 
 (def argparse-params
   ["A command line utility for planning your days"
@@ -12,6 +15,8 @@
             :help "Show stats for the plan file."}
    "insert-days" {:kind :option
                   :help "Insert the following number of days into the plan."}
+   "remove-empty-days" {:kind :flag
+                        :help "Remove past days without events or tasks."}
    :default {:kind :option}])
 
 (defn- run-command [plan file-path command & arguments]
@@ -35,5 +40,9 @@
                                                    file-path
                                                    insert-days
                                                    (d/days-from-now (- (parse (arguments "insert-days")) 1))
-                                                   (d/today))))
+                                                   (d/today))
+            (arguments "remove-empty-days") (run-command plan
+                                                         file-path
+                                                         remove-empty-days
+                                                         (d/today))))
         (print "Plan could not be parsed.")))))
