@@ -23,8 +23,7 @@
 (defn- build-commands [arguments plan]
   (def commands @[])
   (if (arguments "stats")
-    (array/push commands
-                [(fn [plan] (print (formatted-stats (plan :days))))]))
+    (array/push commands [stats]))
   (if (arguments "insert-days")
     (array/push commands
                 [insert-days
