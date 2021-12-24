@@ -92,4 +92,20 @@
   (is (= day-1 (new-days 0)))
   (is (= day-3 (new-days 1))))
 
+## -----------------------------------------------------------------------------
+## Test all-tasks
+
+(deftest all-tasks
+  (def day-1 (day/build-day (d/date 2020 8 4)
+                            @[]
+                            @[(task/build-task "Buy milk" true)]))
+  (def day-2 (day/build-day (d/date 2020 8 3)
+                            @[(event/build-event "Visited museum")]
+                            @[(task/build-task "Review PRs" false)]))
+  (def plan (plan/build-plan "My Plan" @[] @[day-1 day-2]))
+  (def tasks (plan/all-tasks plan))
+  (is (= 2 (length tasks)))
+  (is (= "Buy milk" ((tasks 0) :title)))
+  (is (= "Review PRs" ((tasks 1) :title))))
+
 (run-tests!)
