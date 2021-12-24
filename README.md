@@ -42,3 +42,16 @@ $ alas --stats ~/todo.md
 
 `alas --insert-days 3` will insert 3 new days (starting from today) in your plan
 file.
+
+### `--remove-empty-days`
+
+`alas --remove-empty-days` will remove past days that don't have any events or
+tasks from the plan.
+
+### Running multiple commands
+
+Alas supports running multiple commands:
+
+```bash
+alas --insert-days 3 --remove-empty-days plan.md
+```
