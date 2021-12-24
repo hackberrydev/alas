@@ -13,6 +13,6 @@
   ```
   [plan]
   (print (u/pluralize (length (plan :days)) "day"))
-  (print (u/pluralize (length (plan/completed-tasks plan)) "completed tasks"))
+  (print (u/pluralize (length (plan/completed-tasks plan)) "completed task"))
   (print (u/pluralize (length (plan/pending-tasks plan)) "pending task"))
   plan)
