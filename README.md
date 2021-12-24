@@ -24,6 +24,9 @@ An example plan:
 - [X] #work - Fix the flaky test
 ```
 
+The plan file has days in present and future that serve as your plan, but also
+past days that serve as a log.
+
 ## Commands
 
 ### `--stats`
