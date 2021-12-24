@@ -1,18 +1,13 @@
 ### ————————————————————————————————————————————————————————————————————————————
-### This module implements stats command.
-
-(import ../utils :as "u")
-(import ../plan)
+### This module implements commands runner.
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
-(defn stats
-  ```
-  Prints stats for the plan. Returns the plan.
-  ```
-  [plan]
-  (print (u/pluralize (length (plan :days)) "day"))
-  (print (u/pluralize (length (plan/completed-tasks plan)) "completed task"))
-  (print (u/pluralize (length (plan/pending-tasks plan)) "pending task"))
-  plan)
+(defn run-commands [plan commands-and-arguments]
+  (reduce (fn [new-plan command-and-arguments]
+            (def command (first command-and-arguments))
+            (def arguments (drop 1 command-and-arguments))
+            (apply command new-plan arguments))
+          plan
+          commands-and-arguments))

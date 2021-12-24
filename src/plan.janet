@@ -35,7 +35,7 @@
               (filter keep-day? (plan :days))))
 
 (defn all-tasks [plan]
-  (array/concat @[] (splice (map (fn [day] (day :tasks)) plan))))
+  (array/concat @[] (splice (map (fn [day] (day :tasks)) (plan :days)))))
 
 (defn completed-tasks [plan]
   (filter (fn [t] (t :done)) (all-tasks plan)))
