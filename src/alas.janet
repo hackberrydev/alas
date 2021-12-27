@@ -12,6 +12,9 @@
 
 (def argparse-params
   ["A command line utility for planning your days"
+   "version" {:kind :flag
+              :short "v"
+              :help "Output version information."}
    "stats" {:kind :flag
             :help "Show stats for the plan file."}
    "insert-days" {:kind :option
@@ -22,6 +25,8 @@
 
 (defn- build-commands [arguments plan]
   (def commands @[])
+  (if (arguments "version")
+    (array/push commands [version]))
   (if (arguments "stats")
     (array/push commands [stats]))
   (if (arguments "insert-days")
