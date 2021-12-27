@@ -4,13 +4,12 @@
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
-(defn version
+(defn print-version
   ```
-  Output version information. Returns the plan.
+  Output version information.
   ```
-  [plan]
-  (print "Alas version 0.1")
-  plan)
+  []
+  (print "Alas version 0.1"))
 
 (defn run-commands [plan commands-and-arguments]
   (reduce (fn [new-plan command-and-arguments]
