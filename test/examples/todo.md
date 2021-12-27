@@ -2,6 +2,7 @@
 
 ## Inbox
 
+
 ## 2020-08-01, Saturday
 
 - [ ] Develop photos for the grandmother
