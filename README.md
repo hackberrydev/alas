@@ -29,6 +29,11 @@ past days that serve as a log.
 
 ## Commands
 
+### `--version`
+
+`alas --version` will output the version and exit. This command is available
+only when no other commands are used.
+
 ### `--stats`
 
 `alas --stats` command will print the number of days in your plan, the number
