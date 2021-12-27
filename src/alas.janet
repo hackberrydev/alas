@@ -12,6 +12,9 @@
 
 (def argparse-params
   ["A command line utility for planning your days"
+   "version" {:kind :flag
+              :short "v"
+              :help "Output version information."}
    "stats" {:kind :flag
             :help "Show stats for the plan file."}
    "insert-days" {:kind :option
@@ -37,14 +40,17 @@
 (defn main [& args]
   (def arguments (argparse ;argparse-params))
   (def file-path (arguments :default))
-  (def load-file-result (load-plan file-path))
-  (def error (load-file-result :error))
-  (if error
-    (print error)
-    (let [parse-result (parser/parse (load-file-result :plan))]
-      (if parse-result
-        (let [plan (first parse-result)
-              commands (build-commands arguments plan)]
-          (save-plan (serializer/serialize (run-commands plan commands))
-                     file-path))
-      (print "Plan could not be parsed.")))))
+  (if file-path
+    (let [load-file-result (load-plan file-path)
+          error (load-file-result :error)]
+      (if error
+        (print error)
+        (let [parse-result (parser/parse (load-file-result :plan))]
+          (if parse-result
+            (let [plan (first parse-result)
+                  commands (build-commands arguments plan)]
+              (save-plan (serializer/serialize (run-commands plan commands))
+                         file-path))
+            (print "Plan could not be parsed.")))))
+    (if (arguments "version")
+      (print-version))))
