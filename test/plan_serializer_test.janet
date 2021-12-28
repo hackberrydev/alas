@@ -46,4 +46,20 @@
       ```)
   (is (= plan-string (serialize plan))))
 
+(deftest serialize-plan-with-empty-inbox
+  (def plan
+    (plan/build-plan "My Plan"
+                     @[]
+                     @[(day/build-day (d/date 2020 8 1))]))
+  (def plan-string
+    ```
+    # My Plan
+
+    ## Inbox
+
+    ## 2020-08-01, Saturday
+
+    ```)
+  (is (= plan-string (serialize plan))))
+
 (run-tests!)

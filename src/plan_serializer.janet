@@ -6,8 +6,10 @@
 (defn- plan-title [plan]
   (string "# " (plan :title) "\n"))
 
-(defn- inbox-title []
-  "## Inbox\n")
+(defn- inbox-title [inbox-tasks]
+  (if (any? inbox-tasks)
+    "## Inbox\n"
+    "## Inbox"))
 
 (defn- checkbox [done]
   (if done "[X]" "[ ]"))
@@ -43,7 +45,7 @@
   [plan]
   (def plan-lines @[])
   (array/push plan-lines (plan-title plan))
-  (array/push plan-lines (inbox-title))
+  (array/push plan-lines (inbox-title (plan :inbox)))
   (array/concat plan-lines (map serialize-task (plan :inbox)))
   (array/concat plan-lines (serialize-days (plan :days)))
   (string (string/join plan-lines "\n") "\n"))
