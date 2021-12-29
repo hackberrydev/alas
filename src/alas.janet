@@ -26,11 +26,11 @@
               :help "Output version information."}
    :default {:kind :option}])
 
-(defn- build-commands [arguments plan]
+(defn- build-commands [arguments plan file-path]
   (def commands @[])
   # Backup command needs to be first.
   (if (not (arguments "skip-backup"))
-    (array/push commands [backup]))
+    (array/push commands [backup file-path]))
   (if (arguments "stats")
     (array/push commands [stats]))
   (if (arguments "insert-days")
@@ -54,7 +54,7 @@
         (let [parse-result (parser/parse (load-file-result :plan))]
           (if parse-result
             (let [plan (first parse-result)
-                  commands (build-commands arguments plan)]
+                  commands (build-commands arguments plan file-path)]
               (save-plan (serializer/serialize (run-commands plan commands))
                          file-path))
             (print "Plan could not be parsed.")))))
