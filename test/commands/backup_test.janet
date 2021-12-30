@@ -6,6 +6,7 @@
 ## Test backup-path
 
 (deftest backup-path-when-file-does-not-exist
-  (is (= "plan-2020-08-01.md" (backup-path "plan.md" (date/date 2020 8 1)))))
+  (is (= "test/examples/plan-2020-08-01.md"
+          (backup-path "test/examples/plan.md" (date/date 2020 8 1)))))
 
 (run-tests!)

@@ -1,6 +1,8 @@
 ### ————————————————————————————————————————————————————————————————————————————
 ### This module implements backup command.
 
+(import ../date)
+
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -16,7 +18,13 @@
   (backup-path 'plan.md' (date 2020 8 1))
   > 'plan-2020-08-01.md'
   ```
-  [file-path date])
+  [file-path date]
+  (def path-segments (string/split "." file-path))
+  (string (apply string (array/slice path-segments 0 -2))
+          "-"
+          (date/format date true)
+          "."
+          (array/peek path-segments)))
 
 (defn backup [plan plan-path]
   (def backup-path (string plan-path ".bkp"))
