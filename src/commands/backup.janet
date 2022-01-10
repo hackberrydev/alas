@@ -3,6 +3,27 @@
 
 (import ../date)
 
+(defn- append-path-index
+  [path index]
+  (def path-segments (string/split "." path))
+  (string (apply string (array/slice path-segments 0 -2))
+          "-"
+          index
+          "."
+          (array/peek path-segments)))
+
+(defn- append-backup-path-index
+  ```
+  If a file with the path exists, append an index to make the file path unique.
+  ```
+  [path]
+  (var index 1)
+  (var new-path path)
+  (while (os/stat new-path)
+    (set new-path (append-path-index path index))
+    (set index (+ index 1)))
+  new-path)
+
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -20,11 +41,12 @@
   ```
   [file-path date]
   (def path-segments (string/split "." file-path))
-  (string (apply string (array/slice path-segments 0 -2))
-          "-"
-          (date/format date true)
-          "."
-          (array/peek path-segments)))
+  (def path (string (apply string (array/slice path-segments 0 -2))
+                   "-"
+                   (date/format date true)
+                   "."
+                   (array/peek path-segments)))
+  (append-backup-path-index path))
 
 (defn backup [plan plan-path]
   (def backup-path (string plan-path ".bkp"))
