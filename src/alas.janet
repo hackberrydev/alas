@@ -30,7 +30,7 @@
   (def commands @[])
   # Backup command needs to be first.
   (if (not (arguments "skip-backup"))
-    (array/push commands [backup file-path]))
+    (array/push commands [backup file-path (d/today)]))
   (if (arguments "stats")
     (array/push commands [stats]))
   (if (arguments "insert-days")
