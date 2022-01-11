@@ -62,13 +62,16 @@
 
 (defn format
   ```
-  Formats date in ISO 8601 format. E.g 2021-09-30.
+  Formats date in ISO 8601 format. E.g '2021-12-30, Thursday'.
   ```
-  [date]
+  [date &opt skip-week-day]
+  (default skip-week-day false)
   (def year (string (date :year)))
   (def month (prepend-with-0 (string (date :month))))
   (def day (prepend-with-0 (string (date :day))))
-  (string/format "%s-%s-%s, %s" year month day (date :week-day)))
+  (if skip-week-day
+    (string/format "%s-%s-%s" year month day)
+    (string/format "%s-%s-%s, %s" year month day (date :week-day))))
 
 (defn today
   ```
