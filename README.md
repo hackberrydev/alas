@@ -27,12 +27,23 @@ An example plan:
 The plan file has days in present and future that serve as your plan, but also
 past days that serve as a log.
 
+## Warning
+
+Alas updates your backup file. Using `alas` can destroy your data due to
+unintended use or a bug in Alas. **Always keep a backup of your plan file.**
+
+Alas has a built in backup, but it's best to use a separate backup solution as
+well.
+
+A version control system, such as [Git](https://git-scm.com/) is a convenient
+option.
+
 ## Commands
 
-### `--version`
+### `--skip-backup`
 
-`alas --version` will output the version and exit. This command is available
-only when no other commands are used.
+Alas will create a backup of the plan file before running any other commands, by
+default. To skip creating a backup, pass the `--skip-backup` option.
 
 ### `--stats`
 
@@ -55,6 +66,11 @@ file.
 
 `alas --remove-empty-days` will remove past days that don't have any events or
 tasks from the plan.
+
+### `--version`
+
+`alas --version` will output the version and exit. This command is available
+only when no other commands are used.
 
 ### Running multiple commands
 
