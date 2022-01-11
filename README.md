@@ -27,6 +27,17 @@ An example plan:
 The plan file has days in present and future that serve as your plan, but also
 past days that serve as a log.
 
+## Warning
+
+Alas updates your backup file. Using `alas` can destroy your data due to
+unintended use or a bug in Alas. **Always keep a backup of your plan file.**
+
+Alas has a built in backup, but it's best to use a separate backup solution as
+well.
+
+A version control system, such as [Git](https://git-scm.com/) is a convenient
+option.
+
 ## Commands
 
 ### `--skip-backup`
