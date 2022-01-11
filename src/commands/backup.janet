@@ -48,10 +48,17 @@
                    (array/peek path-segments)))
   (append-backup-path-index path))
 
-(defn backup [plan plan-path]
-  (def backup-path (string plan-path ".bkp"))
+(defn backup [plan plan-path date]
+  ```
+  Creates a backup on a backup path created from plan-path.
+
+  plan      - The plan.
+  plan-path - The path where the plan is located. Used as a base for the backup
+              path.
+  date      - Today.
+  ```
   (let [plan-file (file/open plan-path :r)
-        backup-file (file/open backup-path :w)]
+        backup-file (file/open (backup-path plan-path date) :w)]
     (file/write backup-file (file/read plan-file :all))
     (file/close plan-file)
     (file/close backup-file))
