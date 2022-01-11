@@ -57,10 +57,10 @@
               path.
   date      - Today.
   ```
-  (let [plan-file (file/open plan-path :r)
-        backup-file (file/open (backup-path plan-path date) :w)]
-    (file/write backup-file (file/read plan-file :all))
-    (file/close plan-file)
-    (file/close backup-file))
+  (def plan-file (file/open plan-path :r))
+  (def backup-file (file/open (backup-path plan-path date) :w))
+  (file/write backup-file (file/read plan-file :all))
+  (file/close plan-file)
+  (file/close backup-file)
   (print "Created backup.")
   plan)
