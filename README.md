@@ -29,10 +29,10 @@ past days that serve as a log.
 
 ## Commands
 
-### `--version`
+### `--skip-backup`
 
-`alas --version` will output the version and exit. This command is available
-only when no other commands are used.
+Alas will create a backup of the plan file before running any other commands, by
+default. To skip creating a backup, pass the `--skip-backup` option.
 
 ### `--stats`
 
@@ -55,6 +55,11 @@ file.
 
 `alas --remove-empty-days` will remove past days that don't have any events or
 tasks from the plan.
+
+### `--version`
+
+`alas --version` will output the version and exit. This command is available
+only when no other commands are used.
 
 ### Running multiple commands
 
