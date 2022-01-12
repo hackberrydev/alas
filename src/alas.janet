@@ -1,3 +1,6 @@
+### ————————————————————————————————————————————————————————————————————————————
+### The main file.
+
 (import argparse :prefix "")
 
 (import ./commands/backup :prefix "")
@@ -62,6 +65,9 @@
     (run-with-file-path arguments file-path)
     (if (arguments "version")
       (print-version))))
+
+## —————————————————————————————————————————————————————————————————————————————
+## Public Interface
 
 (defn main [& args]
   (def arguments (argparse ;argparse-params))
