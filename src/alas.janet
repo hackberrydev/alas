@@ -1,3 +1,6 @@
+### ————————————————————————————————————————————————————————————————————————————
+### The main file.
+
 (import argparse :prefix "")
 
 (import ./commands/backup :prefix "")
@@ -43,20 +46,30 @@
                 [remove-empty-days (d/today)]))
   commands)
 
-(defn main [& args]
-  (def arguments (argparse ;argparse-params))
+(defn- run-with-file-path [arguments file-path]
+  (def load-file-result (load-plan file-path))
+  (def error (load-file-result :error))
+  (if error
+    (print error)
+    (let [parse-result (parser/parse (load-file-result :plan))]
+      (if parse-result
+        (let [plan (first parse-result)
+              commands (build-commands arguments plan file-path)]
+          (save-plan (serializer/serialize (run-commands plan commands))
+                     file-path))
+        (print "Plan could not be parsed.")))))
+
+(defn- run-with-arguments [arguments]
   (def file-path (arguments :default))
   (if file-path
-    (let [load-file-result (load-plan file-path)
-          error (load-file-result :error)]
-      (if error
-        (print error)
-        (let [parse-result (parser/parse (load-file-result :plan))]
-          (if parse-result
-            (let [plan (first parse-result)
-                  commands (build-commands arguments plan file-path)]
-              (save-plan (serializer/serialize (run-commands plan commands))
-                         file-path))
-            (print "Plan could not be parsed.")))))
+    (run-with-file-path arguments file-path)
     (if (arguments "version")
       (print-version))))
+
+## —————————————————————————————————————————————————————————————————————————————
+## Public Interface
+
+(defn main [& args]
+  (def arguments (argparse ;argparse-params))
+  (if arguments
+    (run-with-arguments arguments)))
