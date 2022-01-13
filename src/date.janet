@@ -112,6 +112,10 @@
  [d1 d2]
  (>= (to-time d1) (to-time d2)))
 
+(defn +days [date n]
+  (def new-date-time (+ (to-time date) (* n seconds-in-day)))
+  (from-os-date-struct (os/date new-date-time)))
+
 (defn -days [date n]
   (def new-date-time (- (to-time date) (* n seconds-in-day)))
   (from-os-date-struct (os/date new-date-time)))
