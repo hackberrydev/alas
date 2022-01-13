@@ -1,17 +1,11 @@
 ### ————————————————————————————————————————————————————————————————————————————
-### This module implements command for inserting new days in a plan.
-
-(import ../date)
-(import ../plan)
+### This module implements report command.
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
-(defn remove-empty-days
+(defn report
   ```
-  Removes empty days from plan that are before today.
+  Returns tasks from the selected number of days.
   ```
-  [plan today]
-  (def empty-days (filter (fn [day] (date/before? (day :date) today))
-                          (plan/empty-days plan)))
-  (plan/remove-days plan empty-days))
+  [plan date days-count])
