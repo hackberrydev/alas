@@ -85,24 +85,10 @@
   (is (= (d/date 2020 8 2) (d/-days (d/date 2020 8 5) 3))))
 
 ## -----------------------------------------------------------------------------
-## Test next-day
-
-(deftest next-day
-  (is (= (d/next-day (d/date 2021 7 1)) (d/date 2021 7 2)))
-  (is (= (d/next-day (d/date 2021 7 31)) (d/date 2021 8 1))))
-
-## -----------------------------------------------------------------------------
-## Test previous-day
-
-(deftest previous-day
-  (is (= (d/previous-day (d/date 2021 7 2)) (d/date 2021 7 1)))
-  (is (= (d/previous-day (d/date 2021 7 1)) (d/date 2021 6 30))))
-
-## -----------------------------------------------------------------------------
 ## Test days-from-now
 
 (deftest days-from-now
-  (is (= (d/days-from-now 1) (d/next-day (d/today))))
-  (is (= (d/days-from-now 2) (d/next-day (d/next-day (d/today))))))
+  (is (= (d/days-from-now 1) (d/+days (d/today) 1)))
+  (is (= (d/days-from-now 2) (d/+days (d/today) 2))))
 
 (run-tests!)

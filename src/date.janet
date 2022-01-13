@@ -120,13 +120,5 @@
   (def new-date-time (- (to-time date) (* n seconds-in-day)))
   (from-os-date-struct (os/date new-date-time)))
 
-(defn next-day [date]
-  (def next-day-time (+ (to-time date) seconds-in-day))
-  (from-os-date-struct (os/date next-day-time)))
-
-(defn previous-day [date]
-  (def previous-day-time (- (to-time date) seconds-in-day))
-  (from-os-date-struct (os/date previous-day-time)))
-
 (defn days-from-now [n]
   (+days (today) n))
