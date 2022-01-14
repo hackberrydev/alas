@@ -18,7 +18,8 @@
                                       @[(task/build-task "Task 2" true)
                                         (task/build-task "Task 3" true)])
                        (day/build-day (d/date 2020 8 5) @[]
-                                      @[(task/build-task "Task 4" true)])
+                                      @[(task/build-task "Task 3" true)
+                                        (task/build-task "Task 4" true)])
                        (day/build-day (d/date 2020 8 4) @[]
                                       @([(task/build-task "Task 5" true)]))]))
   (def tasks (report plan (d/date 2020 8 7) 2))
