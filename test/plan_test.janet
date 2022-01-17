@@ -108,4 +108,26 @@
   (is (= "Buy milk" ((tasks 0) :title)))
   (is (= "Review PRs" ((tasks 1) :title))))
 
+## -----------------------------------------------------------------------------
+## Test tasks-between
+
+(deftest tasks-between
+  (def day-1 (day/build-day (d/date 2020 8 4)
+                            @[]
+                            @[(task/build-task "Task 1" true)]))
+  (def day-2 (day/build-day (d/date 2020 8 3)
+                            @[]
+                            @[(task/build-task "Task 2" false)]))
+  (def day-3 (day/build-day (d/date 2020 8 2)
+                            @[]
+                            @[(task/build-task "Task 3" false)]))
+  (def day-4 (day/build-day (d/date 2020 8 1)
+                            @[]
+                            @[(task/build-task "Task 4" false)]))
+  (def plan (plan/build-plan "My Plan" @[] @[day-1 day-2 day-3 day-4]))
+  (def tasks (plan/tasks-between plan (d/date 2020 8 2) (d/date 2020 8 3)))
+  (is (= 2 (length tasks)))
+  (is (= "Task 2" ((tasks 0) :title)))
+  (is (= "Task 3" ((tasks 1) :title))))
+
 (run-tests!)

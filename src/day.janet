@@ -13,7 +13,7 @@
   (var date from-date)
   (while (date/before-or-eq? date to-date)
     (array/push days (build-day date))
-    (set date (date/next-day date)))
+    (set date (date/+days date 1)))
   (reverse days))
 
 (defn empty-day? [day]

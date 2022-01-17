@@ -112,14 +112,13 @@
  [d1 d2]
  (>= (to-time d1) (to-time d2)))
 
-(defn next-day [date]
-  (def next-day-time (+ (to-time date) seconds-in-day))
-  (from-os-date-struct (os/date next-day-time)))
+(defn +days [date n]
+  (def new-date-time (+ (to-time date) (* n seconds-in-day)))
+  (from-os-date-struct (os/date new-date-time)))
 
-(defn previous-day [date]
-  (def previous-day-time (- (to-time date) seconds-in-day))
-  (from-os-date-struct (os/date previous-day-time)))
+(defn -days [date n]
+  (def new-date-time (- (to-time date) (* n seconds-in-day)))
+  (from-os-date-struct (os/date new-date-time)))
 
 (defn days-from-now [n]
-  (def time (+ (to-time (today)) (* n seconds-in-day)))
-  (from-os-date-struct (os/date time)))
+  (+days (today) n))
