@@ -4,6 +4,15 @@
 (import ../date)
 (import ../plan)
 
+(defn- unique-tasks [tasks]
+  (def unique-tasks @[])
+  (def sorted-tasks  (sorted-by (fn [task] (task :title)) tasks))
+  (loop [task :in sorted-tasks
+         :when (or (empty? unique-tasks)
+                   (not (= (task :title) ((array/peek unique-tasks) :title))))]
+    (array/push unique-tasks task))
+  unique-tasks)
+
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -14,11 +23,4 @@
   [plan date days-count]
   (def start-date (date/-days date days-count))
   (def end-date (date/-days date 1))
-  (def tasks (sorted-by (fn [task] (task :title))
-                        (plan/tasks-between plan start-date end-date)))
-  (def unique-tasks @[])
-  (loop [task :in tasks
-         :when (or (empty? unique-tasks)
-                   (not (= (task :title) ((array/peek unique-tasks) :title))))]
-    (array/push unique-tasks task))
-  unique-tasks)
+  (unique-tasks (plan/tasks-between plan start-date end-date)))
