@@ -6,6 +6,7 @@
 (import ./commands/backup :prefix "")
 (import ./commands/insert_days :prefix "")
 (import ./commands/remove_empty_days :prefix "")
+(import ./commands/report :prefix "")
 (import ./commands/stats :prefix "")
 (import ./commands :prefix "")
 
@@ -20,6 +21,8 @@
                   :help "Insert the following number of days into the plan."}
    "remove-empty-days" {:kind :flag
                         :help "Remove past days without events or tasks."}
+   "report" {:kind :flag
+             :help "Print tasks for the selected number of days."}
    "skip-backup" {:kind :flag
                   :help "Don't create a backup."}
    "stats" {:kind :flag
@@ -44,6 +47,9 @@
   (if (arguments "remove-empty-days")
     (array/push commands
                 [remove-empty-days (d/today)]))
+  (if (arguments "report")
+    (array/push commands
+                [report (d/today) (arguments "report")]))
   commands)
 
 (defn- run-with-file-path [arguments file-path]

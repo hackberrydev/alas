@@ -24,3 +24,9 @@
   (def start-date (date/-days date days-count))
   (def end-date (date/-days date 1))
   (unique-tasks (plan/tasks-between plan start-date end-date)))
+
+(defn print-report
+  [plan date days-count]
+  (loop [task :in (report plan date days-count)]
+    (print "- " (task :title)))
+  plan)
