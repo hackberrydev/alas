@@ -37,8 +37,6 @@
   # Backup command needs to be first.
   (if (not (arguments "skip-backup"))
     (array/push commands [backup file-path (d/today)]))
-  (if (arguments "stats")
-    (array/push commands [stats]))
   (if (arguments "insert-days")
     (array/push commands
                 [insert-days
@@ -50,6 +48,8 @@
   (if (arguments "report")
     (array/push commands
                 [report (d/today) (arguments "report")]))
+  (if (arguments "stats")
+    (array/push commands [stats]))
   commands)
 
 (defn- run-with-file-path [arguments file-path]
