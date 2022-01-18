@@ -1,5 +1,5 @@
 ### ————————————————————————————————————————————————————————————————————————————
-### This module implements command for inserting new days in a TODO.
+### This module implements command for inserting new days in a plan.
 
 (import ../date)
 (import ../plan)
