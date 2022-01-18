@@ -67,6 +67,10 @@ file.
 `alas --remove-empty-days` will remove past days that don't have any events or
 tasks from the plan.
 
+### `--report`
+
+`alas --report 7` will print all tasks for the last 7 days, excluding today.
+
 ### `--version`
 
 `alas --version` will output the version and exit. This command is available
