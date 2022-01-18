@@ -9,7 +9,7 @@
   Output version information.
   ```
   []
-  (print "Alas version 0.1"))
+  (print "Alas version 0.2"))
 
 (defn run-commands [plan commands-and-arguments]
   (reduce (fn [new-plan command-and-arguments]
