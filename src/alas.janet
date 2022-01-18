@@ -21,7 +21,7 @@
                   :help "Insert the following number of days into the plan."}
    "remove-empty-days" {:kind :flag
                         :help "Remove past days without events or tasks."}
-   "report" {:kind :flag
+   "report" {:kind :option
              :help "Print tasks for the selected number of days."}
    "skip-backup" {:kind :flag
                   :help "Don't create a backup."}
@@ -47,7 +47,7 @@
                 [remove-empty-days (d/today)]))
   (if (arguments "report")
     (array/push commands
-                [report (d/today) (arguments "report")]))
+                [print-report (d/today) (parse (arguments "report"))]))
   (if (arguments "stats")
     (array/push commands [stats]))
   commands)
