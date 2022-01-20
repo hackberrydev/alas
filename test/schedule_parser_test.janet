@@ -14,12 +14,13 @@
     - Martha's birthsday (every 05-24)
     - Meeting with Jack (on 2022-05-03)
     ```)
-  (print (schedule_parser/parse schedule-string))
   (def scheduled-tasks (first (schedule_parser/parse schedule-string)))
   (is (= 6 (length scheduled-tasks)))
   (is (= {:title "Weekly Meeting" :done false :schedule "every Tuesday"}
          (scheduled-tasks 0)))
   (is (= {:title "Puzzle Storm on Lichess" :done false :schedule "every day"}
-         (scheduled-tasks 1))))
+         (scheduled-tasks 1)))
+  (is (= {:title "Meeting with Jack" :done false :schedule "on 2022-05-03"}
+         (scheduled-tasks 5))))
 
 (run-tests!)
