@@ -7,6 +7,7 @@
 (import ./commands/insert_days :prefix "")
 (import ./commands/remove_empty_days :prefix "")
 (import ./commands/report :prefix "")
+(import ./commands/schedule_tasks :prefix "")
 (import ./commands/stats :prefix "")
 (import ./commands :prefix "")
 
@@ -14,6 +15,7 @@
 (import ./file_repository)
 (import ./plan_parser)
 (import ./plan_serializer)
+(import ./schedule_parser)
 
 # Keep commands sorted alphabetically.
 (def argparse-params
@@ -24,6 +26,8 @@
                         :help "Remove past days without events or tasks."}
    "report" {:kind :option
              :help "Print tasks for the selected number of days."}
+   "schedule-tasks" {:kind :option
+                     :help "Schedule tasks from a list of tasks in a file."}
    "skip-backup" {:kind :flag
                   :help "Don't create a backup."}
    "stats" {:kind :flag
@@ -50,6 +54,17 @@
   (if (arguments "report")
     (array/push commands
                 [print-report (d/today) (parse (arguments "report"))]))
+  (if (arguments "schedule-tasks")
+    (let [file-path (arguments "schedule-tasks")
+          load-file-result (file_repository/load file-path)
+          error (load-file-result :error)]
+      (if error
+        (print error)
+        (let [parse-result (schedule_parser/parse (load-file-result :text))]
+          (if parse-result
+            (array/push commands
+                        [schedule-tasks (first parse-result) (d/today)])
+            (print "Schedule could not be parsed."))))))
   (if (arguments "stats")
     (array/push commands [stats]))
   commands)
