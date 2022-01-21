@@ -1,21 +1,11 @@
 ### ————————————————————————————————————————————————————————————————————————————
-### This module implements a command for inserting new days in a plan.
-
-(import ../plan)
-(import ../day)
+### This module implements a command for scheduling days for today in a plan.
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
-(defn insert-days
-  ```
-  Inserts new days into the plan.
-
-  (insert-days plan date today)
-
-  plan  - The plan entity.
-  date  - The date up to which new days will be generated.
-  today - Date.
-  ```
-  [plan date today]
-  (plan/insert-days plan (day/generate-days today date)))
+(defn schedule-tasks
+  [plan scheduled-tasks date]
+  (loop [task :in scheduled-tasks]
+    (print "- " (task :title)))
+  plan)
