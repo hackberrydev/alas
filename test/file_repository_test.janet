@@ -1,14 +1,8 @@
 (import testament :prefix "" :exit true)
-(import ../src/file_repository :as "file-repository")
+(import ../src/file_repository :prefix "")
 
-(deftest load-plan-from-file
-  (let [result (file-repository/load-plan "test/examples/todo.md")
-        plan (result :plan)]
-    (is (= 14 (length (string/split "\n" plan))))))
-
-(deftest load-plan-from-file-that-does-not-exist
-  (let [result (file-repository/load-plan "missing_file.md")]
-    (is (= "File does not exist" (result :error)))))
+## -----------------------------------------------------------------------------
+## Test save-plan
 
 (deftest save-plan
   (def new-plan-path "test/examples/new_plan.md")
@@ -35,8 +29,20 @@
        - [x] Review open pull requests
        - [x] Fix the flaky test
       ```)
-  (file-repository/save-plan plan new-plan-path)
-  (is (= plan ((file-repository/load-plan new-plan-path) :plan)))
+  (save-plan plan new-plan-path)
+  (is (= plan ((load new-plan-path) :text)))
   (os/rm new-plan-path))
+
+## -----------------------------------------------------------------------------
+## Test load
+
+(deftest load-from-file
+  (let [result (load "test/examples/todo.md")
+        text (result :text)]
+    (is (= 14 (length (string/split "\n" text))))))
+
+(deftest load-from-file-that-does-not-exist
+  (let [result (load "missing_file.md")]
+    (is (= "File does not exist" (result :error)))))
 
 (run-tests!)

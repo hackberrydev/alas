@@ -17,16 +17,16 @@
     (os/rm path))
   (os/rename copy-path path))
 
-(defn load-plan
+(defn load
   ```
-  Read plan from the file on the file path.
+  Read a string from the file on the file path.
   Returns a struct:
 
-    {:plan plan-string} - When the file was successfully read.
-    {:error message}   - When the file was not successfully read.
+    {:text string}   - When the file was successfully read.
+    {:error message} - When the file was not successfully read.
 
   ```
   [path]
   (if (= (os/stat path) nil)
     {:error "File does not exist"}
-    {:plan (string (file/read (file/open path) :all))}))
+    {:text (string (file/read (file/open path) :all))}))
