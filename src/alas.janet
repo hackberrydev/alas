@@ -11,10 +11,11 @@
 (import ./commands :prefix "")
 
 (import ./date :as d)
-(import ./file_repository :prefix "")
-(import ./plan_parser :as parser)
-(import ./plan_serializer :as serializer)
+(import ./file_repository)
+(import ./plan_parser)
+(import ./plan_serializer)
 
+# Keep commands sorted alphabetically.
 (def argparse-params
   ["A command line utility for planning your days"
    "insert-days" {:kind :option
@@ -37,6 +38,7 @@
   # Backup command needs to be first.
   (if (not (arguments "skip-backup"))
     (array/push commands [backup file-path (d/today)]))
+  # Keep commands sorted alphabetically.
   (if (arguments "insert-days")
     (array/push commands
                 [insert-days
@@ -53,16 +55,17 @@
   commands)
 
 (defn- run-with-file-path [arguments file-path]
-  (def load-file-result (load-plan file-path))
+  (def load-file-result (file_repository/load file-path))
   (def error (load-file-result :error))
   (if error
     (print error)
-    (let [parse-result (parser/parse (load-file-result :plan))]
+    (let [parse-result (plan_parser/parse (load-file-result :text))]
       (if parse-result
         (let [plan (first parse-result)
               commands (build-commands arguments plan file-path)]
-          (save-plan (serializer/serialize (run-commands plan commands))
-                     file-path))
+          (file_repository/save
+            (plan_serializer/serialize (run-commands plan commands))
+            file-path))
         (print "Plan could not be parsed.")))))
 
 (defn- run-with-arguments [arguments]
