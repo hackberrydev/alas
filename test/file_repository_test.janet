@@ -2,9 +2,9 @@
 (import ../src/file_repository :prefix "")
 
 ## -----------------------------------------------------------------------------
-## Test save-plan
+## Test save
 
-(deftest save-plan
+(deftest save
   (def new-plan-path "test/examples/new_plan.md")
   (def plan
 
@@ -29,7 +29,7 @@
        - [x] Review open pull requests
        - [x] Fix the flaky test
       ```)
-  (save-plan plan new-plan-path)
+  (save plan new-plan-path)
   (is (= plan ((load new-plan-path) :text)))
   (os/rm new-plan-path))
 

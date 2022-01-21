@@ -4,14 +4,14 @@
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public interface
 
-(defn save-plan
+(defn save
   ```
-  Save plan to supplied path.
+  Save string to a file to the supplied path.
   ```
-  [plan path]
+  [text path]
   (def copy-path (string path ".copy"))
   (let [file (file/open copy-path :w)]
-    (file/write file plan)
+    (file/write file text)
     (file/close file))
   (if (os/stat path)
     (os/rm path))
