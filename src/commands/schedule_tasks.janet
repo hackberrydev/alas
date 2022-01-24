@@ -6,6 +6,7 @@
 
 (defn schedule-tasks
   [plan scheduled-tasks date]
-  (loop [task :in scheduled-tasks]
-    (print "- " (task :title)))
+  (each day
+        (plan/days-on-or-after plan date)
+        (fn [day] (schedule-tasks day scheduled-tasks)))
   plan)

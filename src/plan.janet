@@ -20,6 +20,9 @@
 (defn build-plan [title inbox-tasks days]
   {:title title :inbox inbox-tasks :days days})
 
+# ------------------------------------------------------------------------------
+# Days functions
+
 (defn has-day-with-date? [plan date]
   (find (fn [day] (date/equal? date (day :date)))
         (plan :days)))
@@ -43,6 +46,9 @@
   (build-plan (plan :title)
               (plan :inbox)
               (filter keep-day? (plan :days))))
+
+# ------------------------------------------------------------------------------
+# Tasks functions
 
 (defn all-tasks [plan]
   (tasks-from-days (plan :days)))
