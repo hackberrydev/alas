@@ -16,9 +16,10 @@
 (deftest schedule-task-on-specific-weekday
   (def scheduled-tasks
     @[(task/build-scheduled-task "Weekly meeting" "every Monday")])
-  (def new-plan (schedule-tasks plan scheduled-tasks (d/date 2022 1 17)))
-  (def day-1 ((new-plan :days) 0))
+  (schedule-tasks plan scheduled-tasks (d/date 2022 1 17))
+  (def day-1 ((plan :days) 0))
   (is (= {:title "Weekly meeting" :done false :schedule "every Monday"}
-         ((day-1 :tasks) 0))))
+         ((day-1 :tasks) 0)))
+  (is (empty? (((plan :days) 1) :tasks))))
 
 (run-tests!)
