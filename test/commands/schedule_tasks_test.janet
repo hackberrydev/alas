@@ -10,8 +10,8 @@
 ## Test schedule-tasks
 
 (def plan (plan/build-plan "My Plan" @[]
-                           @[(day/build-day (d/date 2022 1 17))
-                             (day/build-day (d/date 2022 1 18))]))
+                           @[(day/build-day (d/date 2022 1 18))
+                             (day/build-day (d/date 2022 1 17))]))
 
 (deftest schedule-task-on-specific-weekday
   (def scheduled-tasks
