@@ -54,6 +54,8 @@
   (if (arguments "report")
     (array/push commands
                 [print-report (d/today) (parse (arguments "report"))]))
+  # schedule-tasks has to be after insert-days and all other commands that
+  # insert new days.
   (if (arguments "schedule-tasks")
     (let [file-path (arguments "schedule-tasks")
           load-file-result (file_repository/load file-path)

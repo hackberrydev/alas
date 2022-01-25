@@ -86,11 +86,27 @@
   (def plan (plan/build-plan "My Plan"
                              @[]
                              @[day-1 day-2 day-3 day-4]))
-  (var new-plan (plan/remove-days plan @[day-2 day-4]))
-  (var new-days (new-plan :days))
+  (def new-plan (plan/remove-days plan @[day-2 day-4]))
+  (def new-days (new-plan :days))
   (is (= 2 (length new-days)))
   (is (= day-1 (new-days 0)))
   (is (= day-3 (new-days 1))))
+
+## -----------------------------------------------------------------------------
+## Test days-on-or-after
+
+(deftest days-on-or-after
+  (def day-1 (day/build-day (d/date 2020 8 5)))
+  (def day-2 (day/build-day (d/date 2020 8 4)))
+  (def day-3 (day/build-day (d/date 2020 8 3)))
+  (def day-4 (day/build-day (d/date 2020 8 2)))
+  (def plan (plan/build-plan "My Plan"
+                             @[]
+                             @[day-1 day-2 day-3 day-4]))
+  (def days (plan/days-on-or-after plan (d/date 2020 8 4)))
+  (is (= 2 (length days)))
+  (is (= day-1 (days 0)))
+  (is (= day-2 (days 1))))
 
 ## -----------------------------------------------------------------------------
 ## Test all-tasks
