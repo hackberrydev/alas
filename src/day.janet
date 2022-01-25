@@ -22,3 +22,6 @@
 
 (defn get-time [day]
   (date/to-time (day :date)))
+
+(defn add-tasks [day tasks]
+  (array/concat (day :tasks) tasks))
