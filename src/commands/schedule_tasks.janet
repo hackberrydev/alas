@@ -7,7 +7,7 @@
 
 # Public
 (defn scheduled-for? [task date]
-  true)
+  (= (task :schedule) (string "every " (date :week-day))))
 
 (defn- schedule-tasks-for-day [day scheduled-tasks]
   (def tasks (filter (fn [task] (scheduled-for? task (day :date)))
