@@ -7,6 +7,19 @@
 (import ../../src/commands/schedule_tasks :prefix "")
 
 ## -----------------------------------------------------------------------------
+## Test scheduled-for?
+
+(deftest scheduled-for-monday
+  (def task (task/build-scheduled-task "Weekly meeting" "every Monday"))
+  (is (scheduled-for? task (d/date 2022 1 24)))
+  (is (not (scheduled-for? task (d/date 2022 1 25)))))
+
+(deftest scheduled-for-tuesday
+  (def task (task/build-scheduled-task "Weekly meeting" "every Tuesday"))
+  (is (not (scheduled-for? task (d/date 2022 1 24))))
+  (is (scheduled-for? task (d/date 2022 1 25))))
+
+## -----------------------------------------------------------------------------
 ## Test schedule-tasks
 
 (def plan (plan/build-plan "My Plan" @[]
