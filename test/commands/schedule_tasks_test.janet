@@ -49,6 +49,15 @@
   (is (not (scheduled-for? task (d/date 2022 1 29))))  # Saturday
   (is (not (scheduled-for? task (d/date 2022 1 30))))) # Sunday
 
+(deftest scheduled-for-specific-date-every-year
+  (def task (task/build-scheduled-task "Review logs" "every year on 01-27"))
+  (is (scheduled-for? task (d/date 2022 1 27)))
+  (is (scheduled-for? task (d/date 2023 1 27)))
+  (is (scheduled-for? task (d/date 2024 1 27)))
+  (is (not (scheduled-for? task (d/date 2022 1 26))))
+  (is (not (scheduled-for? task (d/date 2022 1 28))))
+  (is (not (scheduled-for? task (d/date 2022 2 1)))))
+
 (deftest scheduled-for-specific-date
   (def task (task/build-scheduled-task "Review logs" "on 2022-01-27"))
   (is (scheduled-for? task (d/date 2022 1 27)))
