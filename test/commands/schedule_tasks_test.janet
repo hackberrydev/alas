@@ -26,6 +26,16 @@
   (is (scheduled-for? task (d/date 2022 6 1)))
   (is (not (scheduled-for? task (d/date 2022 6 15)))))
 
+(deftest scheduled-for-every-weekday
+  (def task (task/build-scheduled-task "Review logs" "every weekday"))
+  (is (scheduled-for? task (d/date 2022 1 24)))        # Monday
+  (is (scheduled-for? task (d/date 2022 1 25)))        # Tuesday
+  (is (scheduled-for? task (d/date 2022 1 26)))        # Wednesday
+  (is (scheduled-for? task (d/date 2022 1 27)))        # Thursday
+  (is (scheduled-for? task (d/date 2022 1 28)))        # Friday
+  (is (not (scheduled-for? task (d/date 2022 1 29))))  # Saturday
+  (is (not (scheduled-for? task (d/date 2022 1 30))))) # Sunday
+
 ## -----------------------------------------------------------------------------
 ## Test schedule-tasks
 
