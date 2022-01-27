@@ -14,7 +14,8 @@
         "every weekday" (index-of (date :week-day) weekdays)
         "every month" (= (date :day) 1)
         "every 3 months" (and (= (date :day) 1)
-                              (index-of (date :month) [1 4 7 10]))))
+                              (index-of (date :month) [1 4 7 10]))
+        (string "on " (date/format date true)) true))
 
 (defn- schedule-tasks-for-day [day scheduled-tasks]
   (def tasks (filter (fn [task] (scheduled-for? task (day :date)))
