@@ -19,6 +19,13 @@
   (is (not (scheduled-for? task (d/date 2022 1 24))))
   (is (scheduled-for? task (d/date 2022 1 25))))
 
+(deftest scheduled-for-every-month
+  (def task (task/build-scheduled-task "Review logs" "every month"))
+  (is (scheduled-for? task (d/date 2022 1 1)))
+  (is (not (scheduled-for? task (d/date 2022 1 2))))
+  (is (scheduled-for? task (d/date 2022 6 1)))
+  (is (not (scheduled-for? task (d/date 2022 6 15)))))
+
 ## -----------------------------------------------------------------------------
 ## Test schedule-tasks
 
