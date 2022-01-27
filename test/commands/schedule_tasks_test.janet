@@ -26,6 +26,19 @@
   (is (scheduled-for? task (d/date 2022 6 1)))
   (is (not (scheduled-for? task (d/date 2022 6 15)))))
 
+(deftest scheduled-for-every-3-months
+  (def task (task/build-scheduled-task "Review logs" "every 3 months"))
+  (is (scheduled-for? task (d/date 2022 1 1)))
+  (is (not (scheduled-for? task (d/date 2022 2 1))))
+  (is (not (scheduled-for? task (d/date 2022 3 1))))
+  (is (scheduled-for? task (d/date 2022 4 1)))
+  (is (not (scheduled-for? task (d/date 2022 5 1))))
+  (is (not (scheduled-for? task (d/date 2022 6 1))))
+  (is (scheduled-for? task (d/date 2022 7 1)))
+  (is (not (scheduled-for? task (d/date 2022 8 1))))
+  (is (not (scheduled-for? task (d/date 2022 9 1))))
+  (is (scheduled-for? task (d/date 2022 10 1))))
+
 (deftest scheduled-for-every-weekday
   (def task (task/build-scheduled-task "Review logs" "every weekday"))
   (is (scheduled-for? task (d/date 2022 1 24)))        # Monday
