@@ -8,7 +8,7 @@
 (def weekdays ["Monday" "Tuesday" "Wednesday" "Thursday" "Friday"])
 
 (defn- remove-year [formatted-date]
-  (apply string (drop 1 (string/split "-" formatted-date))))
+  (string/join (drop 1 (string/split "-" formatted-date)) "-"))
 
 # Public
 (defn scheduled-for? [task date]
