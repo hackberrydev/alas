@@ -69,16 +69,25 @@
 ## -----------------------------------------------------------------------------
 ## Test schedule-tasks
 
-(def plan (plan/build-plan "My Plan" @[]
-                           @[(day/build-day (d/date 2022 1 18))
-                             (day/build-day (d/date 2022 1 17))]))
+(defn build-plan []
+  (plan/build-plan "My Plan" @[]
+                   @[(day/build-day (d/date 2022 1 18))
+                     (day/build-day (d/date 2022 1 17))]))
+(def scheduled-tasks
+  @[(task/build-scheduled-task "Weekly meeting" "every Monday")])
 
 (deftest schedule-task-on-specific-weekday
-  (def scheduled-tasks
-    @[(task/build-scheduled-task "Weekly meeting" "every Monday")])
+  (def plan (build-plan))
   (schedule-tasks plan scheduled-tasks (d/date 2022 1 17))
   (is (empty? (((plan :days) 0) :tasks)))
   (is (= {:title "Weekly meeting" :done false :schedule "every Monday"}
          ((((plan :days) 1) :tasks) 0))))
+
+(deftest schedule-tasks-does-not-insert-duplicate-tasks
+  (def plan (build-plan))
+  (schedule-tasks plan scheduled-tasks (d/date 2022 1 17))
+  (schedule-tasks plan scheduled-tasks (d/date 2022 1 17))
+  (is (empty? (((plan :days) 0) :tasks)))
+  (is (= 1 (length (((plan :days) 1) :tasks)))))
 
 (run-tests!)

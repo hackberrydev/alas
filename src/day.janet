@@ -20,8 +20,17 @@
   (and (empty? (day :events))
        (empty? (day :tasks))))
 
+(defn has-task? [day task]
+  (some (fn [t] (= (t :title) (task :title)))
+        (day :tasks)))
+
 (defn get-time [day]
   (date/to-time (day :date)))
 
+(defn add-task [day task]
+  (unless (has-task? day task)
+          (array/push (day :tasks) task)))
+
 (defn add-tasks [day tasks]
-  (array/concat (day :tasks) tasks))
+  (loop [task :in tasks]
+    (add-task day task)))
