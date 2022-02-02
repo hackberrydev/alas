@@ -22,7 +22,7 @@
 (deftest backup-plan
   (def plan-path "test/examples/todo.md")
   (def backup-path "test/examples/todo-2020-08-01.md")
-  (def plan (file_repository/load-plan plan-path))
+  (def plan (file_repository/load plan-path))
   (backup plan plan-path (date/date 2020 8 1))
   (is (os/stat backup-path))
   (os/rm backup-path))
