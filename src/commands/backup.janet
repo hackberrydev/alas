@@ -3,9 +3,15 @@
 
 (import ../date)
 
+(defn- split-path-to-segments [path]
+  (def segments (string/split "." path))
+  (if (= "" (first segments))
+    (put segments 0 "."))
+  segments)
+
 (defn- append-path-index
   [path index]
-  (def path-segments (string/split "." path))
+  (def path-segments (split-path-to-segments path))
   (string (apply string (array/slice path-segments 0 -2))
           "-"
           index
@@ -40,7 +46,7 @@
   > 'plan-2020-08-01.md'
   ```
   [file-path date]
-  (def path-segments (string/split "." file-path))
+  (def path-segments (split-path-to-segments file-path))
   (def path (string (apply string (array/slice path-segments 0 -2))
                    "-"
                    (date/format date true)
