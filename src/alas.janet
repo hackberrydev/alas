@@ -39,15 +39,19 @@
 
 (defn- build-commands [arguments plan file-path]
   (def commands @[])
+  (def insert-days-arg (arguments "insert-days"))
   # Backup command needs to be first.
   (if (not (arguments "skip-backup"))
     (array/push commands [backup file-path (d/today)]))
   # Keep commands sorted alphabetically.
-  (if (arguments "insert-days")
-    (array/push commands
-                [insert-days
-                 (d/days-from-now (- (parse (arguments "insert-days")) 1))
-                 (d/today)]))
+  (if insert-days-arg
+    (let [insert-days-count (parse insert-days-arg)]
+      (if (number? insert-days-count)
+        (array/push commands
+                    [insert-days
+                     (d/days-from-now (- insert-days-count 1))
+                     (d/today)])
+        (print "--insert-days argument in not a number."))))
   (if (arguments "remove-empty-days")
     (array/push commands
                 [remove-empty-days (d/today)]))
