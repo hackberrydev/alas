@@ -90,7 +90,8 @@
   (if file-path
     (run-with-file-path arguments file-path)
     (if (arguments "version")
-      (print-version))))
+      (print-version)
+      (print "Plan file path missing."))))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
