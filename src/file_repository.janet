@@ -28,5 +28,5 @@
   ```
   [path]
   (if (= (os/stat path) nil)
-    {:error "File does not exist"}
+    {:error "File does not exist."}
     {:text (string (file/read (file/open path) :all))}))
