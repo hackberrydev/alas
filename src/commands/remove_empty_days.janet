@@ -15,3 +15,9 @@
   (def empty-days (filter (fn [day] (date/before? (day :date) today))
                           (plan/empty-days plan)))
   (plan/remove-days plan empty-days))
+
+(defn build-command [arguments]
+  (def argument (arguments "remove-empty-days"))
+  (if argument
+    {:command [remove-empty-days (date/today)]}
+    {}))
