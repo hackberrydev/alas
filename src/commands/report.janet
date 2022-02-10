@@ -31,7 +31,7 @@
     (print "- " (task :title)))
   plan)
 
-(defn build-command [arguments]
+(defn build-command [arguments &]
   (def argument (arguments "report"))
   (if argument
     (let [days-count (parse argument)]

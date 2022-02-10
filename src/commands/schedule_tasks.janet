@@ -38,7 +38,7 @@
     (schedule-tasks-for-day day scheduled-tasks))
   plan)
 
-(defn build-command [arguments]
+(defn build-command [arguments &]
   (def argument (arguments "schedule-tasks"))
   (if argument
     (let [load-file-result (file_repository/load argument)

@@ -21,7 +21,7 @@
   [plan date today]
   (plan/insert-days plan (day/generate-days today date)))
 
-(defn build-command [arguments]
+(defn build-command [arguments &]
   (def argument (arguments "insert-days"))
   (if argument
     (let [insert-days-count (parse argument)]
