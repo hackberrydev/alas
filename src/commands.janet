@@ -12,9 +12,9 @@
 (import ./file_repository)
 (import ./schedule_parser)
 
-# TODO: Add backup command
 # backup command needs to be first
-(def commands [insert_days/build-command
+(def commands [backup/build-command
+               insert_days/build-command
                remove_empty_days/build-command
                report/build-command
                schedule_tasks/build-command

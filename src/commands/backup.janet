@@ -70,3 +70,8 @@
   (file/close backup-file)
   (print "Created backup.")
   plan)
+
+(defn build-command [arguments file-path]
+  (if (arguments "skip-backup")
+    {}
+    {:command [backup file-path (date/today)]}))

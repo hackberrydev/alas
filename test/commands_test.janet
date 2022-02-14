@@ -33,6 +33,13 @@
   (is (= 1 (length commands)))
   (is ((first commands) :errors)))
 
+(deftest build-commands-when-not-skipping-backup
+  (def arguments {"report" "7"})
+  (def commands (build-commands arguments file-path))
+  (is (= 2 (length commands)))
+  (is ((commands 0) :command))
+  (is ((commands 1) :command)))
+
 ## -----------------------------------------------------------------------------
 ## Test run-commands
 
