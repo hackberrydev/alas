@@ -33,4 +33,17 @@
   (is (os/stat backup-path))
   (os/rm backup-path))
 
+## -----------------------------------------------------------------------------
+## Test build-command
+
+(deftest build-command-when-not-skipping-backup
+  (def arguments {"stats" true})
+  (def result (build-command arguments "test/examples/plan.md"))
+  (is (tuple? (result :command))))
+
+(deftest build-command-when-skipping-backup
+  (def arguments {"skip-backup" true "stats" true})
+  (def result (build-command arguments "test/examples/plan.md"))
+  (is (empty? result)))
+
 (run-tests!)

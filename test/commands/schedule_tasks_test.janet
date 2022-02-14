@@ -90,4 +90,28 @@
   (is (empty? (((plan :days) 0) :tasks)))
   (is (= 1 (length (((plan :days) 1) :tasks)))))
 
+## -----------------------------------------------------------------------------
+## Test build-command
+
+(deftest build-command-without-matching-argument
+  (def arguments {"stats" true})
+  (is (empty? (build-command arguments))))
+
+(deftest build-command-with-correct-arguments
+  (def arguments {"schedule-tasks" "test/examples/schedule.md"})
+  (def result (build-command arguments))
+  (is (tuple? (result :command))))
+
+(deftest build-command-when-the-schedule-does-not-exist
+  (def arguments {"schedule-tasks" "test/examples/missing-schedule.md"})
+  (def result (build-command arguments))
+  (is (nil? (result :command)))
+  (is (= "--schedule-tasks file does not exist." (first (result :errors)))))
+
+(deftest build-command-when-the-schedule-can-not-be-parsed
+  (def arguments {"schedule-tasks" "test/examples/unparsable-schedule.md"})
+  (def result (build-command arguments))
+  (is (nil? (result :command)))
+  (is (= "--schedule-tasks schedule could not be parsed." (first (result :errors)))))
+
 (run-tests!)
