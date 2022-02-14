@@ -16,3 +16,9 @@
   (print (u/pluralize (length (plan/completed-tasks plan)) "completed task"))
   (print (u/pluralize (length (plan/pending-tasks plan)) "pending task"))
   plan)
+
+(defn build-command [arguments &]
+  (def argument (arguments "stats"))
+  (if argument
+    {:command [stats]}
+    {}))

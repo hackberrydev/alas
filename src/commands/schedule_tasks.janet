@@ -4,6 +4,8 @@
 (import ../day)
 (import ../date)
 (import ../plan)
+(import ../file_repository)
+(import ../schedule_parser)
 
 (def weekdays ["Monday" "Tuesday" "Wednesday" "Thursday" "Friday"])
 
@@ -35,3 +37,16 @@
   (loop [day :in (plan/days-on-or-after plan date)]
     (schedule-tasks-for-day day scheduled-tasks))
   plan)
+
+(defn build-command [arguments &]
+  (def argument (arguments "schedule-tasks"))
+  (if argument
+    (let [load-file-result (file_repository/load argument)
+          error (load-file-result :error)]
+      (if error
+        {:errors [(string "--schedule-tasks " (string/ascii-lower error))]}
+        (let [parse-result (schedule_parser/parse (load-file-result :text))]
+          (if parse-result
+            {:command [schedule-tasks (first parse-result) (date/today)]}
+            {:errors ["--schedule-tasks schedule could not be parsed."]}))))
+    {}))
