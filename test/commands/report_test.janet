@@ -28,4 +28,22 @@
   (is (= "Task 3" ((tasks 1) :title)))
   (is (= "Task 4" ((tasks 2) :title))))
 
+## -----------------------------------------------------------------------------
+## Test build-command
+
+(deftest build-command-without-matching-argument
+  (def arguments {"stats" true})
+  (is (empty? (build-command arguments))))
+
+(deftest build-command-with-correct-arguments
+  (def arguments {"report" "7"})
+  (def result (build-command arguments))
+  (is (tuple? (result :command))))
+
+(deftest build-command-with-incorrect-arguments
+  (def arguments {"report" "seven"})
+  (def result (build-command arguments))
+  (is (nil? (result :command)))
+  (is (= "--report argument is not a number." (first (result :errors)))))
+
 (run-tests!)
