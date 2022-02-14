@@ -37,10 +37,8 @@
     (let [parse-result (plan_parser/parse (load-file-result :text))]
       (if parse-result
         (let [plan (first parse-result)
-              commands (build-commands arguments plan file-path)]
-          (file_repository/save
-            (plan_serializer/serialize (run-commands plan commands))
-            file-path))
+              new-plan (run-commands plan file-path arguments)]
+          (file_repository/save (plan_serializer/serialize new-plan) file-path))
         (print "Plan could not be parsed.")))))
 
 (defn- run-with-arguments [arguments]
