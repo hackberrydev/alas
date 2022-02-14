@@ -20,6 +20,10 @@
                schedule_tasks/build-command
                stats/build-command])
 
+(defn- print-errors [errors]
+  (loop [error :in errors]
+    (print error)))
+
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -37,9 +41,14 @@
 
 (defn run-commands [plan file-path arguments]
   (def commands (build-commands arguments file-path))
-  (reduce (fn [new-plan command-and-arguments]
-            (def command (first (command-and-arguments :command)))
-            (def arguments (drop 1 (command-and-arguments :command)))
-            (apply command new-plan arguments))
-          plan
-          commands))
+  (def errors (flatten (map (fn [c] (c :errors)) commands)))
+  (if (any? errors)
+    (do
+      (print-errors errors)
+      plan)
+    (reduce (fn [new-plan command-and-arguments]
+              (def command (first (command-and-arguments :command)))
+              (def arguments (drop 1 (command-and-arguments :command)))
+              (apply command new-plan arguments))
+            plan
+            commands)))

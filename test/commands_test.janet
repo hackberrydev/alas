@@ -36,7 +36,7 @@
 ## -----------------------------------------------------------------------------
 ## Test run-commands
 
-(deftest run-multiple-commands
+(deftest run-commands-with-valid-arguments
   (def today (d/today))
   (def plan (plan/build-plan "Plan" @[]
                              @[(day/build-day today)
@@ -51,5 +51,20 @@
   (is (= (d/+days today 1) ((days 1) :date)))
   (is (= today ((days 2) :date)))
   (is (= (d/date 2020 8 2) ((days 3) :date))))
+
+(deftest run-commands-with-invalid-arguments
+  (def today (d/today))
+  (def plan (plan/build-plan "Plan" @[]
+                             @[(day/build-day today)
+                               (day/build-day (d/date 2020 8 4))
+                               (day/build-day (d/date 2020 8 2) @[]
+                                              @[(task/build-task "Buy milk" true)])]))
+  (def arguments {"skip-backup" true "remove-empty-days" true "insert-days" "three"})
+  (def new-plan (run-commands plan file-path arguments))
+  (def days (new-plan :days))
+  (is (= 3 (length days)))
+  (is (= today ((days 0) :date)))
+  (is (= (d/date 2020 8 4) ((days 1) :date)))
+  (is (= (d/date 2020 8 2) ((days 2) :date))))
 
 (run-tests!)
