@@ -17,8 +17,11 @@
 ## -----------------------------------------------------------------------------
 ## Public Interface
 
-(defn build-plan [title inbox-tasks days]
-  {:title title :inbox inbox-tasks :days days})
+(defn build-plan [&keys {:title title :inbox inbox :days days}]
+  (default title "Plan")
+  (default inbox @[])
+  (default days @[])
+  {:title title :inbox inbox :days days})
 
 # ------------------------------------------------------------------------------
 # Days functions
@@ -31,9 +34,9 @@
   (filter day/empty-day? (plan :days)))
 
 (defn sort-days [plan]
-  (build-plan (plan :title)
-              (plan :inbox)
-              (reverse (sort-by day/get-time (plan :days)))))
+  (build-plan :title (plan :title)
+              :inbox (plan :inbox)
+              :days (reverse (sort-by day/get-time (plan :days)))))
 
 (defn insert-days [plan days]
   (loop [day :in days
@@ -43,9 +46,9 @@
 
 (defn remove-days [plan days]
   (defn- keep-day? [day] (not (index-of day days)))
-  (build-plan (plan :title)
-              (plan :inbox)
-              (filter keep-day? (plan :days))))
+  (build-plan :title (plan :title)
+              :inbox (plan :inbox)
+              :days (filter keep-day? (plan :days))))
 
 (defn days-on-or-after
   ```

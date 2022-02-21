@@ -2,6 +2,9 @@
 (import ../src/date :as d)
 (import ../src/plan_parser :prefix "")
 
+## -----------------------------------------------------------------------------
+## Test parse
+
 (deftest parse-plan
   (def plan-string
     ```
@@ -37,5 +40,29 @@
   (is (= {:text "Talked to Mike & Molly"} ((day-2 :events) 0)))
   (is (= {:title "#work - Review open pull requests" :done true} ((day-2 :tasks) 0)))
   (is (= {:title "#work - Fix the flaky test" :done true} ((day-2 :tasks) 1))))
+
+(deftest parse-plan-without-inbox
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## 2020-08-01, Saturday
+
+    - [ ] Develop photos
+    - [x] Pay bills
+
+    ## 2020-07-31, Friday
+
+    - Talked to Mike & Molly
+    - [x] #work - Review open pull requests
+    - [x] #work - Fix the flaky test
+    ```)
+  (def plan (first (parse plan-string)))
+  (def day-1 ((plan :days) 0))
+  (def day-2 ((plan :days) 1))
+  (is (= "Main TODO" (plan :title)))
+  (is (empty? (plan :inbox)))
+  (is (= (d/date 2020 8 1) (day-1 :date)))
+  (is (= (d/date 2020 7 31) (day-2 :date))))
 
 (run-tests!)
