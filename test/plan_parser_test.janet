@@ -61,7 +61,7 @@
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
   (is (= "Main TODO" (plan :title)))
-  (is (nil? (plan :inbox)))
+  (is (empty? (plan :inbox)))
   (is (= (d/date 2020 8 1) (day-1 :date)))
   (is (= (d/date 2020 7 31) (day-2 :date))))
 
