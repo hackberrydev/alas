@@ -4,12 +4,8 @@
 (import ../date)
 
 (defn- split-path-to-segments [path]
-  (def segments (string/split "." path))
-  (if (= "" (segments 0))
-    (put segments 0 "."))
-  (if (= "" (segments 1))
-    (put segments 1 "."))
-  segments)
+  (map (fn [segment] (if (= "" segment) "." segment))
+       (string/split "." path)))
 
 (defn- append-path-index
   [path index]
