@@ -5,8 +5,10 @@
 
 (defn- split-path-to-segments [path]
   (def segments (string/split "." path))
-  (if (= "" (first segments))
+  (if (= "" (segments 0))
     (put segments 0 "."))
+  (if (= "" (segments 1))
+    (put segments 1 "."))
   segments)
 
 (defn- append-path-index
