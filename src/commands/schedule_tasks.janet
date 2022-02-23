@@ -47,6 +47,9 @@
         {:errors [(string "--schedule-tasks " (string/ascii-lower error))]}
         (let [parse-result (schedule_parser/parse (load-file-result :text))]
           (if parse-result
-            {:command [schedule-tasks (first parse-result) (date/today)]}
+            (let [schedule (first parse-result)]
+              (if (empty? schedule)
+                {:errors ["--schedule-tasks schedule is empty."]}
+                {:command [schedule-tasks (first parse-result) (date/today)]}))
             {:errors ["--schedule-tasks schedule could not be parsed."]}))))
     {}))
