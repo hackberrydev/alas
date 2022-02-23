@@ -41,7 +41,7 @@
 
 (defn run-commands [plan file-path arguments]
   (def commands (build-commands arguments file-path))
-  (def errors (flatten (map (fn [c] (c :errors)) commands)))
+  (def errors (filter identity (flatten (map (fn [c] (c :errors)) commands))))
   (if (any? errors)
     (do
       (print-errors errors)
