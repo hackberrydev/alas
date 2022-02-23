@@ -102,16 +102,22 @@
   (def result (build-command arguments))
   (is (tuple? (result :command))))
 
-(deftest build-command-when-the-schedule-does-not-exist
+(deftest build-command-when-schedule-does-not-exist
   (def arguments {"schedule-tasks" "test/examples/missing-schedule.md"})
   (def result (build-command arguments))
   (is (nil? (result :command)))
   (is (= "--schedule-tasks file does not exist." (first (result :errors)))))
 
-(deftest build-command-when-the-schedule-can-not-be-parsed
+(deftest build-command-when-schedule-can-not-be-parsed
   (def arguments {"schedule-tasks" "test/examples/unparsable-schedule.md"})
   (def result (build-command arguments))
   (is (nil? (result :command)))
   (is (= "--schedule-tasks schedule could not be parsed." (first (result :errors)))))
+
+(deftest build-command-when-schedule-is-empty
+  (def arguments {"schedule-tasks" "test/examples/empty-schedule.md"})
+  (def result (build-command arguments))
+  (is (nil? (result :command)))
+  (is (= "--schedule-tasks schedule is empty." (first (result :errors)))))
 
 (run-tests!)
