@@ -26,7 +26,7 @@
     - [x] #work - Review open pull requests
     - [x] #work - Fix the flaky test
     ```)
-  (def plan (first (parse plan-string)))
+  (def plan ((parse plan-string) :plan))
   (def inbox (plan :inbox))
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
@@ -57,7 +57,7 @@
     - [x] #work - Review open pull requests
     - [x] #work - Fix the flaky test
     ```)
-  (def plan (first (parse plan-string)))
+  (def plan ((parse plan-string) :plan))
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
   (is (= "Main TODO" (plan :title)))

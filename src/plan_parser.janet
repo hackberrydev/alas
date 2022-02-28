@@ -38,4 +38,6 @@
   Parses plan string and returns plan as entities.
   ```
   [plan-string]
-  (peg/match plan-grammar plan-string))
+  (def parse-result (peg/match plan-grammar plan-string))
+  (if parse-result
+    {:plan (first parse-result)}))
