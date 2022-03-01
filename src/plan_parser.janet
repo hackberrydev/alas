@@ -40,4 +40,5 @@
   [plan-string]
   (def parse-result (peg/match plan-grammar plan-string))
   (if parse-result
-    {:plan (first parse-result)}))
+    {:plan (first parse-result)}
+    {:error "Plan can not be parsed"}))

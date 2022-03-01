@@ -65,4 +65,16 @@
   (is (= (d/date 2020 8 1) (day-1 :date)))
   (is (= (d/date 2020 7 31) (day-2 :date))))
 
+(deftest parse-when-plan-can-not-be-parsed
+  (def plan-string
+    ```
+    ## Main TODO
+
+    - [ ] Pay bills
+    - [O] Talk to Mike
+    ```)
+  (def parse-result (parse plan-string))
+  (is (parse-result :error))
+  (is (= "Plan can not be parsed" (parse-result :error))))
+
 (run-tests!)
