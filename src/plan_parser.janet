@@ -6,6 +6,7 @@
 (import ./day)
 (import ./event)
 (import ./plan)
+(import ./plan_serializer)
 
 (def plan-grammar
   ~{:main (replace (* (constant :title) :title (? (* (constant :inbox) :inbox)) (constant :days) :days) ,plan/build-plan)
@@ -30,6 +31,13 @@
     :checkbox-pending (* "[ ]" (constant false))
     :task-body (replace (capture (some (if-not (+ :day-title :task-begin) 1))) ,string/trim)})
 
+(defn- lines-count [plan-string]
+  (def count (length (filter (fn [line] (not= line "\n"))
+                             (string/split "\n" plan-string))))
+  (if (= (last plan-string) 10) # line feed (\n)
+    (- count 1)
+    count))
+
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -40,5 +48,10 @@
   [plan-string]
   (def parse-result (peg/match plan-grammar plan-string))
   (if parse-result
-    {:plan (first parse-result)}
+    (let [plan (first parse-result)
+          serialized-plan (plan_serializer/serialize plan)]
+      (if (= (lines-count serialized-plan) (lines-count plan-string))
+        {:plan plan}
+        {:error (string "Plan can not be parsed: last parsed line is line "
+                        (lines-count serialized-plan))}))
     {:error "Plan can not be parsed"}))

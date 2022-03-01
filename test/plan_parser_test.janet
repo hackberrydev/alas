@@ -77,4 +77,18 @@
   (is (parse-result :error))
   (is (= "Plan can not be parsed" (parse-result :error))))
 
+(deftest parse-when-plan-can-partially-be-parsed
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## Tomorrow
+
+    - [ ] Pay bills
+    ```)
+  (def parse-result (parse plan-string))
+  (is (parse-result :error))
+  (is (= "Plan can not be parsed: last parsed line is line 1")
+      (parse-result :error)))
+
 (run-tests!)
