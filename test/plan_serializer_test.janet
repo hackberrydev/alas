@@ -55,8 +55,6 @@
     ```
     # My Plan
 
-    ## Inbox
-
     ## 2020-08-01, Saturday
 
     ```)
