@@ -15,6 +15,11 @@
 (defn- serialize-task [task]
   (string "- " (checkbox (task :done)) " " (task :title)))
 
+(defn- plan-inbox [plan]
+  (if (any? (plan :inbox))
+    (array/concat @["\n## Inbox\n"] (map serialize-task (plan :inbox)))
+    []))
+
 (defn- day-title [day new-line]
   (def title (string "\n## " (date/format (day :date))))
   (if new-line
@@ -40,9 +45,6 @@
   [plan]
   (def plan-lines @[])
   (array/push plan-lines (plan-title plan))
-  (if (any? (plan :inbox))
-    (do
-      (array/push plan-lines "\n## Inbox\n")
-      (array/concat plan-lines (map serialize-task (plan :inbox)))))
+  (array/concat plan-lines (plan-inbox plan))
   (array/concat plan-lines (serialize-days (plan :days)))
   (string (string/join plan-lines "\n") "\n"))
