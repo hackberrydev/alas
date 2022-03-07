@@ -41,6 +41,9 @@
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
+(defn serialize-empty-inbox? [plan-string]
+  (truthy? (string/find "## Inbox" plan-string)))
+
 (defn parse
   ```
   Parses plan string and returns plan as entities.
@@ -49,7 +52,9 @@
   (def parse-result (peg/match plan-grammar plan-string))
   (if parse-result
     (let [plan (first parse-result)
-          serialized-plan (plan_serializer/serialize plan)]
+          serialized-plan (plan_serializer/serialize
+                            plan
+                            {:serialize-empty-inbox (serialize-empty-inbox? plan-string)})]
       (if (= (lines-count serialized-plan) (lines-count plan-string))
         {:plan plan}
         {:error (string "Plan can not be parsed: last parsed line is line "
