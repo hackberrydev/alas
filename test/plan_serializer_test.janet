@@ -60,6 +60,19 @@
     ## 2020-08-01, Saturday
 
     ```)
+  (is (= plan-string (serialize plan {:serialize-empty-inbox true}))))
+
+(deftest serialize-plan-without-inbox
+  (def plan
+    (plan/build-plan :title "My Plan"
+                     :days @[(day/build-day (d/date 2020 8 1))]))
+  (def plan-string
+    ```
+    # My Plan
+
+    ## 2020-08-01, Saturday
+
+    ```)
   (is (= plan-string (serialize plan))))
 
 (run-tests!)
