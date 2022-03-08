@@ -4,12 +4,7 @@
 (import ./date :as date)
 
 (defn- plan-title [plan]
-  (string "# " (plan :title) "\n"))
-
-(defn- inbox-title [inbox-tasks]
-  (if (any? inbox-tasks)
-    "## Inbox\n"
-    "## Inbox"))
+  (string "# " (plan :title)))
 
 (defn- checkbox [done]
   (if done "[X]" "[ ]"))
@@ -19,6 +14,13 @@
 
 (defn- serialize-task [task]
   (string "- " (checkbox (task :done)) " " (task :title)))
+
+(defn- plan-inbox [plan serialize-empty-inbox]
+  (if (any? (plan :inbox))
+    (array/concat @["\n## Inbox\n"] (map serialize-task (plan :inbox)))
+    (if serialize-empty-inbox
+      ["\n## Inbox"]
+      [])))
 
 (defn- day-title [day new-line]
   (def title (string "\n## " (date/format (day :date))))
@@ -42,10 +44,11 @@
   ```
   Serializes plan into a string.
   ```
-  [plan]
+  [plan &opt options]
+  (default options {})
+  (def serialize-empty-inbox (get options :serialize-empty-inbox false))
   (def plan-lines @[])
   (array/push plan-lines (plan-title plan))
-  (array/push plan-lines (inbox-title (plan :inbox)))
-  (array/concat plan-lines (map serialize-task (plan :inbox)))
+  (array/concat plan-lines (plan-inbox plan serialize-empty-inbox))
   (array/concat plan-lines (serialize-days (plan :days)))
   (string (string/join plan-lines "\n") "\n"))
