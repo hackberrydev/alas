@@ -34,11 +34,16 @@
   (def error (load-file-result :error))
   (if error
     (print error)
-    (let [parse-result (plan_parser/parse (load-file-result :text))]
+    (let [plan-string (load-file-result :text)
+          parse-result (plan_parser/parse plan-string)]
       (if parse-result
-        (let [plan (first parse-result)
-              new-plan (run-commands plan file-path arguments)]
-          (file_repository/save (plan_serializer/serialize new-plan) file-path))
+        (let [serialize-empty-inbox (truthy? (string/find "## Inbox" plan-string))
+              plan (first parse-result)
+              new-plan (run-commands plan file-path arguments)
+              new-plan-string (plan_serializer/serialize
+                                new-plan
+                                {:serialize-empty-inbox serialize-empty-inbox})]
+          (file_repository/save new-plan-string file-path))
         (print "Plan could not be parsed.")))))
 
 (defn- run-with-arguments [arguments]
