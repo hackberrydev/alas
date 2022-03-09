@@ -40,7 +40,7 @@
           plan (parse-result :plan)]
       (if parse-error
         (print parse-error)
-        (let [serialize-empty-inbox (truthy? (string/find "## Inbox" plan-string))
+        (let [serialize-empty-inbox (plan_parser/serialize-empty-inbox? plan-string)
               new-plan (run-commands plan file-path arguments)
               new-plan-string (plan_serializer/serialize
                                 new-plan
