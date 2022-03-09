@@ -32,11 +32,8 @@
     :task-body (replace (capture (some (if-not (+ :day-title :task-begin) 1))) ,string/trim)})
 
 (defn- lines-count [plan-string]
-  (def count (length (filter (fn [line] (not= line "\n"))
-                             (string/split "\n" plan-string))))
-  (if (= (last plan-string) 10) # line feed (\n)
-    (- count 1)
-    count))
+  (length (filter (fn [line] (not= (string/trim line) ""))
+                  (string/split "\n" plan-string))))
 
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
