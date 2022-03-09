@@ -49,14 +49,16 @@
   Parses plan string and returns plan as entities.
   ```
   [plan-string]
+  (def serialize-empty-inbox (serialize-empty-inbox? plan-string))
   (def parse-result (peg/match plan-grammar plan-string))
   (if parse-result
     (let [plan (first parse-result)
-          serialized-plan (plan_serializer/serialize
-                            plan
-                            {:serialize-empty-inbox (serialize-empty-inbox? plan-string)})]
-      (if (= (lines-count serialized-plan) (lines-count plan-string))
+          parsed-plan-string (plan_serializer/serialize
+                               plan
+                               {:serialize-empty-inbox serialize-empty-inbox})
+          parsed-lines-count (lines-count parsed-plan-string)]
+      (if (= parsed-lines-count  (lines-count plan-string))
         {:plan plan}
         {:error (string "Plan can not be parsed: last parsed line is line "
-                        (lines-count serialized-plan))}))
+                        parsed-lines-count)}))
     {:error "Plan can not be parsed"}))
