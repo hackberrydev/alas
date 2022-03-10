@@ -108,13 +108,15 @@
     ```
     # Main TODO
 
-    ## Tomorrow
+    ## 2020-01-31, Friday
 
-    - [ ] Pay bills
+    ## 2020-01-30, Thursday
+
+    ## Tomorrow
     ```)
   (def parse-result (parse plan-string))
   (is (parse-result :error))
-  (is (= "Plan can not be parsed: last parsed line is line 1")
-      (parse-result :error)))
+  (is (= "Plan can not be parsed: last parsed line is line 6"
+         (parse-result :error))))
 
 (run-tests!)
