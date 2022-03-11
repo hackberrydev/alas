@@ -6,6 +6,7 @@
 (import ./day)
 (import ./event)
 (import ./plan)
+(import ./plan_serializer)
 
 (def plan-grammar
   ~{:main (replace (* (constant :title) :title (? (* (constant :inbox) :inbox)) (constant :days) :days) ,plan/build-plan)
@@ -30,12 +31,33 @@
     :checkbox-pending (* "[ ]" (constant false))
     :task-body (replace (capture (some (if-not (+ :day-title :task-begin) 1))) ,string/trim)})
 
+(defn- lines-count [plan-string &opt options]
+  (default options {:ignore-whitespace true})
+  (def filter-function (if (options :ignore-whitespace)
+                           (fn [line] (not= (string/trim line) ""))
+                           (fn [_line] true)))
+  (length (filter filter-function (string/split "\n" plan-string))))
+
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
+
+(defn serialize-empty-inbox? [plan-string]
+  (truthy? (string/find "## Inbox" plan-string)))
 
 (defn parse
   ```
   Parses plan string and returns plan as entities.
   ```
   [plan-string]
-  (peg/match plan-grammar plan-string))
+  (def serialize-empty-inbox (serialize-empty-inbox? plan-string))
+  (def parse-result (peg/match plan-grammar plan-string))
+  (if parse-result
+    (let [plan (first parse-result)
+          parsed-plan-string (plan_serializer/serialize
+                               plan
+                               {:serialize-empty-inbox serialize-empty-inbox})]
+      (if (= (lines-count parsed-plan-string) (lines-count plan-string))
+        {:plan plan}
+        {:error (string "Plan can not be parsed: last parsed line is line "
+                        (lines-count parsed-plan-string {:ignore-whitespace false}))}))
+    {:error "Plan can not be parsed"}))
