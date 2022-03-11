@@ -26,7 +26,7 @@
     - [x] #work - Review open pull requests
     - [x] #work - Fix the flaky test
     ```)
-  (def plan (first (parse plan-string)))
+  (def plan ((parse plan-string) :plan))
   (def inbox (plan :inbox))
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
@@ -57,12 +57,66 @@
     - [x] #work - Review open pull requests
     - [x] #work - Fix the flaky test
     ```)
-  (def plan (first (parse plan-string)))
+  (def plan ((parse plan-string) :plan))
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
   (is (= "Main TODO" (plan :title)))
   (is (empty? (plan :inbox)))
   (is (= (d/date 2020 8 1) (day-1 :date)))
   (is (= (d/date 2020 7 31) (day-2 :date))))
+
+(deftest parse-plan-with-empty-inbox
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## Inbox
+
+    ## 2020-08-01, Saturday
+
+    - [ ] Develop photos
+    - [x] Pay bills
+
+    ## 2020-07-31, Friday
+
+    - Talked to Mike & Molly
+    - [x] #work - Review open pull requests
+    - [x] #work - Fix the flaky test
+    ```)
+  (def plan ((parse plan-string) :plan))
+  (def day-1 ((plan :days) 0))
+  (def day-2 ((plan :days) 1))
+  (is (= "Main TODO" (plan :title)))
+  (is (empty? (plan :inbox)))
+  (is (= (d/date 2020 8 1) (day-1 :date)))
+  (is (= (d/date 2020 7 31) (day-2 :date))))
+
+(deftest parse-when-plan-can-not-be-parsed
+  (def plan-string
+    ```
+    ## Main TODO
+
+    - [ ] Pay bills
+    - [O] Talk to Mike
+    ```)
+  (def parse-result (parse plan-string))
+  (is (parse-result :error))
+  (is (= "Plan can not be parsed" (parse-result :error))))
+
+(deftest parse-when-plan-can-partially-be-parsed
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## 2020-01-31, Friday
+
+    ## 2020-01-30, Thursday
+
+    ## Tomorrow
+    ```)
+  (def parse-result (parse plan-string))
+  (is (parse-result :error))
+  (is (= "Plan can not be parsed: last parsed line is line 6"
+         (parse-result :error))))
 
 (run-tests!)
