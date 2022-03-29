@@ -1,5 +1,5 @@
 ### ————————————————————————————————————————————————————————————————————————————
-### This module implements a PEG parser that parses plan as a string into
+### This module implements a PEG parser that parses a plan as a string into
 ### entities.
 
 (import ../date :as d)
