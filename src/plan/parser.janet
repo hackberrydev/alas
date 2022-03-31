@@ -9,7 +9,10 @@
 (import ./serializer :as plan_serializer)
 
 (def plan-grammar
-  ~{:main (replace (* (constant :title) :title (? (* (constant :inbox) :inbox)) (constant :days) :days) ,plan/build-plan)
+  ~{:main (replace (* (constant :title) :title
+                      (? (* (constant :inbox) :inbox))
+                      (constant :days) :days)
+                   ,plan/build-plan)
     :title (* "# " :sentence)
     :sentence (replace (capture (some (+ :w+ :s+))) ,string/trim)
     :inbox (* :inbox-title "\n" :tasks)
