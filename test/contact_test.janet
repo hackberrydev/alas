@@ -17,3 +17,9 @@
   (is (= :b (contact :category)))
   (is (nil? (contact :birthday)))
   (is (nil? (contact :last-contact))))
+
+(deftest build-contact-with-string-category
+  (def contact (contact/build-contact "John Doe" :category "B"))
+  (is (= :b (contact :category))))
+
+(run-tests!)
