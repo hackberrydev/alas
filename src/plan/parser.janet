@@ -6,7 +6,7 @@
 (import ../day)
 (import ../event)
 (import ../plan)
-(import ../plan_serializer)
+(import ./serializer :as plan_serializer)
 
 (def plan-grammar
   ~{:main (replace (* (constant :title) :title (? (* (constant :inbox) :inbox)) (constant :days) :days) ,plan/build-plan)

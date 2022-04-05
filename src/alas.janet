@@ -7,7 +7,7 @@
 
 (import ./file_repository)
 (import ./plan/parser :as plan_parser)
-(import ./plan_serializer)
+(import ./plan/serializer :as plan_serializer)
 
 # Keep commands sorted alphabetically.
 (def argparse-params

@@ -1,7 +1,7 @@
 ### ————————————————————————————————————————————————————————————————————————————
 ### This module implements serializing a plan into a string.
 
-(import ./date :as date)
+(import ../date :as date)
 
 (defn- plan-title [plan]
   (string "# " (plan :title)))
