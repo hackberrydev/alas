@@ -2,8 +2,8 @@
 ### This module implements a PEG parser that parses a contact as a string into
 ### entities.
 
-(import ./date :as d)
-(import ./contact)
+(import ../date :as d)
+(import ../contact)
 
 (def contact-grammar
   ~{:main (replace (* :name

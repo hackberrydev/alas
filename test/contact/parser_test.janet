@@ -1,6 +1,6 @@
 (import testament :prefix "" :exit true)
-(import ../src/date :as d)
-(import ../src/contact_parser)
+(import ../../src/contact/parser :prefix "")
+(import ../../src/date :as d)
 
 ## -----------------------------------------------------------------------------
 ## Test parse
@@ -21,7 +21,7 @@
 
     Grabbed a beer and talked about stuff.
     ```)
-  (def contact ((contact_parser/parse contact-string) :contact))
+  (def contact ((parse contact-string) :contact))
   (is (= "John Doe" (contact :name)))
   (is (= :a (contact :category)))
   (is (= "04-23" (contact :birthday)))
@@ -36,7 +36,7 @@
 
     Talked over the phone about stuff.
     ```)
-  (def contact ((contact_parser/parse contact-string) :contact))
+  (def contact ((parse contact-string) :contact))
   (is (= "John Doe" (contact :name)))
   (is (= (d/date 2022 2 19) (contact :last-contact))))
 
