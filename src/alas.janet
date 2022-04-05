@@ -6,7 +6,7 @@
 (import ./commands :prefix "")
 
 (import ./file_repository)
-(import ./plan_parser)
+(import ./plan/parser :as plan_parser)
 (import ./plan_serializer)
 
 # Keep commands sorted alphabetically.
