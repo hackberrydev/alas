@@ -2,11 +2,11 @@
 ### This module implements a PEG parser that parses plan as a string into
 ### entities.
 
-(import ./date :as d)
-(import ./day)
-(import ./event)
-(import ./plan)
-(import ./plan_serializer)
+(import ../date :as d)
+(import ../day)
+(import ../event)
+(import ../plan)
+(import ./serializer :as plan_serializer)
 
 (def plan-grammar
   ~{:main (replace (* (constant :title) :title (? (* (constant :inbox) :inbox)) (constant :days) :days) ,plan/build-plan)
