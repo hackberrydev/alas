@@ -1,10 +1,10 @@
 (import testament :prefix "" :exit true)
-(import ../src/plan_serializer :prefix "")
-(import ../src/date :as d)
-(import ../src/day)
-(import ../src/event)
-(import ../src/plan)
-(import ../src/task)
+(import ../../src/plan/serializer :prefix "")
+(import ../../src/date :as d)
+(import ../../src/day)
+(import ../../src/event)
+(import ../../src/plan)
+(import ../../src/task)
 
 (deftest serialize-plan
   (def plan

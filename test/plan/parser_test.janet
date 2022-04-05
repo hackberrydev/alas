@@ -1,6 +1,6 @@
 (import testament :prefix "" :exit true)
-(import ../src/date :as d)
-(import ../src/plan_parser :prefix "")
+(import ../../src/plan/parser :prefix "")
+(import ../../src/date :as d)
 
 ## ————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test parse
