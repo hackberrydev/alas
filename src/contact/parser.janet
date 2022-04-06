@@ -7,6 +7,7 @@
 
 (def contact-grammar
   ~{:main (replace (* :name
+                      (any :detail)
                       :type
                       (any :detail)
                       (? "\n")
