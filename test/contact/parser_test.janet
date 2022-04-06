@@ -66,4 +66,20 @@
   (is (= "John Doe" (contact :name)))
   (is (= (d/date 2022 2 19) (contact :last-contact))))
 
+(deftest parse-contact-with-extra-details
+  (def contact-string
+    ```
+    # John Doe
+
+    - Type: Contact
+    - Spouse: Jane Doe
+
+    ## 2022-02-19
+
+    Talked over the phone about stuff.
+    ```)
+  (def contact ((parse contact-string) :contact))
+  (is (= "John Doe" (contact :name)))
+  (is (= (d/date 2022 2 19) (contact :last-contact))))
+
 (run-tests!)

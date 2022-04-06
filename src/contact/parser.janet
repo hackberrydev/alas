@@ -8,16 +8,15 @@
 (def contact-grammar
   ~{:main (replace (* :name
                       (any :detail)
-                      :type
-                      (any :detail)
                       (? "\n")
                       (? (* (constant :last-contact) :last-contact)))
                    ,contact/build-contact)
     :name (* "# " (replace (capture (some (+ :w+ :s+))) ,string/trim))
+    :detail (+ :type :category :birthday :other-detail)
     :type (* "- Type: " (+ "Contact" "contact") "\n")
-    :detail (+ :category :birthday)
     :category (* "- Category: " (constant :category) (capture (+ "A" "a" "B" "b" "C" "c" "D" "d")) "\n")
     :birthday (* "- Birthday: " (constant :birthday) (capture (* :d :d "-" :d :d)) "\n")
+    :other-detail (* "- " :w+ ": " (some (+ :w+ " ")) "\n")
     :last-contact (* "## " (replace :date ,d/parse))
     :date (capture (* :d :d :d :d "-" :d :d "-" :d :d))})
 
