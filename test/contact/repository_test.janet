@@ -5,7 +5,7 @@
 ## Test load-contacts
 
 (deftest load-contacts-from-directory
-  (def path "../examples")
+  (def path (os/realpath "test/examples"))
   (def contacts (load-contacts path))
   (is (= 2 (length contacts)))
   (is (= "Jane Doe" ((contacts 0) :name)))
