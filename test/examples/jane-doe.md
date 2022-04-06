@@ -1,5 +1,6 @@
 # Jane Doe
 
+- Type: Contact
 - Category: C
 - Birthday: 07-01
 

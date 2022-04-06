@@ -10,6 +10,7 @@
     ```
     # John Doe
 
+    - Type: Contact
     - Category: A
     - Birthday: 04-23
 
@@ -31,6 +32,8 @@
   (def contact-string
     ```
     # John Doe
+
+    - Type: contact
 
     ## 2022-02-19
 

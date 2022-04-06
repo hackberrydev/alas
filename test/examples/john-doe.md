@@ -1,5 +1,6 @@
 # John Doe
 
+- Type: Contact
 - Category: A
 - Birthday: 04-23
 

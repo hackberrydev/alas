@@ -7,6 +7,7 @@
 
 (def contact-grammar
   ~{:main (replace (* :name
+                      (* "- Type: " (+ "Contact" "contact") "\n")
                       (? (* (constant :category) :category))
                       (? (* (constant :birthday) :birthday))
                       (? "\n")
