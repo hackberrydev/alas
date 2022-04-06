@@ -7,13 +7,14 @@
 
 (def contact-grammar
   ~{:main (replace (* :name
-                      (* "- Type: " (+ "Contact" "contact") "\n")
+                      :type
                       (? (* (constant :category) :category))
                       (? (* (constant :birthday) :birthday))
                       (? "\n")
                       (? (* (constant :last-contact) :last-contact)))
                    ,contact/build-contact)
     :name (* "# " (replace (capture (some (+ :w+ :s+))) ,string/trim))
+    :type (* "- Type: " (+ "Contact" "contact") "\n")
     :category (* "- Category: " (capture (+ "A" "a" "B" "b" "C" "c" "D" "d")) "\n")
     :birthday (* "- Birthday: " (capture (* :d :d "-" :d :d)) "\n")
     :last-contact (* "## " (replace :date ,d/parse))
