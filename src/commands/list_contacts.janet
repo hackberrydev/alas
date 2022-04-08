@@ -16,3 +16,9 @@
   ```
   [contacts]
   (map to-csv-line contacts))
+
+(defn build-command [arguments &]
+  (def argument (arguments "list-contacts"))
+  (if argument
+    {}
+    {}))
