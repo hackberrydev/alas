@@ -4,17 +4,21 @@
 (import ../file_repository)
 (import ./parser :as contact_parser)
 
+(defn load-contact [contact-path]
+  (def text ((file_repository/load contact-path) :text))
+  (if text
+   ((contact_parser/parse text) :contact)))
+
 ## —————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn load-contacts [path]
-  (def abs-path (os/realpath path))
-  (def contacts (filter
-                 identity
-                 (map
-                   (fn [contact-path]
-                     (def text ((file_repository/load (string abs-path "/" contact-path)) :text))
-                     (if text
-                       ((contact_parser/parse text) :contact)))
-                   (os/dir abs-path))))
-  {:contacts contacts})
+  (if (os/stat path)
+    (let [abs-path (os/realpath path)
+          contacts (filter
+                     identity
+                     (map
+                       (fn [contact-file] (load-contact (string abs-path "/" contact-file)))
+                       (os/dir abs-path)))]
+      {:contacts contacts})
+    {:error "Directory does not exist."}))
