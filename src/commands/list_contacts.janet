@@ -8,6 +8,12 @@
   (def last-contact (if (contact :last-contact) (d/format (contact :last-contact) true)))
   (string (contact :name) "," (contact :birthday) "," last-contact))
 
+(defn- print-contacts [plan contacts]
+  (print "Name,Birthday,Last Contact")
+  (loop [contact :in contacts]
+    (print contact))
+  plan)
+
 ## —————————————————————————————————————————————————————————————————————————————––––––––––––––––––––
 ## Public Interface
 
@@ -25,5 +31,5 @@
           error (load-result :error)]
       (if error
         {:errors [(string "--list-contacts " (string/ascii-lower error))]}
-        {}))
+        {:command [print-contacts (load-result :contacts)]}))
     {}))
