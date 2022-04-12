@@ -5,7 +5,7 @@
 (import ../utils)
 (import ./parser :as contact_parser)
 
-(defn load-contact [contact-path]
+(defn- load-contact [contact-path]
   (def text ((file_repository/load contact-path) :text))
   (if text
    ((contact_parser/parse text) :contact)))
