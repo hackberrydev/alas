@@ -1,4 +1,4 @@
-### ————————————————————————————————————————————————————————————————————————————
+### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### The main file.
 
 (import argparse :prefix "")
@@ -14,6 +14,8 @@
   ["A command line utility for planning your days"
    "insert-days" {:kind :option
                   :help "Insert the following number of days into the plan."}
+   "list-contacts" {:kind :option
+                    :help "List all contacts."}
    "remove-empty-days" {:kind :flag
                         :help "Remove past days without events or tasks."}
    "report" {:kind :option
@@ -55,7 +57,7 @@
       (print-version)
       (print "Plan file path missing."))))
 
-## —————————————————————————————————————————————————————————————————————————————
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn main [& args]
