@@ -1,6 +1,5 @@
-### ————————————————————————————————————————————————————————————————————————————
-### This module implements a PEG parser that parses a plan as a string into
-### entities.
+### ————————————————————————————————————————————————————————————————————————————————————————————————
+### This module implements a PEG parser that parses a plan as a string into entities.
 
 (import ../date :as d)
 (import ../day)
@@ -41,7 +40,7 @@
                            (fn [_line] true)))
   (length (filter filter-function (string/split "\n" plan-string))))
 
-## —————————————————————————————————————————————————————————————————————————————
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn serialize-empty-inbox? [plan-string]

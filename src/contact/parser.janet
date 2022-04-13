@@ -1,6 +1,5 @@
-### ————————————————————————————————————————————————————————————————————————————
-### This module implements a PEG parser that parses a contact as a string into
-### entities.
+### ————————————————————————————————————————————————————————————————————————————————————————————————
+### This module implements a PEG parser that parses a contact as a string into entities.
 
 (import ../date :as d)
 (import ../contact)
@@ -21,7 +20,7 @@
     :last-contact (* "## " (replace :date ,d/parse))
     :date (capture (* :d :d :d :d "-" :d :d "-" :d :d))})
 
-## —————————————————————————————————————————————————————————————————————————————
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn parse
