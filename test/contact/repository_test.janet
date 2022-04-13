@@ -1,7 +1,7 @@
 (import testament :prefix "" :exit true)
 (import ../../src/contact/repository :prefix "")
 
-## —————————————————————————————————————————————————————————————————————————————––––––––––––––––––––
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test load-contacts
 
 (deftest load-contacts-from-directory
