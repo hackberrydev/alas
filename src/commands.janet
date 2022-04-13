@@ -1,8 +1,9 @@
-### ————————————————————————————————————————————————————————————————————————————
+### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements commands runner.
 
 (import ./commands/backup)
 (import ./commands/insert_days)
+(import ./commands/list_contacts)
 (import ./commands/remove_empty_days)
 (import ./commands/report)
 (import ./commands/schedule_tasks)
@@ -15,6 +16,7 @@
 # backup command needs to be first
 (def commands [backup/build-command
                insert_days/build-command
+               list_contacts/build-command
                remove_empty_days/build-command
                report/build-command
                schedule_tasks/build-command
@@ -24,7 +26,7 @@
   (loop [error :in errors]
     (print error)))
 
-## —————————————————————————————————————————————————————————————————————————————
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn print-version

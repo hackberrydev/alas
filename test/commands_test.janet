@@ -11,18 +11,21 @@
 (import ../src/commands :prefix "")
 
 
-## ————————————————————————————————————————————————————————————————————————————————————————————————
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Setup
 
 (def file-path "test/examples/todo.md")
 
-## ————————————————————————————————————————————————————————————————————————————————————————————————
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-commands
 
 (deftest build-commands-when-there-are-no-errors
-  (def arguments {"skip-backup" true "report" "7" "stats" true})
+  (def arguments {"skip-backup" true
+                  "report" "7"
+                  "stats" true
+                  "list-contacts" "test/examples"})
   (def commands (build-commands arguments file-path))
-  (is (= 2 (length commands)))
+  (is (= 3 (length commands)))
   (loop [command :in commands]
     (is (command :command))
     (is (not (command :errors)))))
@@ -40,7 +43,7 @@
   (is ((commands 0) :command))
   (is ((commands 1) :command)))
 
-## ————————————————————————————————————————————————————————————————————————————————————————————————
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test run-commands
 
 (deftest run-commands-with-valid-arguments
