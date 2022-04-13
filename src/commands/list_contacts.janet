@@ -11,7 +11,7 @@
 (defn- print-contacts [plan contacts]
   (print "Name,Birthday,Last Contact")
   (loop [contact :in contacts]
-    (print contact))
+    (print (to-csv-line contact)))
   plan)
 
 ## —————————————————————————————————————————————————————————————————————————————––––––––––––––––––––
