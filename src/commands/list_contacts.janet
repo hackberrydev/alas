@@ -5,11 +5,15 @@
 (import ../contact/repository :as contacts_repository)
 
 (defn- to-csv-line [contact]
-  (def last-contact (if (contact :last-contact) (d/format (contact :last-contact) true)))
-  (string (contact :name) "," (contact :birthday) "," last-contact))
+  (def last-contact (if (contact :last-contact)
+                      (d/format (contact :last-contact) true)))
+  (string (contact :name) ","
+          (contact :category) ","
+          (contact :birthday) ","
+          last-contact))
 
 (defn- print-contacts [plan contacts]
-  (print "Name,Birthday,Last Contact")
+  (print "Name,Category,Birthday,Last Contact")
   (loop [contact :in contacts]
     (print (to-csv-line contact)))
   plan)
