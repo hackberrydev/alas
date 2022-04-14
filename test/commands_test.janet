@@ -23,7 +23,7 @@
   (def arguments {"skip-backup" true
                   "report" "7"
                   "stats" true
-                  "list-contacts" "test/examples"})
+                  "list-contacts" "test/examples/contacts"})
   (def commands (build-commands arguments file-path))
   (is (= 3 (length commands)))
   (loop [command :in commands]
