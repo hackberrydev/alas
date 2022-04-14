@@ -25,12 +25,12 @@
   (is (empty? (build-command arguments))))
 
 (deftest build-command-with-correct-arguments
-  (def arguments {"list-contacts" "test/examples"})
+  (def arguments {"list-contacts" "test/examples/contacts"})
   (def result (build-command arguments))
   (is (tuple? (result :command))))
 
 (deftest build-command-when-directory-does-not-exist
-  (def arguments {"list-contacts" "test/examples/contacts"})
+  (def arguments {"list-contacts" "test/missing-directory"})
   (def result (build-command arguments))
   (is (= "--list-contacts directory does not exist." (first (result :errors)))))
 
