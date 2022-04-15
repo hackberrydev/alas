@@ -55,4 +55,16 @@
   (is (= "John Doe" (contact :name)))
   (is (= (d/date 2022 2 19) (contact :last-contact))))
 
+(deftest parse-contact-with-non-ascii-characters-in-name
+  (def contact-string
+    ```
+    # Petar Petrović
+
+    ## 2022-02-19
+
+    Talked over the phone about stuff.
+    ```)
+  (def contact ((parse contact-string) :contact))
+  (is (= "Petar Petrović" (contact :name))))
+
 (run-tests!)
