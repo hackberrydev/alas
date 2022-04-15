@@ -67,4 +67,19 @@
   (def contact ((parse contact-string) :contact))
   (is (= "Petar Petrović" (contact :name))))
 
+(deftest parse-contact-with-non-ascii-characters-in-extra-details
+  (def contact-string
+    ```
+    # John Doe
+
+    - Spouse: Jane Doić
+
+    ## 2022-02-19
+
+    Talked over the phone about stuff.
+    ```)
+  (def contact ((parse contact-string) :contact))
+  (is (= "John Doe" (contact :name)))
+  (is (= (d/date 2022 2 19) (contact :last-contact))))
+
 (run-tests!)
