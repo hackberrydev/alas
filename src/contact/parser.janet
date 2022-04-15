@@ -11,7 +11,7 @@
                       (? "\n")
                       (? (* (constant :last-contact) :last-contact)))
                    ,contact/build-contact)
-    :name (* "# " (replace (capture (some (if-not "\n" 1))) ,string/trim) "\n")
+    :name (* "# " (? (some :d)) (replace (capture (some (if-not "\n" 1))) ,string/trim) "\n")
     :detail (+ :category :birthday :other-detail)
     :category (* "- Category: " (constant :category) (capture (+ "A" "a" "B" "b" "C" "c" "D" "d")) "\n")
     :birthday (* "- Birthday: " (constant :birthday) (capture (* :d :d "-" :d :d)) "\n")
