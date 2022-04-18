@@ -25,3 +25,6 @@
 (defn next-contact-date [contact]
   (if (and (contact :category) (contact :last-contact))
     (d/+days (contact :last-contact) (next-contact-periods (contact :category)))))
+
+(defn contact-on-date? [contact date]
+  (d/after-or-eq? date (next-contact-date contact)))

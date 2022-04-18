@@ -43,4 +43,14 @@
   (def contact (build-contact "John Doe" :category :b))
   (is (nil? (next-contact-date contact))))
 
+## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Test contact-on-date?
+
+(deftest contact-on-date?
+  (def contact (build-contact "John Doe" :last-contact (d/date 2022 4 1) :category :a))
+  (is (contact-on-date? contact (d/date 2022 4 21)))
+  (is (contact-on-date? contact (d/date 2022 5 1)))
+  (is (not (contact-on-date? contact (d/date 2022 4 20))))
+  (is (not (contact-on-date? contact (d/date 2022 4 2)))))
+
 (run-tests!)
