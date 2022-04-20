@@ -15,3 +15,6 @@
   (loop [contact :in contacts-to-schedule]
     (day/add-task day (task/build-task (string "Contact " (contact :name)) false)))
   plan)
+
+(defn build-command [arguments &]
+  {})
