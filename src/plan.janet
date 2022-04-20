@@ -26,9 +26,12 @@
 # ————————————————————————————————————————————————————————————————————————————————————————————————-
 # Days functions
 
-(defn has-day-with-date? [plan date]
+(defn day-with-date [plan date]
   (find (fn [day] (date/equal? date (day :date)))
         (plan :days)))
+
+(defn has-day-with-date? [plan date]
+  (day-with-date plan date))
 
 (defn empty-days [plan]
   (filter day/empty-day? (plan :days)))
