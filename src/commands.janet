@@ -6,6 +6,7 @@
 (import ./commands/list_contacts)
 (import ./commands/remove_empty_days)
 (import ./commands/report)
+(import ./commands/schedule_contacts)
 (import ./commands/schedule_tasks)
 (import ./commands/stats)
 
@@ -19,6 +20,7 @@
                list_contacts/build-command
                remove_empty_days/build-command
                report/build-command
+               schedule_contacts/build-command
                schedule_tasks/build-command
                stats/build-command])
 

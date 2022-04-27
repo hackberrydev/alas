@@ -1,7 +1,7 @@
 # Jane Doe
 
 - Type: Contact
-- Category: C
+- Category: A
 - Birthday: 07-01
 
 ## 2022-03-01

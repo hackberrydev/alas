@@ -1,8 +1,7 @@
 # John Doe
 
-- Type: Contact
 - Category: A
-- Birthday: 04-23
+- Birthday: 04-27
 
 ## 2022-02-15
 

@@ -23,12 +23,15 @@
   (default days @[])
   {:title title :inbox inbox :days days})
 
-# ————————————————————————————————————————————————————————————————————————————————————————————————-
-# Days functions
+## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Days functions
 
-(defn has-day-with-date? [plan date]
+(defn day-with-date [plan date]
   (find (fn [day] (date/equal? date (day :date)))
         (plan :days)))
+
+(defn has-day-with-date? [plan date]
+  (day-with-date plan date))
 
 (defn empty-days [plan]
   (filter day/empty-day? (plan :days)))
@@ -58,8 +61,8 @@
   (take-while (fn [day] (date/after-or-eq? (day :date) date))
               (plan :days)))
 
-# ————————————————————————————————————————————————————————————————————————————————————————————————-
-# Tasks functions
+## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Tasks functions
 
 (defn all-tasks [plan]
   (tasks-from-days (plan :days)))
