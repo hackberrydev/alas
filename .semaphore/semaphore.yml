@@ -10,13 +10,14 @@ blocks:
       jobs:
         - name: 'Tests'
           commands:
-            - wget https://github.com/janet-lang/janet/archive/refs/tags/v1.19.2.tar.gz
-            - tar xvf v1.19.2.tar.gz
-            - cd janet-1.19.2
+            - wget https://github.com/janet-lang/janet/archive/refs/tags/v1.21.1.tar.gz
+            - tar xvf v1.21.1.tar.gz
+            - cd janet-1.21.1
             - make
             - sudo make install
             - cd
             - git clone https://github.com/janet-lang/jpm.git
+            - git config --global --add safe.directory /home/semaphore/jpm
             - cd jpm
             - sudo janet bootstrap.janet
             - cd
