@@ -20,6 +20,8 @@
                         :help "Remove past days without events or tasks."}
    "report" {:kind :option
              :help "Print tasks for the selected number of days."}
+   "schedule-contacts" {:kind :option
+                        :help "Schedule contacts to be contacted today."}
    "schedule-tasks" {:kind :option
                      :help "Schedule tasks from a list of tasks in a file."}
    "skip-backup" {:kind :flag
