@@ -5,6 +5,7 @@
 (import ../task)
 (import ../day)
 (import ../plan)
+(import ../contact/repository :as contacts_repository)
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
@@ -17,4 +18,11 @@
   plan)
 
 (defn build-command [arguments &]
-  {})
+  (def argument (arguments "schedule-contacts"))
+  (if argument
+    (let [load-result (contacts_repository/load-contacts argument)
+          error (load-result :error)]
+      (if error
+        {:errors [(string "--schedule-contacts " (string/ascii-lower error))]}
+        {}))
+    {}))
