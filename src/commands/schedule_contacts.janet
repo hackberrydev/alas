@@ -1,6 +1,7 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a command for scheduling contacts for today in a plan.
 
+(import ../date)
 (import ../contact)
 (import ../task)
 (import ../day)
@@ -21,8 +22,9 @@
   (def argument (arguments "schedule-contacts"))
   (if argument
     (let [load-result (contacts_repository/load-contacts argument)
-          error (load-result :error)]
+          error (load-result :error)
+          contacts (load-result :contacts)]
       (if error
         {:errors [(string "--schedule-contacts " (string/ascii-lower error))]}
-        {}))
+        {:command [schedule-contacts contacts (date/today)]}))
     {}))
