@@ -16,6 +16,16 @@
   (is (= {:title "Contact John Doe" :done false}
          ((((plan :days) 0) :tasks) 0))))
 
+(deftest schedule-contact-with-birthday
+  (def contact (contact/build-contact "John Doe"
+                                      :birthday (d/date 2022 4 25)
+                                      :last-contact (d/date 2022 4 21)
+                                      :category :a))
+  (def plan (plan/build-plan :days @[(day/build-day (d/date 2022 4 25))]))
+  (schedule-contacts plan @[contact] (d/date 2022 4 25))
+  (is (= {:title "Congratulate birthday to John Doe" :done false}
+         ((((plan :days) 0) :tasks) 0))))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
 
