@@ -12,10 +12,13 @@
 ## Public Interface
 
 (defn schedule-contacts [plan contacts date]
-  (def contacts-to-schedule (filter (fn [c] (contact/contact-on-date? c date)) contacts))
   (def day (plan/day-with-date plan date))
-  (loop [contact :in contacts-to-schedule]
+  (each contact
+    (filter (fn [c] (contact/contact-on-date? c date)) contacts)
     (day/add-task day (task/build-task (string "Contact " (contact :name)) false)))
+  (each contact
+    (filter (fn [c] (contact/birthday? c date)) contacts)
+    (day/add-task day (task/build-task (string "Congratulate birthday to " (contact :name)) false)))
   plan)
 
 (defn build-command [arguments &]

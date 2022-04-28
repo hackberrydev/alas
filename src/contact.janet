@@ -30,4 +30,5 @@
   (d/after-or-eq? date (next-contact-date contact)))
 
 (defn birthday? [contact date]
-  (d/equal? date (contact :birthday)))
+  (def birthday (contact :birthday))
+  (and birthday (d/equal? date birthday)))
