@@ -8,14 +8,19 @@
 (import ../plan)
 (import ../contact/repository :as contacts_repository)
 
+(defn- schedule-tasks [contacts day predicate task-title]
+  (def date (day :date))
+  (each contact
+    (filter (fn [c] (predicate c date)) contacts)
+    (day/add-task day (task/build-task (string task-title (contact :name)) false))))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn schedule-contacts [plan contacts date]
-  (def contacts-to-schedule (filter (fn [c] (contact/contact-on-date? c date)) contacts))
   (def day (plan/day-with-date plan date))
-  (loop [contact :in contacts-to-schedule]
-    (day/add-task day (task/build-task (string "Contact " (contact :name)) false)))
+  (schedule-tasks contacts day contact/contact-on-date? "Contact ")
+  (schedule-tasks contacts day contact/birthday? "Congratulate birthday to ")
   plan)
 
 (defn build-command [arguments &]
