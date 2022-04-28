@@ -28,3 +28,6 @@
 
 (defn contact-on-date? [contact date]
   (d/after-or-eq? date (next-contact-date contact)))
+
+(defn birthday? [contact date]
+  (d/equal? date (contact :birthday)))
