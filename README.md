@@ -27,6 +27,9 @@ An example plan:
 The plan file has days in present and future that serve as your plan, but also
 past days that serve as a log.
 
+Alas can insert new empty days into your plan, remove empty days from past,
+schedule tasks and help you stay in touch with your contacts.
+
 ## Warning
 
 Alas updates your backup file. Using `alas` can destroy your data due to
@@ -37,6 +40,72 @@ well.
 
 A version control system, such as [Git](https://git-scm.com/) is a convenient
 option.
+
+## Getting Started
+
+### Plan Template
+
+First, use your favorite text editor to create a plan file (e.g. `plan.md`):
+
+```markdown
+# My Plan
+
+## Inbox
+
+## 2022-05-12
+```
+
+Start adding new days and tasks. You can use this plan file even without
+the `alas` command utility.
+
+### Installing Alas
+
+If you are using MacOS or a Linux based operating system, visit the Alas
+[releases](https://github.com/hackberrydev/alas/releases) page and download
+the latest release for your operating system. Add the Alas executable path
+to your `PATH` and you can run `alas` with your plan file.
+
+You can also put the executable in the same directory as your plan file and
+use the relative path to run Alas:
+
+```bash
+./alas plan.md
+```
+
+#### Windows
+
+At the moment, we don't provide an executable for Windows. However, you
+can try compiling Alas on Windows and running it. To compile Alas, you
+need [Janet](https://janet-lang.org) and JPM. See the Janet [installation
+instructions](https://janet-lang.org/1.21.0/docs/index.html) for more
+information.
+
+Since Janet wasn't tested on Windows, we expect some problems. To avoid some
+problems, you can try running `alas` from the same directory as you plan file,
+to avoid path related issues.
+
+### Common Usage
+
+Alas is usually executed with the same command every day. For example:
+
+```bash
+alas --insert-days 3 --remove-empty-days --skip-backup --schedule-tasks scheduled.md --schedule-contacts contacts plan.md
+```
+
+To avoid typing the command every day, you can create an alias for your
+shell or a small script and run that instead.
+
+Here's an example script that runs Alas on a plan file, runs Tmux and opens
+the plan file in Vim:
+
+```bash
+#!/usr/bin/env bash
+
+cd ~/wiki
+alas --insert-days 3 --remove-empty-days --skip-backup --schedule-tasks scheduled.md --schedule-contacts contacts plan.md
+tmux new-session -d 'vim plan.md'
+tmux -2 attach-session -d
+```
 
 ## Commands
 
@@ -78,7 +147,7 @@ Alas allows keeping a list of scheduled tasks in a separate file. For example:
 ```markdown
 # My Scheduled Tasks
 
-- Meeting with Jonh (on 2022-05-12)
+- Meeting with John (on 2022-05-12)
 - Tina's birthday (every year on 10-11)
 - Run 20 minutes (every Monday)
 - Run 20 minutes (every Thursday)
