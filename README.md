@@ -80,9 +80,9 @@ need [Janet](https://janet-lang.org) and JPM. See the Janet [installation
 instructions](https://janet-lang.org/1.21.0/docs/index.html) for more
 information.
 
-Since Janet wasn't tested on Windows, we expect some problems. To avoid some
-problems, you can try running `alas` from the same directory as you plan file,
-to avoid path related issues.
+Since Janet wasn't tested on Windows, we expect some problems. You can
+try running `alas` from the same directory as you plan file, to avoid path
+related issues.
 
 ### Common Usage
 
@@ -92,8 +92,8 @@ Alas is usually executed with the same command every day. For example:
 alas --insert-days 3 --remove-empty-days --skip-backup --schedule-tasks scheduled.md --schedule-contacts contacts plan.md
 ```
 
-To avoid typing the command every day, you can create an alias for your
-shell or a small script and run that instead.
+To avoid typing the long command, you can create an alias for your shell or
+a small script and run that instead.
 
 Here's an example script that runs Alas on a plan file, runs Tmux and opens
 the plan file in Vim:
