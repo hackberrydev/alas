@@ -39,4 +39,9 @@
   (def arguments {"stats" true})
   (is (empty? (build-command arguments))))
 
+(deftest build-command-with-correct-arguments
+  (def arguments {"insert-task" "Upgrade OS"})
+  (def result (build-command arguments))
+  (is (tuple? (result :command))))
+
 (run-tests!)

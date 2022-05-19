@@ -1,6 +1,7 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a command for inserting a new task in a plan.
 
+(import ../date)
 (import ../day)
 (import ../plan)
 (import ../task)
@@ -26,4 +27,7 @@
   plan)
 
 (defn build-command [arguments &]
-  {})
+  (def task-title (arguments "insert-task"))
+  (if task-title
+    {:command [insert-task (date/today) task-title]}
+    {}))
