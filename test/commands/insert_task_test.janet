@@ -32,4 +32,11 @@
   (is (= 1 (length (new-day :tasks))))
   (is (= "Upgrade OS" ((first (new-day :tasks)) :title))))
 
+## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Test build-command
+
+(deftest build-command-without-matching-arguments
+  (def arguments {"stats" true})
+  (is (empty? (build-command arguments))))
+
 (run-tests!)

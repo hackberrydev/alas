@@ -24,3 +24,6 @@
   (if day
     (day/add-task day task))
   plan)
+
+(defn build-command [arguments &]
+  {})
