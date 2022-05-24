@@ -14,6 +14,8 @@
   ["A command line utility for planning your days"
    "insert-days" {:kind :option
                   :help "Insert the following number of days into the plan."}
+   "insert-task" {:kind :option
+                  :help "Insert new task for today, if today is in the plan."}
    "list-contacts" {:kind :option
                     :help "List all contacts."}
    "remove-empty-days" {:kind :flag

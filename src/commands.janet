@@ -3,6 +3,7 @@
 
 (import ./commands/backup)
 (import ./commands/insert_days)
+(import ./commands/insert_task)
 (import ./commands/list_contacts)
 (import ./commands/remove_empty_days)
 (import ./commands/report)
@@ -15,8 +16,11 @@
 (import ./schedule_parser)
 
 # backup command needs to be first
+# insert-task command needs to be after insert-days
+# schedule-contacts command needs to be after insert-days
 (def commands [backup/build-command
                insert_days/build-command
+               insert_task/build-command
                list_contacts/build-command
                remove_empty_days/build-command
                report/build-command
