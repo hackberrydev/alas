@@ -136,6 +136,21 @@ file.
 `alas --remove-empty-days` will remove past days that don't have any events or
 tasks from the plan.
 
+### `--insert-task`
+
+`alas --insert-task "Upgrade OS" plan.md` will insert a new task for today with
+the title "Upgrade OS".
+
+It's usually easier to add new tasks in the plan file with an editor. However,
+`--insert-task` is useful for scripting and automation. For example, you can
+write a script that will fetch open pull requests from a GitHub repository and
+insert a review task for each pull request.
+
+**Note:** Alas will insert a task only if today is already present in the
+plan. If the day doesn't exist, `--insert-task` won't insert a day.  This means
+that it's best to use `--insert-task` in combination with `--insert-days`. Alas
+will make sure that `--insert-days` is always executed before `--insert-task`.
+
 ### `--report`
 
 `alas --report 7` will print all tasks for the last 7 days, excluding today.
@@ -195,7 +210,7 @@ be in a single directory, separate from other Markdown files. For example:
 ```
 ├── contacts
 │   ├── john-doe.md
-│   ├── marry-doe.md
+│   ├── mary-doe.md
 │   ├── jack-black.md
 │   ├── ...
 ├── diary.md
