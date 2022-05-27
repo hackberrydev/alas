@@ -27,7 +27,10 @@
     :event-begin (* "- " (if-not "[" 0))
     :event-body (replace (capture (some (if-not (+ :event-begin :task-begin) 1))) ,string/trim)
     :tasks (group (any :task))
-    :task (replace (* (constant :done) :task-begin " " (constant :title) :task-body) ,struct)
+    :task (replace (* (constant :done) :task-begin
+                      " "
+                      (constant :title) :task-body)
+                   ,struct)
     :task-begin (* "- " :checkbox)
     :checkbox (+ :checkbox-done :checkbox-pending)
     :checkbox-done (* (+ "[x]" "[X]") (constant true))
