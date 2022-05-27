@@ -18,7 +18,7 @@
     :inbox (* :inbox-title "\n" :tasks)
     :inbox-title (* "## Inbox\n")
     :days (group (any :day))
-    :day (replace (* :day-title "\n" :events :tasks) ,day/build-day)
+    :day (replace (* :day-title "\n" :events :tasks (? "\n")) ,day/build-day)
     :day-title (* "## " (replace :date ,d/parse) ", " :week-day "\n")
     :date (capture (* :d :d :d :d "-" :d :d "-" :d :d))
     :week-day (+ "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
