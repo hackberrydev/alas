@@ -23,9 +23,8 @@
     :date (capture (* :d :d :d :d "-" :d :d "-" :d :d))
     :week-day (+ "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
     :events (group (any :event))
-    :event (replace (* :event-begin :event-body) ,event/build-event)
+    :event (replace (* :event-begin :text-line "\n") ,event/build-event)
     :event-begin (* "- " (if-not "[" 0))
-    :event-body (replace (capture (some (if-not (+ :event-begin :task-begin) 1))) ,string/trim)
     :tasks (group (any :task))
     :task (replace (* (constant :done) :task-begin
                       " "
