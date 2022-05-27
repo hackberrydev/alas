@@ -9,11 +9,12 @@
 
 (def plan-grammar
   ~{:main (replace (* (constant :title) :title
+                      (? "\n")
                       (? (* (constant :inbox) :inbox))
                       (constant :days) :days)
                    ,plan/build-plan)
-    :title (* "# " :sentence)
-    :sentence (replace (capture (some (+ :w+ :s+))) ,string/trim)
+    :title (* "# " :text-line "\n")
+    :text-line (capture (some (if-not "\n" 1)))
     :inbox (* :inbox-title "\n" :tasks)
     :inbox-title (* "## Inbox\n")
     :days (group (any :day))
