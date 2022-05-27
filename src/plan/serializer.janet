@@ -18,12 +18,13 @@
   (string "- " (checkbox (task :done)) " " (task :title)))
 
 (defn- serialize-task-body [task]
-  (if (task :body)
+  (def body (task :body))
+  (if (or (nil? body) (empty? body))
+    ""
     (string "\n"
             (string/join
-              (map (fn [line] (string task-body-indentation line)) (task :body))
-              "\n"))
-    ""))
+              (map (fn [line] (string task-body-indentation line)) body)
+              "\n"))))
 
 (defn- serialize-task [task]
   (string (serialize-task-title task)

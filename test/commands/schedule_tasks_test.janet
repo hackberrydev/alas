@@ -78,8 +78,11 @@
                       (day/build-day (d/date 2022 1 17))]))
   (schedule-tasks plan scheduled-tasks (d/date 2022 1 17))
   (is (empty? (((plan :days) 0) :tasks)))
-  (is (= {:title "Weekly meeting" :done false :schedule "every Monday"}
-         ((((plan :days) 1) :tasks) 0))))
+  (let [day ((plan :days) 1)
+        task ((day :tasks) 0)]
+    (is (= "Weekly meeting" (task :title)))
+    (is (= false (task :done)))
+    (is (= "every Monday" (task :schedule)))))
 
 (deftest schedule-tasks-does-not-insert-duplicate-tasks
   (def plan (plan/build-plan
