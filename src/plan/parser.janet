@@ -15,7 +15,7 @@
                    ,plan/build-plan)
     :title (* "# " :text-line "\n")
     :text-line (capture (some (if-not "\n" 1)))
-    :inbox (* :inbox-title "\n" :tasks)
+    :inbox (* :inbox-title "\n" :tasks (? "\n"))
     :inbox-title (* "## Inbox\n")
     :days (group (any :day))
     :day (replace (* :day-title "\n" :events :tasks (? "\n")) ,day/build-day)
@@ -28,7 +28,8 @@
     :tasks (group (any :task))
     :task (replace (* (constant :done) :task-begin
                       " "
-                      (constant :title) :task-body)
+                      (constant :title) :text-line
+                      (? "\n"))
                    ,struct)
     :task-begin (* "- " :checkbox)
     :checkbox (+ :checkbox-done :checkbox-pending)
