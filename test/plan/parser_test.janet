@@ -41,6 +41,23 @@
   (is (= {:title "#work - Review open pull requests" :done true} ((day-2 :tasks) 0)))
   (is (= {:title "#work - Fix the flaky test" :done true} ((day-2 :tasks) 1))))
 
+(deftest parse-plan-with-one-task
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## 2020-07-30, Thursday
+
+    - [ ] Pay bills
+    ```)
+  (def plan ((parse plan-string) :plan))
+  (is (= 1 (length (plan :days))))
+  (let [day ((plan :days) 0)
+        task ((day :tasks) 0)]
+    (is (= (d/date 2020 7 30) (day :date)))
+    (is (= "Pay bills" (task :title)))
+    (is (not (task :done)))))
+
 (deftest parse-plan-without-inbox
   (def plan-string
     ```
