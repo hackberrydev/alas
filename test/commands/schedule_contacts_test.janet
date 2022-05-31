@@ -13,8 +13,11 @@
   (def contact (contact/build-contact "John Doe" :last-contact (d/date 2022 4 1) :category :a))
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2022 4 25))]))
   (schedule-contacts plan @[contact] (d/date 2022 4 25))
-  (is (= {:title "Contact John Doe" :done false}
-         ((((plan :days) 0) :tasks) 0))))
+  (let [day ((plan :days) 0)
+        task ((day :tasks) 0)]
+    (is (= "Contact John Doe" (task :title)))
+    (is (= false (task :done)))
+    (is (empty? (task :body)))))
 
 (deftest schedule-contact-with-birthday
   (def contact (contact/build-contact "John Doe"
@@ -23,8 +26,11 @@
                                       :category :a))
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2022 4 25))]))
   (schedule-contacts plan @[contact] (d/date 2022 4 25))
-  (is (= {:title "Congratulate birthday to John Doe" :done false}
-         ((((plan :days) 0) :tasks) 0))))
+  (let [day ((plan :days) 0)
+        task ((day :tasks) 0)]
+    (is (= "Congratulate birthday to John Doe" (task :title)))
+    (is (= false (task :done)))
+    (is (empty? (task :body)))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command

@@ -1,4 +1,5 @@
 (import testament :prefix "" :exit true)
+
 (import ../../src/plan/parser :prefix "")
 (import ../../src/date :as d)
 
@@ -31,15 +32,87 @@
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
   (is (= "Main TODO" (plan :title)))
-  (is (= {:title "#home - Fix the lamp" :done false} (inbox 0)))
-  (is (= {:title "Update Rust" :done false} (inbox 1)))
+  (let [task (inbox 0)]
+    (is (= "#home - Fix the lamp" (task :title)))
+    (is (not (task :done))))
+  (let [task (inbox 1)]
+    (is (= "Update Rust" (task :title)))
+    (is (not (task :done))))
   (is (= (d/date 2020 8 1) (day-1 :date)))
-  (is (= {:title "Develop photos" :done false} ((day-1 :tasks) 0)))
-  (is (= {:title "Pay bills" :done true} ((day-1 :tasks) 1)))
+  (let [task ((day-1 :tasks) 0)]
+    (is (= "Develop photos" (task :title)))
+    (is (not (task :done))))
+  (let [task ((day-1 :tasks) 1)]
+    (is (= "Pay bills" (task :title)))
+    (is (task :done)))
   (is (= (d/date 2020 7 31) (day-2 :date)))
   (is (= {:text "Talked to Mike & Molly"} ((day-2 :events) 0)))
-  (is (= {:title "#work - Review open pull requests" :done true} ((day-2 :tasks) 0)))
-  (is (= {:title "#work - Fix the flaky test" :done true} ((day-2 :tasks) 1))))
+  (let [task ((day-2 :tasks) 0)]
+    (is (= "#work - Review open pull requests" (task :title)))
+    (is (task :done)))
+  (let [task ((day-2 :tasks) 1)]
+    (is (= "#work - Fix the flaky test" (task :title)))
+    (is (task :done))))
+
+(deftest parse-plan-with-one-task
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## 2020-07-30, Thursday
+
+    - [ ] Pay bills
+    ```)
+  (def plan ((parse plan-string) :plan))
+  (is (= 1 (length (plan :days))))
+  (let [day ((plan :days) 0)
+        task ((day :tasks) 0)]
+    (is (= (d/date 2020 7 30) (day :date)))
+    (is (= "Pay bills" (task :title)))
+    (is (not (task :done)))))
+
+(deftest parse-plan-with-one-task-with-body
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## 2020-07-30, Thursday
+
+    - [ ] Pay bills
+      - Electricity
+      - Water
+    ```)
+  (def plan ((parse plan-string) :plan))
+  (is (= 1 (length (plan :days))))
+  (let [day ((plan :days) 0)
+        task ((day :tasks) 0)
+        task-body (task :body)]
+    (is (= (d/date 2020 7 30) (day :date)))
+    (is (= "Pay bills" (task :title)))
+    (is (not (task :done)))
+    (is (= "- Electricity" (task-body 0)))
+    (is (= "- Water" (task-body 1)))))
+
+(deftest parse-plan-with-two-tasks
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## 2020-07-30, Thursday
+
+    - [ ] Pay bills
+    - [x] Fix the lamp
+    ```)
+  (def plan ((parse plan-string) :plan))
+  (is (= 1 (length (plan :days))))
+  (let [day ((plan :days) 0)
+        task-1 ((day :tasks) 0)
+        task-2 ((day :tasks) 1)]
+    (is (= (d/date 2020 7 30) (day :date)))
+    (is (= "Pay bills" (task-1 :title)))
+    (is (not (task-1 :done)))
+    (is (= "Fix the lamp" (task-2 :title)))
+    (is (task-2 :done))))
 
 (deftest parse-plan-without-inbox
   (def plan-string

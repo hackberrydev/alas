@@ -1,7 +1,9 @@
-### ————————————————————————————————————————————————————————————————————————————
+### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements serializing a plan into a string.
 
 (import ../date :as date)
+
+(def task-body-indentation "  ")
 
 (defn- plan-title [plan]
   (string "# " (plan :title)))
@@ -12,8 +14,21 @@
 (defn- serialize-event [event]
   (string "- " (event :text)))
 
-(defn- serialize-task [task]
+(defn- serialize-task-title [task]
   (string "- " (checkbox (task :done)) " " (task :title)))
+
+(defn- serialize-task-body [task]
+  (def body (task :body))
+  (if (or (nil? body) (empty? body))
+    ""
+    (string "\n"
+            (string/join
+              (map (fn [line] (string task-body-indentation line)) body)
+              "\n"))))
+
+(defn- serialize-task [task]
+  (string (serialize-task-title task)
+    (serialize-task-body task)))
 
 (defn- plan-inbox [plan serialize-empty-inbox]
   (if (any? (plan :inbox))
@@ -37,7 +52,7 @@
 (defn- serialize-days [days]
   (flatten (map serialize-day days)))
 
-## —————————————————————————————————————————————————————————————————————————————
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn serialize

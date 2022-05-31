@@ -16,11 +16,17 @@
     ```)
   (def scheduled-tasks (first (schedule_parser/parse schedule-string)))
   (is (= 6 (length scheduled-tasks)))
-  (is (= {:title "Weekly Meeting" :done false :schedule "every Tuesday"}
-         (scheduled-tasks 0)))
-  (is (= {:title "Puzzle Storm on Lichess" :done false :schedule "every day"}
-         (scheduled-tasks 1)))
-  (is (= {:title "Meeting with Jack" :done false :schedule "on 2022-05-03"}
-         (scheduled-tasks 5))))
+  (let [task (scheduled-tasks 0)]
+    (is (= "Weekly Meeting" (task :title)))
+    (is (= false (task :done)))
+    (is (= "every Tuesday" (task :schedule))))
+  (let [task (scheduled-tasks 1)]
+    (is (= "Puzzle Storm on Lichess" (task :title)))
+    (is (= false (task :done)))
+    (is (= "every day" (task :schedule))))
+  (let [task (scheduled-tasks 5)]
+    (is (= "Meeting with Jack" (task :title)))
+    (is (= false (task :done)))
+    (is (= "on 2022-05-03" (task :schedule)))))
 
 (run-tests!)
