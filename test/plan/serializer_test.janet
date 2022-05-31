@@ -16,7 +16,7 @@
               (day/build-day (d/date 2020 8 1)
                              @[(event/build-event "Talked to Mike")]
                              @[(task/build-task "Develop photos" false)
-                               (task/build-task "Pay bills" true)])
+                               (task/build-task "Pay bills" true @["- Electricity" "- Water"])])
               (day/build-day (d/date 2020 7 31)
                              @[]
                              @[(task/build-task "Review open pull requests" true)
@@ -38,6 +38,8 @@
        - Talked to Mike
        - [ ] Develop photos
        - [X] Pay bills
+         - Electricity
+         - Water
 
        ## 2020-07-31, Friday
 

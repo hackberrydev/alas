@@ -9,29 +9,36 @@
 
 (def plan-grammar
   ~{:main (replace (* (constant :title) :title
+                      (? "\n")
                       (? (* (constant :inbox) :inbox))
                       (constant :days) :days)
                    ,plan/build-plan)
-    :title (* "# " :sentence)
-    :sentence (replace (capture (some (+ :w+ :s+))) ,string/trim)
-    :inbox (* :inbox-title "\n" :tasks)
+    :title (* "# " :text-line "\n")
+    :text-line (capture (some (if-not "\n" 1)))
+    :inbox (* :inbox-title "\n" :tasks (? "\n"))
     :inbox-title (* "## Inbox\n")
     :days (group (any :day))
-    :day (replace (* :day-title "\n" :events :tasks) ,day/build-day)
+    :day (replace (* :day-title "\n" :events :tasks (? "\n")) ,day/build-day)
     :day-title (* "## " (replace :date ,d/parse) ", " :week-day "\n")
     :date (capture (* :d :d :d :d "-" :d :d "-" :d :d))
     :week-day (+ "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
     :events (group (any :event))
-    :event (replace (* :event-begin :event-body) ,event/build-event)
+    :event (replace (* :event-begin :text-line (? "\n")) ,event/build-event)
     :event-begin (* "- " (if-not "[" 0))
-    :event-body (replace (capture (some (if-not (+ :event-begin :task-begin) 1))) ,string/trim)
     :tasks (group (any :task))
-    :task (replace (* (constant :done) :task-begin " " (constant :title) :task-body) ,struct)
+    :task (replace (* (constant :done) :task-begin
+                      " "
+                      (constant :title) :text-line
+                      (? "\n")
+                      (constant :body) :task-body
+                      (? "\n"))
+                   ,struct)
     :task-begin (* "- " :checkbox)
     :checkbox (+ :checkbox-done :checkbox-pending)
     :checkbox-done (* (+ "[x]" "[X]") (constant true))
     :checkbox-pending (* "[ ]" (constant false))
-    :task-body (replace (capture (some (if-not (+ :day-title :task-begin) 1))) ,string/trim)})
+    :task-body (group (any :task-body-line))
+    :task-body-line (* "  " :text-line (? "\n"))})
 
 (defn- lines-count [plan-string &opt options]
   (default options {:ignore-whitespace true})
