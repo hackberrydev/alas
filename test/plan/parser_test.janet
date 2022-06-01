@@ -54,6 +54,19 @@
     (is (= "#work - Fix the flaky test" (task :title)))
     (is (task :done))))
 
+(deftest parse-template-plan
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## Inbox
+
+    ## 2022-05-12, Thursday
+    ```)
+  (def plan ((parse plan-string) :plan))
+  (is (= 1 (length (plan :days))))
+  (is (= (d/date 2022 5 12) (((plan :days) 0) :date))))
+
 (deftest parse-plan-with-one-task
   (def plan-string
     ```

@@ -52,7 +52,7 @@ First, use your favorite text editor to create a plan file (e.g. `plan.md`):
 
 ## Inbox
 
-## 2022-05-12
+## 2022-05-12, Thursday
 ```
 
 Start adding new days and tasks. You can use this plan file even without
