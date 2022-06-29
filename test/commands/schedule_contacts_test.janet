@@ -21,7 +21,7 @@
 
 (deftest schedule-contact-with-birthday
   (def contact (contact/build-contact "John Doe"
-                                      :birthday (d/date 2022 4 25)
+                                      :birthday "04-25"
                                       :last-contact (d/date 2022 4 21)
                                       :category :a))
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2022 4 25))]))
