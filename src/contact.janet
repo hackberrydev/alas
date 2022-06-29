@@ -30,5 +30,8 @@
   (d/after-or-eq? date (next-contact-date contact)))
 
 (defn birthday? [contact date]
-  (def birthday (contact :birthday))
-  (and birthday (d/equal? date birthday)))
+  (if (contact :birthday)
+    (let [year (date :year)
+          birthday (d/parse (string year "-" (contact :birthday)))]
+      (d/equal? date birthday))
+    false))
