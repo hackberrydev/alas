@@ -57,7 +57,7 @@
 ## Test birthday?
 
 (deftest birthday?
-  (def contact (build-contact "John Doe" :birthday (d/date 2022 4 1)))
+  (def contact (build-contact "John Doe" :birthday "04-01"))
   (is (birthday? contact (d/date 2022 4 1)))
   (is (not (birthday? contact (d/date 2022 4 20)))))
 
