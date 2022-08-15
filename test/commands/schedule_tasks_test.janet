@@ -93,6 +93,18 @@
   (is (empty? (((plan :days) 0) :tasks)))
   (is (= 1 (length (((plan :days) 1) :tasks)))))
 
+(deftest schedule-missed-task
+  (def plan (plan/build-plan
+              :days @[(day/build-day (d/date 2022 1 18))
+                      (day/build-day (d/date 2022 1 17))]))
+  (schedule-tasks plan scheduled-tasks (d/date 2022 1 18))
+  (is (empty? (((plan :days) 1) :tasks)))
+  (let [day ((plan :days) 0)
+        task ((day :tasks) 0)]
+    (is (= "Weekly meeting (missed)" (task :title)))
+    (is (= false (task :done)))
+    (is (= "every Monday" (task :schedule)))))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
 
