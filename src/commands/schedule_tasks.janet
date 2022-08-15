@@ -24,8 +24,13 @@
         (string "every year on " (remove-year formatted-date)) true
         (string "on " formatted-date) true))
 
-(defn- schedule-tasks-for-day [day scheduled-tasks]
-  (def tasks (filter (fn [task] (scheduled-for? task (day :date)))
+# Public
+(defn missed? [plan task]
+  false)
+
+(defn- schedule-tasks-for-day [plan day scheduled-tasks]
+  (def tasks (filter (fn [task] (or (scheduled-for? task (day :date))
+                                    (missed? plan task)))
                      scheduled-tasks))
   (day/add-tasks day tasks))
 
@@ -35,7 +40,7 @@
 (defn schedule-tasks
   [plan scheduled-tasks date]
   (loop [day :in (plan/days-on-or-after plan date)]
-    (schedule-tasks-for-day day scheduled-tasks))
+    (schedule-tasks-for-day plan day scheduled-tasks))
   plan)
 
 (defn build-command [arguments &]
