@@ -24,9 +24,14 @@
         (string "every year on " (remove-year formatted-date)) true
         (string "on " formatted-date) true))
 
+(defn- missed-on-date? [plan task]
+  (find (fn [day] (and (scheduled-for? task (day :date))
+                       (not (day/has-task? day task))))
+        (plan :days)))
+
 # Public
 (defn missed? [plan task]
-  false)
+  (missed-on-date? plan task))
 
 (defn- schedule-tasks-for-day [plan day scheduled-tasks]
   (def tasks (filter (fn [task] (or (scheduled-for? task (day :date))

@@ -69,7 +69,7 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test missed?
 
-(def scheduled-task (task/build-scheduled-task "Weekly meeting" "2022-08-01"))
+(def scheduled-task (task/build-scheduled-task "Weekly meeting" "on 2022-08-01"))
 
 (deftest missed-returns-true-when-task-is-missed
   (def plan (plan/build-plan
@@ -114,7 +114,7 @@
     (is (not (empty? (day :tasks))))
     (if (not (empty? (day :tasks)))
       (let [task ((day :tasks) 0)]
-        (is (= "Weekly meeting (missed)" (task :title)))
+        (is (= "Weekly meeting" (task :title)))
         (is (= false (task :done)))
         (is (= "every Monday" (task :schedule)))))))
 
