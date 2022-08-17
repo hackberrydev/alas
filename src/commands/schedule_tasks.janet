@@ -30,7 +30,8 @@
         (plan :days)))
 
 (defn- scheduled-after? [plan task date]
-  false)
+  (find (fn [day] (day/has-task? day task))
+        (plan/days-after plan date)))
 
 # Public
 (defn missed? [plan task]
