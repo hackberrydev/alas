@@ -92,6 +92,22 @@
   (is (= day-3 (new-days 1))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Test days-after
+
+(deftest days-after
+  (def day-1 (day/build-day (d/date 2020 8 5)))
+  (def day-2 (day/build-day (d/date 2020 8 4)))
+  (def day-3 (day/build-day (d/date 2020 8 3)))
+  (def day-4 (day/build-day (d/date 2020 8 2)))
+  (def plan (plan/build-plan :days @[day-1 day-2 day-3 day-4]))
+  (def days (plan/days-after plan (d/date 2020 8 3)))
+  (is (= 2 (length days)))
+  (if (>= (length days) 2)
+    (do
+      (is (= day-1 (days 0)))
+      (is (= day-2 (days 1))))))
+
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test days-on-or-after
 
 (deftest days-on-or-after
