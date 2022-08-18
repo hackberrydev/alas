@@ -49,7 +49,7 @@
 
 (defn schedule-tasks
   [plan scheduled-tasks date]
-  (loop [day :in (plan/days-on-or-after plan date)]
+  (loop [day :in (reverse (plan/days-on-or-after plan date))]
     (schedule-tasks-for-day plan day scheduled-tasks))
   plan)
 
