@@ -14,9 +14,13 @@
     (filter (fn [c] (predicate c date)) contacts)
     (day/add-task day (task/build-task (string task-title (contact :name)) false))))
 
+(defn- missed-birthday? [plan contact date]
+  false)
+
 (defn- birthday-predicate [plan]
   (fn [contact date]
-    (contact/birthday? contact date)))
+    (or (contact/birthday? contact date)
+        (missed-birthday? plan contact date))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
