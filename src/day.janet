@@ -27,6 +27,9 @@
   (some (fn [t] (= (t :title) (task :title)))
         (day :tasks)))
 
+(defn missed-task? [day task]
+  (not (has-task? day task)))
+
 (defn get-time [day]
   (date/to-time (day :date)))
 
