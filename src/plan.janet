@@ -53,6 +53,14 @@
               :inbox (plan :inbox)
               :days (filter keep-day? (plan :days))))
 
+(defn days-before
+  ```
+  Returns days that are before the date.
+  ```
+  [plan date]
+  (drop-while (fn [day] (date/after-or-eq? (day :date) date))
+              (plan :days)))
+
 (defn days-after
   ```
   Returns days that are after the date.
