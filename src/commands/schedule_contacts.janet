@@ -19,10 +19,13 @@
     (filter (fn [c] (predicate c date)) contacts)
     (day/add-task day (task/build-task (build-task-title task-title contact) false))))
 
+(defn- birthdays [plan contact]
+  (filter (fn [day] (contact/birthday? contact (day :date)))
+          (reverse (plan :days))))
+
 (defn- missed-birthday? [plan contact date]
-  (find (fn [day] (and (contact/birthday? contact (day :date))
-                       (not (day/has-task? day (build-task-title birthday-title contact)))))
-        (reverse (plan :days))))
+  (find (fn [day] (not (day/has-task? day (build-task-title birthday-title contact))))
+        (birthdays plan contact)))
 
 (defn- birthday-predicate [plan]
   (fn [contact date]
