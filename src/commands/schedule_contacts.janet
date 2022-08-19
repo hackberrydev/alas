@@ -14,13 +14,17 @@
     (filter (fn [c] (predicate c date)) contacts)
     (day/add-task day (task/build-task (string task-title (contact :name)) false))))
 
+(defn- birthday-predicate [plan]
+  (fn [contact date]
+    (contact/birthday? contact date)))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn schedule-contacts [plan contacts date]
   (def day (plan/day-with-date plan date))
   (schedule-tasks contacts day contact/contact-on-date? "Contact ")
-  (schedule-tasks contacts day contact/birthday? "Congratulate birthday to ")
+  (schedule-tasks contacts day (birthday-predicate plan) "Congratulate birthday to ")
   plan)
 
 (defn build-command [arguments &]
