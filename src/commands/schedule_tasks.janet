@@ -39,8 +39,12 @@
   (and day (not (scheduled-after? plan task (day :date)))))
 
 (defn- schedule-tasks-for-day [plan day scheduled-tasks]
-  (def tasks (filter (fn [task] (or (scheduled-for? task (day :date))
-                                    (missed? plan task)))
+  (def tasks (filter (fn [task] (scheduled-for? task (day :date)))
+                     scheduled-tasks))
+  (day/add-tasks day tasks))
+
+(defn- schedule-missed-tasks [plan day scheduled-tasks]
+  (def tasks (filter (fn [task] (missed? plan task))
                      scheduled-tasks))
   (day/add-tasks day tasks))
 
@@ -49,8 +53,11 @@
 
 (defn schedule-tasks
   [plan scheduled-tasks date]
-  (loop [day :in (reverse (plan/days-on-or-after plan date))]
+  (def future-days (reverse (plan/days-on-or-after plan date)))
+  (loop [day :in future-days]
     (schedule-tasks-for-day plan day scheduled-tasks))
+  (loop [day :in future-days]
+    (schedule-missed-tasks plan day scheduled-tasks))
   plan)
 
 (defn build-command [arguments &]
