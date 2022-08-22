@@ -4,6 +4,7 @@
 (import ../../src/contact)
 (import ../../src/plan)
 (import ../../src/day)
+(import ../../src/task)
 (import ../../src/commands/schedule_contacts :prefix "")
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
@@ -38,11 +39,13 @@
                                       :last-contact (d/date 2022 4 21)
                                       :category :a))
   (def day-1 (day/build-day (d/date 2022 4 26)))
-  (def day-2 (day/build-day (d/date 2022 4 25)))
+  (def day-2 (day/build-day (d/date 2022 4 25)
+                            @[]
+                            @[(task/build-task "Weekly meeting" false)]))
   (def plan (plan/build-plan :days @[day-1 day-2]))
   (schedule-contacts plan @[contact] (d/date 2022 4 26))
   (is (not (empty? (day-1 :tasks))))
-  (is (empty? (day-2 :tasks)))
+  (is (= 1 (length (day-2 :tasks))))
   (if (not (empty? (day-1 :tasks)))
     (let [task ((day-1 :tasks) 0)]
       (is (= "Congratulate birthday to John Doe" (task :title)))
