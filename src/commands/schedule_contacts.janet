@@ -1,11 +1,11 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a command for scheduling contacts for today in a plan.
 
-(import ../date)
 (import ../contact)
-(import ../task)
+(import ../date)
 (import ../day)
 (import ../plan)
+(import ../task)
 (import ../contact/repository :as contacts_repository)
 
 (def birthday-title "Congratulate birthday to ")
@@ -13,18 +13,21 @@
 (defn- build-task-title [title contact]
   (string title (contact :name)))
 
+(defn- build-task [title contact]
+  (task/build-task (build-task-title title contact) false))
+
 (defn- schedule-tasks [contacts day predicate task-title]
   (def date (day :date))
   (each contact
     (filter (fn [c] (predicate c date)) contacts)
-    (day/add-task day (task/build-task (build-task-title task-title contact) false))))
+    (day/add-task day (build-task task-title contact))))
 
 (defn- birthdays [plan contact]
   (filter (fn [day] (contact/birthday? contact (day :date)))
           (reverse (plan :days))))
 
 (defn- missed-birthday? [plan contact date]
-  (find (fn [day] (day/missed-task? day (build-task-title birthday-title contact)))
+  (find (fn [day] (day/missed-task? day (build-task birthday-title contact)))
         (birthdays plan contact)))
 
 (defn- birthday-predicate [plan]
