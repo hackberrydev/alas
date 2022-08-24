@@ -27,7 +27,9 @@
           (reverse (plan :days))))
 
 (defn- missed-birthday? [plan contact date]
-  (find (fn [day] (day/missed-task? day (build-task birthday-title contact)))
+  (def task (build-task birthday-title contact))
+  (find (fn [day] (and (day/missed-task? day task)
+                       (not (plan/has-task-after? plan task (day :date)))))
         (birthdays plan contact)))
 
 (defn- birthday-predicate [plan]

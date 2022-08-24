@@ -89,7 +89,8 @@
 ## Test schedule-tasks
 
 (def scheduled-tasks
-  @[(task/build-scheduled-task "Weekly meeting" "every Monday")])
+  @[(task/build-scheduled-task "Weekly meeting" "every Monday")
+    (task/build-scheduled-task "Check logs" "every Wednesday")])
 
 (deftest schedule-task-on-specific-weekday
   (def plan (plan/build-plan
@@ -120,6 +121,22 @@
   (is (empty? (((plan :days) 1) :tasks)))
   (let [day ((plan :days) 0)]
     (is (not (empty? (day :tasks))))
+    (if (not (empty? (day :tasks)))
+      (let [task ((day :tasks) 0)]
+        (is (= "Weekly meeting" (task :title)))
+        (is (= false (task :done)))
+        (is (= "every Monday" (task :schedule)))))))
+
+(deftest does-not-schedule-tasks-today-that-are-not-yet-scheduled-for-future
+  (def plan (plan/build-plan
+              :days @[(day/build-day (d/date 2022 1 19))
+                      (day/build-day (d/date 2022 1 18))
+                      (day/build-day (d/date 2022 1 17))]))
+  (schedule-tasks plan scheduled-tasks (d/date 2022 1 18))
+  (is (= 1 (length (((plan :days) 0) :tasks))))
+  (is (= 1 (length (((plan :days) 1) :tasks))))
+  (is (empty? (((plan :days) 2) :tasks)))
+  (let [day ((plan :days) 1)]
     (if (not (empty? (day :tasks)))
       (let [task ((day :tasks) 0)]
         (is (= "Weekly meeting" (task :title)))
