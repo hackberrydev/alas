@@ -92,3 +92,11 @@
 
 (defn pending-tasks [plan]
   (filter (fn [t] (not (t :done))) (all-tasks plan)))
+
+(defn has-task-after?
+  ```
+  Returns true if the plan has the task scheduled on a day after the date.
+  ```
+  [plan task date]
+  (find (fn [day] (day/has-task? day task))
+        (days-after plan date)))
