@@ -29,14 +29,10 @@
                        (not (day/has-task? day task))))
         (plan :days)))
 
-(defn- scheduled-after? [plan task date]
-  (find (fn [day] (day/has-task? day task))
-        (plan/days-after plan date)))
-
 # Public
 (defn missed? [plan task]
   (def day (missed-on-day plan task))
-  (and day (not (scheduled-after? plan task (day :date)))))
+  (and day (not (plan/has-task-after? plan task (day :date)))))
 
 (defn- schedule-tasks-for-day [day scheduled-tasks task-predicate]
   (def tasks (filter task-predicate scheduled-tasks))
