@@ -52,6 +52,22 @@
       (is (= false (task :done)))
       (is (empty? (task :body))))))
 
+(deftest schedule-contact-does-not-schedule-after-missed-date-twice
+  (def contact (contact/build-contact "John Doe"
+                                      :birthday "04-25"
+                                      :last-contact (d/date 2022 4 21)
+                                      :category :a))
+  (def day-1 (day/build-day (d/date 2022 4 27)))
+  (def day-2 (day/build-day (d/date 2022 4 26)
+                            @[]
+                            @[(task/build-task "Congratulate birthday to John Doe" true)]))
+  (def day-3 (day/build-day (d/date 2022 4 25)
+                            @[]
+                            @[(task/build-task "Weekly meeting" false)]))
+  (def plan (plan/build-plan :days @[day-1 day-2 day-3]))
+  (schedule-contacts plan @[contact] (d/date 2022 4 27))
+  (is (empty? (day-1 :tasks))))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
 
