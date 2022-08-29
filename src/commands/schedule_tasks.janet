@@ -1,9 +1,11 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a command for scheduling days for today in a plan.
 
-(import ../day)
 (import ../date)
+(import ../day)
 (import ../plan)
+(import ../task)
+
 (import ../file_repository)
 (import ../schedule_parser)
 
@@ -34,6 +36,11 @@
   (def day (missed-on-day plan task))
   (and day (not (plan/has-task-after? plan task (day :date)))))
 
+(defn- mark-tasks-as-missed [plan tasks]
+  (each task tasks
+        (let [day (missed-on-day plan task)]
+          (task/mark-as-missed task day))))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -45,6 +52,7 @@
       (day/add-tasks day tasks)))
   (loop [day :in future-days]
     (let [tasks (filter (fn [task] (missed? plan task)) scheduled-tasks)]
+      (mark-tasks-as-missed plan tasks)
       (day/add-tasks day tasks)))
 
   plan)

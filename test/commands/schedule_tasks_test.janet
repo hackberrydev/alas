@@ -123,7 +123,7 @@
     (is (not (empty? (day :tasks))))
     (if (not (empty? (day :tasks)))
       (let [task ((day :tasks) 0)]
-        (is (= "Weekly meeting" (task :title)))
+        (is (= "Weekly meeting (missed on 2022-01-17)" (task :title)))
         (is (= false (task :done)))
         (is (= "every Monday" (task :schedule)))))))
 
@@ -139,7 +139,7 @@
   (let [day ((plan :days) 1)]
     (if (not (empty? (day :tasks)))
       (let [task ((day :tasks) 0)]
-        (is (= "Weekly meeting" (task :title)))
+        (is (= "Weekly meeting (missed on 2022-01-17)" (task :title)))
         (is (= false (task :done)))
         (is (= "every Monday" (task :schedule)))))))
 
