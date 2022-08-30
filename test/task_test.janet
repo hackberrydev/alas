@@ -8,7 +8,8 @@
 
 (deftest mark-as-missed
   (def task (task/build-task "Weekly meeting" false))
-  (task/mark-as-missed task (d/date 2022 7 15))
-  (is (= "Weekly meeting (missed on 2022-07-15)" (task :title))))
+  (def new-task (task/mark-as-missed task (d/date 2022 7 15)))
+  (is (= "Weekly meeting" (task :title)))
+  (is (= "Weekly meeting (missed on 2022-07-15)" (new-task :title))))
 
 (run-tests!)
