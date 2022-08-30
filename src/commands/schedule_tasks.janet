@@ -37,9 +37,10 @@
   (and day (not (plan/has-task-after? plan task (day :date)))))
 
 (defn- mark-tasks-as-missed [plan tasks]
-  (each task tasks
+  (map (fn [task]
         (let [day (missed-on-day plan task)]
-          (task/mark-as-missed task day))))
+          (task/mark-as-missed task day)))
+       tasks))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
@@ -51,9 +52,9 @@
     (let [tasks (filter (fn [task] (scheduled-for? task (day :date))) scheduled-tasks)]
       (day/add-tasks day tasks)))
   (loop [day :in future-days]
-    (let [tasks (filter (fn [task] (missed? plan task)) scheduled-tasks)]
-      (mark-tasks-as-missed plan tasks)
-      (day/add-tasks day tasks)))
+    (let [tasks (filter (fn [task] (missed? plan task)) scheduled-tasks)
+          missed-tasks (mark-tasks-as-missed plan tasks)]
+      (day/add-tasks day missed-tasks)))
 
   plan)
 
