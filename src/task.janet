@@ -11,6 +11,10 @@
   (default body @[])
   {:title title :body body :done false :schedule schedule})
 
+(defn build-missed-task [title date &opt body]
+  (default body @[])
+  {:title title :body body :done false :missed-on date})
+
 (defn mark-as-missed
   ```
   Adds :missed-on key to the task.
