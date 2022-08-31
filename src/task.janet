@@ -13,8 +13,7 @@
 
 (defn mark-as-missed
   ```
-  Updates the title to include '(missed on DATE)' label.
+  Adds :missed-on key to the task.
   ```
   [task date]
-  (def title (string (task :title) " (missed on " (date/format date true) ")"))
-  (merge task {:title title}))
+  (merge task {:missed-on date}))
