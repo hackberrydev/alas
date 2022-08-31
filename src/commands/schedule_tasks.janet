@@ -39,7 +39,7 @@
 (defn- mark-tasks-as-missed [plan tasks]
   (map (fn [task]
         (let [day (missed-on-day plan task)]
-          (task/mark-as-missed task day)))
+          (task/mark-as-missed task (day :date))))
        tasks))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
