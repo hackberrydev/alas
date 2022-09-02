@@ -15,6 +15,10 @@
   (default body @[])
   {:title title :body body :done false :missed-on date})
 
+(defn build-contact-task [title contact &opt body]
+  (default body @[])
+  {:title title :body body :done false :contact contact})
+
 (defn mark-as-missed
   ```
   Adds :missed-on key to the task.
