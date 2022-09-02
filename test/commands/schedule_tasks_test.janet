@@ -124,6 +124,7 @@
     (if (not (empty? (day :tasks)))
       (let [task ((day :tasks) 0)]
         (is (= "Weekly meeting" (task :title)))
+        (is (d/equal? (d/date 2022 1 17) (task :missed-on)))
         (is (= false (task :done)))
         (is (= "every Monday" (task :schedule)))))))
 

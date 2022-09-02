@@ -19,8 +19,8 @@
     :inbox-title (* "## Inbox" (? "\n"))
     :days (group (any :day))
     :day (replace (* :day-title (? "\n") :events :tasks (? "\n")) ,day/build-day)
-    :day-title (* "## " (replace :date ,d/parse) ", " :week-day (? "\n"))
-    :date (capture (* :d :d :d :d "-" :d :d "-" :d :d))
+    :day-title (* "## " :date ", " :week-day (? "\n"))
+    :date (replace (capture (* :d :d :d :d "-" :d :d "-" :d :d)) ,d/parse)
     :week-day (+ "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
     :events (group (any :event))
     :event (replace (* :event-begin :text-line (? "\n")) ,event/build-event)
@@ -28,7 +28,8 @@
     :tasks (group (any :task))
     :task (replace (* (constant :done) :task-begin
                       " "
-                      (constant :title) :text-line
+                      (constant :title) (capture (some (if-not (+ "\n" " (missed on") 1)))
+                      (? :task-missed-on-date)
                       (? "\n")
                       (constant :body) :task-body
                       (? "\n"))
@@ -38,7 +39,8 @@
     :checkbox-done (* (+ "[x]" "[X]") (constant true))
     :checkbox-pending (* "[ ]" (constant false))
     :task-body (group (any :task-body-line))
-    :task-body-line (* "  " :text-line (? "\n"))})
+    :task-body-line (* "  " :text-line (? "\n"))
+    :task-missed-on-date (* " (missed on " (constant :missed-on) :date ")")})
 
 (defn- lines-count [plan-string &opt options]
   (default options {:ignore-whitespace true})
