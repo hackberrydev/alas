@@ -1,7 +1,7 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements serializing a plan into a string.
 
-(import ../date :as date)
+(import ../date)
 
 (def task-body-indentation "  ")
 
@@ -14,8 +14,13 @@
 (defn- serialize-event [event]
   (string "- " (event :text)))
 
+(defn- task-mark [task]
+  (if (task :missed-on)
+    (string " (missed on " (date/format (task :missed-on) true) ")")
+    ""))
+
 (defn- serialize-task-title [task]
-  (string "- " (checkbox (task :done)) " " (task :title)))
+  (string "- " (checkbox (task :done)) " " (task :title) (task-mark task)))
 
 (defn- serialize-task-body [task]
   (def body (task :body))

@@ -20,6 +20,7 @@
 
     - [ ] Develop photos
     - [x] Pay bills
+    - [ ] Fix the lamp (missed on 2020-07-30)
 
     ## 2020-07-31, Friday
 
@@ -45,6 +46,10 @@
   (let [task ((day-1 :tasks) 1)]
     (is (= "Pay bills" (task :title)))
     (is (task :done)))
+  (let [task ((day-1 :tasks) 2)]
+    (is (= "Fix the lamp" (task :title)))
+    (is (not (task :done)))
+    (is (d/equal? (d/date 2020 7 30) (task :missed-on))))
   (is (= (d/date 2020 7 31) (day-2 :date)))
   (is (= {:text "Talked to Mike & Molly"} ((day-2 :events) 0)))
   (let [task ((day-2 :tasks) 0)]

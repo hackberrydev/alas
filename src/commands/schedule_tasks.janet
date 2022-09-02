@@ -1,9 +1,11 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a command for scheduling days for today in a plan.
 
-(import ../day)
 (import ../date)
+(import ../day)
 (import ../plan)
+(import ../task)
+
 (import ../file_repository)
 (import ../schedule_parser)
 
@@ -34,9 +36,11 @@
   (def day (missed-on-day plan task))
   (and day (not (plan/has-task-after? plan task (day :date)))))
 
-(defn- schedule-tasks-for-day [day scheduled-tasks task-predicate]
-  (def tasks (filter task-predicate scheduled-tasks))
-  (day/add-tasks day tasks))
+(defn- mark-tasks-as-missed [plan tasks]
+  (map (fn [task]
+        (let [day (missed-on-day plan task)]
+          (task/mark-as-missed task (day :date))))
+       tasks))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
@@ -45,9 +49,13 @@
   [plan scheduled-tasks date]
   (def future-days (reverse (plan/days-on-or-after plan date)))
   (loop [day :in future-days]
-    (schedule-tasks-for-day day scheduled-tasks (fn [task] (scheduled-for? task (day :date)))))
+    (let [tasks (filter (fn [task] (scheduled-for? task (day :date))) scheduled-tasks)]
+      (day/add-tasks day tasks)))
   (loop [day :in future-days]
-    (schedule-tasks-for-day day scheduled-tasks (fn [task] (missed? plan task))))
+    (let [tasks (filter (fn [task] (missed? plan task)) scheduled-tasks)
+          missed-tasks (mark-tasks-as-missed plan tasks)]
+      (day/add-tasks day missed-tasks)))
+
   plan)
 
 (defn build-command [arguments &]
