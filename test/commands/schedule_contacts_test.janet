@@ -33,6 +33,19 @@
     (is (= false (task :done)))
     (is (empty? (task :body)))))
 
+(deftest schedule-contact-with-missed-birthday
+  (def contact (contact/build-contact "John Doe"
+                                      :birthday "04-25"
+                                      :last-contact (d/date 2022 4 21)
+                                      :category :a))
+  (def plan (plan/build-plan :days @[(day/build-day (d/date 2022 4 26))
+                                     (day/build-day (d/date 2022 4 25))]))
+  (schedule-contacts plan @[contact] (d/date 2022 4 26))
+  (let [day ((plan :days) 0)
+        task ((day :tasks) 0)]
+    (is (= "Congratulate birthday to John Doe" (task :title)))
+    (is (d/equal? (d/date 2022 4 25) (task :missed-on)))))
+
 (deftest schedule-contact-with-birthday-on-a-missed-day
   (def contact (contact/build-contact "John Doe"
                                       :birthday "04-25"
