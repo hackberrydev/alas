@@ -8,6 +8,7 @@
 (import ../task)
 (import ../contact/repository :as contacts_repository)
 
+(def contact-title "Contact ")
 (def birthday-title "Congratulate birthday to ")
 
 (defn- build-task-title [title contact]
@@ -45,7 +46,14 @@
   (def day (plan/day-with-date plan date))
   (def future-days (reverse (plan/days-on-or-after plan date)))
   (loop [day :in future-days]
-    (day/add-tasks day (scheduled-tasks contacts day contact/contact-on-date? "Contact ")))
+    (day/add-tasks day (scheduled-tasks contacts
+                                        day
+                                        (fn [contact date]
+                                          (def task (build-task contact-title contact))
+                                          (and (contact/contact-on-date? contact date)
+                                               (not (find (fn [day] (day/has-task? day task))
+                                                          future-days))))
+                                        contact-title)))
   (loop [day :in future-days]
     (day/add-tasks day (scheduled-tasks contacts day contact/birthday? birthday-title)))
   (def birthday-reminders (scheduled-tasks contacts
