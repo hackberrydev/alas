@@ -20,6 +20,20 @@
     (is (= false (task :done)))
     (is (empty? (task :body)))))
 
+(deftest schedule-contacts-for-future-day
+  (def contact (contact/build-contact "John Doe" :last-contact (d/date 2022 4 1) :category :a))
+  (def day-1 (day/build-day (d/date 2022 4 23)))
+  (def day-2 (day/build-day (d/date 2022 4 22)))
+  (def day-3 (day/build-day (d/date 2022 4 21)))
+  (def plan (plan/build-plan :days @[day-1 day-2 day-3]))
+  (schedule-contacts plan @[contact] (d/date 2022 4 21))
+  (is (not (empty? (day-1 :tasks))))
+  (if (= 1 (length (day-1 :tasks)))
+    (let [task ((day-1 :tasks) 0)]
+      (is (= "Contact John Doe" (task :title)))
+      (is (= false (task :done)))
+      (is (empty? (task :body))))))
+
 (deftest schedule-contact-with-birthday
   (def contact (contact/build-contact "John Doe"
                                       :birthday "04-25"
