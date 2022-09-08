@@ -43,8 +43,10 @@
 
 (defn schedule-contacts [plan contacts date]
   (def day (plan/day-with-date plan date))
+  (def future-days (reverse (plan/days-on-or-after plan date)))
   (day/add-tasks day (scheduled-tasks contacts day contact/contact-on-date? "Contact "))
-  (day/add-tasks day (scheduled-tasks contacts day contact/birthday? birthday-title))
+  (loop [day :in future-days]
+    (day/add-tasks day (scheduled-tasks contacts day contact/birthday? birthday-title)))
   (def birthday-reminders (scheduled-tasks contacts
                                            day
                                            (fn [contact date] (missed-birthday plan contact date))
