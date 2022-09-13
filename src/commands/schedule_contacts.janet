@@ -27,10 +27,16 @@
                        (not (plan/has-task-after? plan task (day :date)))))
         (birthdays plan contact)))
 
-## —————————————————————————————————————————————————————————————————————————————————————————————————
-## Public Interface
+(defn- schedule-missed-birthday-tasks [plan contacts today]
+  (def day (plan/day-with-date plan today))
+  (loop [contact :in contacts]
+    (let [birthday (missed-birthday plan contact today)]
+      (if birthday
+        (day/add-task day
+                      (task/mark-as-missed (build-task birthday-prefix contact)
+                                           (birthday :date)))))))
 
-(defn schedule-contacts [plan contacts today]
+(defn- schedule-contact-tasks [plan contacts today]
   (def day (plan/day-with-date plan today))
   (def future-days (reverse (plan/days-on-or-after plan today)))
   (loop [day :in future-days
@@ -38,18 +44,26 @@
     (let [task (build-task contact-prefix contact)]
       (if (and (contact/contact-on-date? contact (day :date))
                (not (plan/has-task-on-or-after? plan task today)))
-        (day/add-task day task))))
+        (day/add-task day task)))))
+
+(defn- schedule-birthday-tasks [plan contacts today]
+  (def day (plan/day-with-date plan today))
+  (def future-days (reverse (plan/days-on-or-after plan today)))
+  (schedule-contact-tasks plan contacts today)
   (loop [day :in future-days
          contact :in contacts]
     (let [task (build-task birthday-prefix contact)]
       (if (and (contact/birthday? contact (day :date))
                (not (plan/has-task-on-or-after? plan task today)))
-        (day/add-task day task))))
-  (loop [contact :in contacts]
-    (let [birthday (missed-birthday plan contact today)]
-      (if birthday
-        (let [task (task/mark-as-missed (build-task birthday-prefix contact) (birthday :date))]
-          (day/add-task day task)))))
+        (day/add-task day task)))))
+
+## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Public Interface
+
+(defn schedule-contacts [plan contacts today]
+  (schedule-contact-tasks plan contacts today)
+  (schedule-birthday-tasks plan contacts today)
+  (schedule-missed-birthday-tasks plan contacts today)
   plan)
 
 (defn build-command [arguments &]
