@@ -36,26 +36,20 @@
                       (task/mark-as-missed (build-task birthday-prefix contact)
                                            (birthday :date)))))))
 
-(defn- schedule-contact-tasks [plan contacts today]
-  (def day (plan/day-with-date plan today))
+(defn- schedule-tasks [plan contacts today prefix predicate]
   (def future-days (reverse (plan/days-on-or-after plan today)))
   (loop [day :in future-days
          contact :in contacts]
-    (let [task (build-task contact-prefix contact)]
-      (if (and (contact/contact-on-date? contact (day :date))
+    (let [task (build-task prefix contact)]
+      (if (and (predicate contact (day :date))
                (not (plan/has-task-on-or-after? plan task today)))
         (day/add-task day task)))))
 
+(defn- schedule-contact-tasks [plan contacts today]
+  (schedule-tasks plan contacts today contact-prefix contact/contact-on-date?))
+
 (defn- schedule-birthday-tasks [plan contacts today]
-  (def day (plan/day-with-date plan today))
-  (def future-days (reverse (plan/days-on-or-after plan today)))
-  (schedule-contact-tasks plan contacts today)
-  (loop [day :in future-days
-         contact :in contacts]
-    (let [task (build-task birthday-prefix contact)]
-      (if (and (contact/birthday? contact (day :date))
-               (not (plan/has-task-on-or-after? plan task today)))
-        (day/add-task day task)))))
+  (schedule-tasks plan contacts today birthday-prefix contact/birthday?))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
