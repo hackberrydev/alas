@@ -8,48 +8,56 @@
 (import ../task)
 (import ../contact/repository :as contacts_repository)
 
-(def birthday-title "Congratulate birthday to ")
+(def contact-prefix "Contact ")
+(def birthday-prefix "Congratulate birthday to ")
 
-(defn- build-task-title [title contact]
-  (string title (contact :name)))
+(defn- build-task-title [prefix contact]
+  (string prefix (contact :name)))
 
-(defn- build-task [title contact]
-  (task/build-contact-task (build-task-title title contact) contact))
-
-(defn- scheduled-tasks [contacts day predicate task-title]
-  (def date (day :date))
-  (map (fn [contact] (build-task task-title contact))
-       (filter (fn [c] (predicate c date)) contacts)))
-
+(defn- build-task [prefix contact]
+  (task/build-contact-task (build-task-title prefix contact) contact))
 
 (defn- birthdays [plan contact]
   (filter (fn [day] (contact/birthday? contact (day :date)))
           (reverse (plan :days))))
 
 (defn- missed-birthday [plan contact date]
-  (def task (build-task birthday-title contact))
+  (def task (build-task birthday-prefix contact))
   (find (fn [day] (and (day/missed-task? day task)
                        (not (plan/has-task-after? plan task (day :date)))))
         (birthdays plan contact)))
 
-(defn- mark-birthday-reminders-as-missed [plan tasks date]
-  (map (fn [task]
-        (let [day (missed-birthday plan (task :contact) date)]
-          (task/mark-as-missed task (day :date))))
-       tasks))
+(defn- schedule-missed-birthday-tasks [plan contacts today]
+  (def day (plan/day-with-date plan today))
+  (loop [contact :in contacts]
+    (let [birthday (missed-birthday plan contact today)]
+      (if birthday
+        (day/add-task day
+                      (task/mark-as-missed (build-task birthday-prefix contact)
+                                           (birthday :date)))))))
+
+(defn- schedule-tasks [plan contacts today prefix predicate]
+  (def future-days (reverse (plan/days-on-or-after plan today)))
+  (loop [day :in future-days
+         contact :in contacts]
+    (let [task (build-task prefix contact)]
+      (if (and (predicate contact (day :date))
+               (not (plan/has-task-on-or-after? plan task today)))
+        (day/add-task day task)))))
+
+(defn- schedule-contact-tasks [plan contacts today]
+  (schedule-tasks plan contacts today contact-prefix contact/contact-on-date?))
+
+(defn- schedule-birthday-tasks [plan contacts today]
+  (schedule-tasks plan contacts today birthday-prefix contact/birthday?))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
-(defn schedule-contacts [plan contacts date]
-  (def day (plan/day-with-date plan date))
-  (day/add-tasks day (scheduled-tasks contacts day contact/contact-on-date? "Contact "))
-  (day/add-tasks day (scheduled-tasks contacts day contact/birthday? birthday-title))
-  (def birthday-reminders (scheduled-tasks contacts
-                                           day
-                                           (fn [contact date] (missed-birthday plan contact date))
-                                           birthday-title))
-  (day/add-tasks day (mark-birthday-reminders-as-missed plan birthday-reminders date))
+(defn schedule-contacts [plan contacts today]
+  (schedule-contact-tasks plan contacts today)
+  (schedule-birthday-tasks plan contacts today)
+  (schedule-missed-birthday-tasks plan contacts today)
   plan)
 
 (defn build-command [arguments &]
