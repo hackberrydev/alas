@@ -40,7 +40,7 @@
   Output version information.
   ```
   []
-  (print "Alas version 0.10"))
+  (print "Alas version 0.11"))
 
 (defn build-commands [arguments file-path]
   (filter any?
