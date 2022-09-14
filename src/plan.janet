@@ -100,3 +100,11 @@
   [plan task date]
   (find (fn [day] (day/has-task? day task))
         (days-after plan date)))
+
+(defn has-task-on-or-after?
+  ```
+  Returns true if the plan has the task scheduled on the day with the date or after.
+  ```
+  [plan task date]
+  (find (fn [day] (day/has-task? day task))
+        (days-on-or-after plan date)))

@@ -20,6 +20,22 @@
     (is (= false (task :done)))
     (is (empty? (task :body)))))
 
+(deftest schedule-contacts-for-future-day
+  (def contact (contact/build-contact "John Doe" :last-contact (d/date 2022 4 1) :category :a))
+  (def day-1 (day/build-day (d/date 2022 4 22)))
+  (def day-2 (day/build-day (d/date 2022 4 21)))
+  (def day-3 (day/build-day (d/date 2022 4 20)))
+  (def plan (plan/build-plan :days @[day-1 day-2 day-3]))
+  (schedule-contacts plan @[contact] (d/date 2022 4 20))
+  (is (empty? (day-1 :tasks)))
+  (is (not (empty? (day-2 :tasks))))
+  (is (empty? (day-3 :tasks)))
+  (if (= 1 (length (day-2 :tasks)))
+    (let [task ((day-2 :tasks) 0)]
+      (is (= "Contact John Doe" (task :title)))
+      (is (= false (task :done)))
+      (is (empty? (task :body))))))
+
 (deftest schedule-contact-with-birthday
   (def contact (contact/build-contact "John Doe"
                                       :birthday "04-25"
@@ -61,9 +77,23 @@
   (is (= 1 (length (day-2 :tasks))))
   (if (not (empty? (day-1 :tasks)))
     (let [task ((day-1 :tasks) 0)]
+      (is (= "Congratulate birthday to John Doe" (task :title))))))
+
+(deftest schedule-contact-with-birthday-on-a-future-day
+  (def contact (contact/build-contact "John Doe"
+                                      :birthday "04-26"
+                                      :last-contact (d/date 2022 4 21)
+                                      :category :a))
+  (def day-1 (day/build-day (d/date 2022 4 26)))
+  (def day-2 (day/build-day (d/date 2022 4 25)))
+  (def plan (plan/build-plan :days @[day-1 day-2]))
+  (schedule-contacts plan @[contact] (d/date 2022 4 25))
+  (is (not (empty? (day-1 :tasks))))
+  (is (empty? (day-2 :tasks)))
+  (if (not (empty? (day-1 :tasks)))
+    (let [task ((day-1 :tasks) 0)]
       (is (= "Congratulate birthday to John Doe" (task :title)))
-      (is (= false (task :done)))
-      (is (empty? (task :body))))))
+      (is (not (task :missed-on))))))
 
 (deftest schedule-contact-does-not-schedule-after-missed-date-twice
   (def contact (contact/build-contact "John Doe"
