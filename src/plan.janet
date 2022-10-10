@@ -78,6 +78,14 @@
   (take-while (fn [day] (date/after-or-eq? (day :date) date))
               (plan :days)))
 
+(defn all-days
+  ```
+  Return days from the plan without any 'holes'. For days that are missing, a new day will be
+  generated, without any tasks.
+  ```
+  [plan]
+  (plan :days))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Tasks functions
 
