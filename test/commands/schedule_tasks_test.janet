@@ -77,6 +77,12 @@
                       (day/build-day (d/date 2022 8 1))]))
   (is (missed? plan scheduled-task)))
 
+(deftest missed-returns-true-when-day-does-not-exist
+  (def plan (plan/build-plan
+              :days @[(day/build-day (d/date 2022 8 2))
+                      (day/build-day (d/date 2022 7 15))]))
+  (is (missed? plan scheduled-task)))
+
 (deftest missed-returns-false-when-task-was-scheduled-for-another-day
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 8 2)
@@ -127,6 +133,17 @@
         (is (d/equal? (d/date 2022 1 17) (task :missed-on)))
         (is (= false (task :done)))
         (is (= "every Monday" (task :schedule)))))))
+
+(deftest schedule-missed-monthly-task
+  (def scheduled-tasks
+    @[(task/build-scheduled-task "Review logs" "every month")])
+  (def day-1 (day/build-day (d/date 2022 7 5)))
+  (def day-2 (day/build-day (d/date 2022 6 15)))
+  (def plan (plan/build-plan :days @[day-1 day-2]))
+  (schedule-tasks plan scheduled-tasks (d/date 2022 7 5))
+  (is (not (empty? (day-1 :tasks))))
+  (if (not (empty? (day-1 :tasks)))
+    (is (= "Review logs" (((day-1 :tasks) 0) :title)))))
 
 (deftest does-not-schedule-tasks-today-that-are-not-yet-scheduled-for-future
   (def plan (plan/build-plan

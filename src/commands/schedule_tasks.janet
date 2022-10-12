@@ -29,7 +29,7 @@
 (defn- missed-on-day [plan task]
   (find (fn [day] (and (scheduled-for? task (day :date))
                        (not (day/has-task? day task))))
-        (plan :days)))
+        (plan/all-days plan)))
 
 # Public
 (defn missed? [plan task]
