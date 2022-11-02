@@ -142,16 +142,17 @@
 ## Test all-days
 
 (deftest all-days
-  (def day-1 (day/build-day (d/date 2020 8 5)))
+  (def day-1 (day/build-day (d/date 2020 8 6)))
   (def day-2 (day/build-day (d/date 2020 8 3)))
   (def plan (plan/build-plan :days @[day-1 day-2]))
   (def days (plan/all-days plan))
-  (is (= 3 (length days)))
-  (if (= 3 (length days))
+  (is (= 4 (length days)))
+  (if (= 4 (length days))
     (do
-      (is (d/equal? (d/date 2020 8 5) ((days 0) :date)))
-      (is (d/equal? (d/date 2020 8 4) ((days 1) :date)))
-      (is (d/equal? (d/date 2020 8 3) ((days 2) :date))))))
+      (is (d/equal? (d/date 2020 8 6) ((days 0) :date)))
+      (is (d/equal? (d/date 2020 8 5) ((days 1) :date)))
+      (is (d/equal? (d/date 2020 8 4) ((days 2) :date)))
+      (is (d/equal? (d/date 2020 8 3) ((days 3) :date))))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test all-tasks
