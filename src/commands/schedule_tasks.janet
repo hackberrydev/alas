@@ -26,19 +26,25 @@
         (string "every year on " (remove-year formatted-date)) true
         (string "on " formatted-date) true))
 
-(defn- missed-on-day [plan task]
+(defn- missed-on-day [plan task date]
   (find (fn [day] (and (scheduled-for? task (day :date))
                        (not (day/has-task? day task))))
-        (plan/all-days plan)))
+        (plan/all-days-before plan date)))
 
 # Public
-(defn missed? [plan task]
-  (def day (missed-on-day plan task))
+(defn missed?
+  ```
+  Checks if the task was missed in the plan up to the passed date.
+
+  Returns true or false.
+  ```
+  [plan task date]
+  (def day (missed-on-day plan task date))
   (and day (not (plan/has-task-after? plan task (day :date)))))
 
-(defn- mark-tasks-as-missed [plan tasks]
+(defn- mark-tasks-as-missed [plan tasks date]
   (map (fn [task]
-        (let [day (missed-on-day plan task)]
+        (let [day (missed-on-day plan task date)]
           (task/mark-as-missed task (day :date))))
        tasks))
 
@@ -52,8 +58,8 @@
     (let [tasks (filter (fn [task] (scheduled-for? task (day :date))) scheduled-tasks)]
       (day/add-tasks day tasks)))
   (loop [day :in future-days]
-    (let [tasks (filter (fn [task] (missed? plan task)) scheduled-tasks)
-          missed-tasks (mark-tasks-as-missed plan tasks)]
+    (let [tasks (filter (fn [task] (missed? plan task date)) scheduled-tasks)
+          missed-tasks (mark-tasks-as-missed plan tasks date)]
       (day/add-tasks day missed-tasks)))
 
   plan)

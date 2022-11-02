@@ -75,13 +75,13 @@
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 8 2))
                       (day/build-day (d/date 2022 8 1))]))
-  (is (missed? plan scheduled-task)))
+  (is (missed? plan scheduled-task (d/date 2022 8 3))))
 
 (deftest missed-returns-true-when-day-does-not-exist
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 8 2))
                       (day/build-day (d/date 2022 7 15))]))
-  (is (missed? plan scheduled-task)))
+  (is (missed? plan scheduled-task (d/date 2022 8 3))))
 
 (deftest missed-returns-false-when-task-was-scheduled-for-another-day
   (def plan (plan/build-plan
@@ -89,7 +89,13 @@
                                      @[]
                                      @[(task/build-task "Weekly meeting" true)])
                       (day/build-day (d/date 2022 8 1))]))
-  (is (not (missed? plan scheduled-task))))
+  (is (not (missed? plan scheduled-task (d/date 2022 8 3)))))
+
+(deftest missed-returns-false-when-task-will-be-scheduled-in-future
+  (def plan (plan/build-plan
+             :days @[(day/build-day (d/date 2022 8 2))
+                     (day/build-day (d/date 2022 7 31))]))
+  (is (not (missed? plan scheduled-task (d/date 2022 7 31)))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test schedule-tasks
@@ -160,6 +166,16 @@
         (is (= "Weekly meeting" (task :title)))
         (is (= false (task :done)))
         (is (= "every Monday" (task :schedule)))))))
+
+(deftest does-not-schedule-tasks-today-that-are-not-scheduled-for-future-day-that-is-not-in-plan
+  (def plan (plan/build-plan
+              :days @[(day/build-day (d/date 2022 1 19))
+                      (day/build-day (d/date 2022 1 18))
+                      (day/build-day (d/date 2022 1 16))]))
+  (schedule-tasks plan scheduled-tasks (d/date 2022 1 16))
+  (is (= 1 (length (((plan :days) 0) :tasks))))
+  (is (empty? (((plan :days) 1) :tasks)))
+  (is (empty? (((plan :days) 2) :tasks))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
