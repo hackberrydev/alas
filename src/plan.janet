@@ -94,6 +94,16 @@
             days)
           (reverse (plan :days))))))
 
+(defn all-days-before
+  ```
+  Return days from the plan without any 'holes' up to the date. For days that are missing, a new day
+  will be generated, without any tasks.
+  ```
+  [plan date]
+  (drop-while (fn [day] (date/after-or-eq? (day :date) date))
+              (all-days plan)))
+
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Tasks functions
 

@@ -155,6 +155,20 @@
       (is (d/equal? (d/date 2020 8 3) ((days 3) :date))))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Test all-days-before
+
+(deftest all-days-before
+  (def day-1 (day/build-day (d/date 2020 8 6)))
+  (def day-2 (day/build-day (d/date 2020 8 3)))
+  (def plan (plan/build-plan :days @[day-1 day-2]))
+  (def days (plan/all-days-before plan (d/date 2020 8 5)))
+  (is (= 2 (length days)))
+  (if (= 2 (length days))
+    (do
+      (is (d/equal? (d/date 2020 8 4) ((days 0) :date)))
+      (is (d/equal? (d/date 2020 8 3) ((days 1) :date))))))
+
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test all-tasks
 
 (deftest all-tasks
