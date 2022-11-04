@@ -88,11 +88,21 @@
   (reverse
     (flatten
      (map (fn [day]
-            (def days (day/generate-days (date/+days date 1) (date/-days (day :date) 1)))
+            (def days (reverse (day/generate-days (date/+days date 1) (date/-days (day :date) 1))))
             (array/push days day)
             (set date (day :date))
             days)
           (reverse (plan :days))))))
+
+(defn all-days-before
+  ```
+  Return days from the plan without any 'holes' up to the date. For days that are missing, a new day
+  will be generated, without any tasks.
+  ```
+  [plan date]
+  (drop-while (fn [day] (date/after-or-eq? (day :date) date))
+              (all-days plan)))
+
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Tasks functions
