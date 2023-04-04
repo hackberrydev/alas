@@ -32,3 +32,17 @@ schedule tasks and help you stay in touch with your contacts.
 
 For more information, visit the the main [Alas
 website](https://www.hackberry.dev/alas/).
+
+## Development
+
+Install dependencies with:
+
+```sh
+jpm deps
+```
+
+Run tests with:
+
+```sh
+jpm test
+```
