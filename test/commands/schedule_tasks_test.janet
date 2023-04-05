@@ -199,7 +199,7 @@
   (def arguments {"schedule-tasks" "test/examples/unparsable-schedule.md"})
   (def result (build-command arguments))
   (is (nil? (result :command)))
-  (is (= "--schedule-tasks schedule could not be parsed." (first (result :errors)))))
+  (is (= "--schedule-tasks schedule can not be parsed." (first (result :errors)))))
 
 (deftest build-command-when-schedule-is-empty
   (def arguments {"schedule-tasks" "test/examples/empty-schedule.md"})

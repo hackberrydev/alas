@@ -9,6 +9,7 @@
 (import ../file_repository)
 (import ../schedule_parser)
 
+(def command "--schedule-tasks")
 (def weekdays ["Monday" "Tuesday" "Wednesday" "Thursday" "Friday"])
 
 (defn- remove-year [formatted-date]
@@ -48,6 +49,9 @@
           (task/mark-as-missed task (day :date))))
        tasks))
 
+(defn- format-parse-errors [errors]
+  (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -70,12 +74,10 @@
     (let [load-file-result (file_repository/load argument)
           error (load-file-result :error)]
       (if error
-        {:errors [(string "--schedule-tasks " (string/ascii-lower error))]}
-        (let [parse-result (schedule_parser/parse (load-file-result :text))]
-          (if parse-result
-            (let [schedule (first parse-result)]
-              (if (empty? schedule)
-                {:errors ["--schedule-tasks schedule is empty."]}
-                {:command [schedule-tasks (first parse-result) (date/today)]}))
-            {:errors ["--schedule-tasks schedule could not be parsed."]}))))
+        {:errors [(string command " " (string/ascii-lower error))]}
+        (let [parse-result (schedule_parser/parse (load-file-result :text))
+              errors (parse-result :errors)]
+          (if errors
+            {:errors (format-parse-errors errors)}
+            {:command [schedule-tasks (parse-result :tasks) (date/today)]}))))
     {}))
