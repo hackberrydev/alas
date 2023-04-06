@@ -14,6 +14,6 @@
 
 (deftest load-contacts-when-directory-does-not-exist
   (def result (load-contacts "test/missing-directory"))
-  (is (= "Directory does not exist." (result :error))))
+  (is (= "Directory does not exist" (first (result :errors)))))
 
 (run-tests!)

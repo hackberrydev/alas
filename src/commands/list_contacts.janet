@@ -1,6 +1,7 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements the list contacts command.
 
+(import ../utils :prefix "")
 (import ../date :as d)
 (import ../contact/repository :as contacts_repository)
 
@@ -32,8 +33,8 @@
   (def argument (arguments "list-contacts"))
   (if argument
     (let [load-result (contacts_repository/load-contacts argument)
-          error (load-result :error)]
-      (if error
-        {:errors [(string "--list-contacts " (string/ascii-lower error))]}
+          errors (load-result :errors)]
+      (if errors
+        {:errors (format-command-errors "--list-contacts" errors)}
         {:command [print-contacts (load-result :contacts)]}))
     {}))

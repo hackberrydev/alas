@@ -1,6 +1,8 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a command for scheduling days for today in a plan.
 
+(import ../utils :prefix "")
+
 (import ../date)
 (import ../day)
 (import ../plan)
@@ -49,9 +51,6 @@
           (task/mark-as-missed task (day :date))))
        tasks))
 
-(defn- format-errors [errors]
-  (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
-
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -74,10 +73,10 @@
     (let [load-file-result (file_repository/load argument)
           errors (load-file-result :errors)]
       (if errors
-        {:errors (format-errors errors)}
+        {:errors (format-command-errors command errors)}
         (let [parse-result (schedule_parser/parse (load-file-result :text))
               errors (parse-result :errors)]
           (if errors
-            {:errors (format-errors errors)}
+            {:errors (format-command-errors command errors)}
             {:command [schedule-tasks (parse-result :tasks) (date/today)]}))))
     {}))
