@@ -1,8 +1,9 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a repository that loads contacts from Markdown files.
 
-(import ../file_repository)
 (import ../utils)
+
+(import ../file_repository)
 (import ./parser :as contact_parser)
 
 (defn- load-contact [contact-path]
@@ -22,4 +23,4 @@
                        (fn [contact-file] (load-contact (string directory "/" contact-file)))
                        (os/dir directory)))]
       {:contacts contacts})
-    {:error "Directory does not exist."}))
+    {:errors ["Directory does not exist"]}))

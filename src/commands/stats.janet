@@ -1,7 +1,7 @@
 ### ————————————————————————————————————————————————————————————————————————————
 ### This module implements stats command.
 
-(import ../utils :as "u")
+(import ../utils :prefix "")
 (import ../plan)
 
 ## —————————————————————————————————————————————————————————————————————————————
@@ -12,9 +12,9 @@
   Prints stats for the plan. Returns the plan.
   ```
   [plan]
-  (print (u/pluralize (length (plan :days)) "day"))
-  (print (u/pluralize (length (plan/completed-tasks plan)) "completed task"))
-  (print (u/pluralize (length (plan/pending-tasks plan)) "pending task"))
+  (print (pluralize (length (plan :days)) "day"))
+  (print (pluralize (length (plan/completed-tasks plan)) "completed task"))
+  (print (pluralize (length (plan/pending-tasks plan)) "pending task"))
   plan)
 
 (defn build-command [arguments &]
