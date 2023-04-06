@@ -17,7 +17,16 @@
 
 (defn parse
   ```
-  Parses schedule string and returns an array of task entities.
+  Parses schedule-string and returns a tuple:
+
+  - {:tasks tasks}    Where tasks is an array of task entities, when parsing was successfull.
+  - {:errors errors}  Where errors is an array of strings.
   ```
   [schedule-string]
-  (peg/match schedule-grammar schedule-string))
+  (let [parse-result (peg/match schedule-grammar schedule-string)]
+    (if parse-result
+      (let [tasks (first parse-result)]
+        (if (empty? tasks)
+          {:errors ["Schedule is empty"]}
+          {:tasks tasks}))
+      {:errors ["Schedule can not be parsed"]})))
