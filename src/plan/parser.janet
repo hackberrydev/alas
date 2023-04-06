@@ -69,6 +69,6 @@
                                {:serialize-empty-inbox serialize-empty-inbox})]
       (if (= (lines-count parsed-plan-string) (lines-count plan-string))
         {:plan plan}
-        {:error (string "Plan can not be parsed: last parsed line is line "
-                        (lines-count parsed-plan-string {:ignore-whitespace false}))}))
-    {:error "Plan can not be parsed"}))
+        {:errors [(string "Plan can not be parsed: last parsed line is line "
+                          (lines-count parsed-plan-string {:ignore-whitespace false}))]}))
+    {:errors ["Plan can not be parsed"]}))
