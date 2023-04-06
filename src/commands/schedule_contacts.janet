@@ -1,6 +1,8 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a command for scheduling contacts for today in a plan.
 
+(import ../utils :prefix "")
+
 (import ../contact)
 (import ../date)
 (import ../day)
@@ -50,9 +52,6 @@
 
 (defn- schedule-birthday-tasks [plan contacts today]
   (schedule-tasks plan contacts today birthday-prefix contact/birthday?))
-
-(defn- format-command-errors [command errors]
-  (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface

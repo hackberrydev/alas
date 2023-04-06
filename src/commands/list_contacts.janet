@@ -1,6 +1,7 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements the list contacts command.
 
+(import ../utils :prefix "")
 (import ../date :as d)
 (import ../contact/repository :as contacts_repository)
 
@@ -17,9 +18,6 @@
   (loop [contact :in contacts]
     (print (to-csv-line contact)))
   plan)
-
-(defn- format-command-errors [command errors]
-  (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
