@@ -43,6 +43,6 @@
 
 (deftest load-from-file-that-does-not-exist
   (let [result (load "missing_file.md")]
-    (is (= "File does not exist." (result :error)))))
+    (is (= "File does not exist" (first (result :errors))))))
 
 (run-tests!)

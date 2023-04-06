@@ -9,6 +9,9 @@
 (import ./plan/parser :as plan_parser)
 (import ./plan/serializer :as plan_serializer)
 
+(defn- print-errors [errors]
+  (each error errors (print (string error "."))))
+
 # Keep commands sorted alphabetically.
 (def argparse-params
   ["A command line utility for planning your days"
@@ -37,9 +40,9 @@
 
 (defn- run-with-file-path [arguments file-path]
   (def load-file-result (file_repository/load file-path))
-  (def error (load-file-result :error))
-  (if error
-    (print error)
+  (def errors (load-file-result :errors))
+  (if errors
+    (print-errors errors)
     (let [plan-string (load-file-result :text)
           parse-result (plan_parser/parse plan-string)
           parse-error (parse-result :error)
