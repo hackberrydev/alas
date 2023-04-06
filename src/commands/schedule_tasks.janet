@@ -49,7 +49,7 @@
           (task/mark-as-missed task (day :date))))
        tasks))
 
-(defn- format-parse-errors [errors]
+(defn- format-errors [errors]
   (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
@@ -72,12 +72,12 @@
   (def argument (arguments "schedule-tasks"))
   (if argument
     (let [load-file-result (file_repository/load argument)
-          error (load-file-result :error)]
-      (if error
-        {:errors [(string command " " (string/ascii-lower error))]}
+          errors (load-file-result :errors)]
+      (if errors
+        {:errors (format-errors errors)}
         (let [parse-result (schedule_parser/parse (load-file-result :text))
               errors (parse-result :errors)]
           (if errors
-            {:errors (format-parse-errors errors)}
+            {:errors (format-errors errors)}
             {:command [schedule-tasks (parse-result :tasks) (date/today)]}))))
     {}))
