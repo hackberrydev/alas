@@ -18,6 +18,9 @@
     (print (to-csv-line contact)))
   plan)
 
+(defn- format-command-errors [command errors]
+  (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -32,8 +35,8 @@
   (def argument (arguments "list-contacts"))
   (if argument
     (let [load-result (contacts_repository/load-contacts argument)
-          error (load-result :error)]
-      (if error
-        {:errors [(string "--list-contacts " (string/ascii-lower error))]}
+          errors (load-result :errors)]
+      (if errors
+        {:errors (format-command-errors "--list-contacts" errors)}
         {:command [print-contacts (load-result :contacts)]}))
     {}))

@@ -51,6 +51,9 @@
 (defn- schedule-birthday-tasks [plan contacts today]
   (schedule-tasks plan contacts today birthday-prefix contact/birthday?))
 
+(defn- format-command-errors [command errors]
+  (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
@@ -64,9 +67,9 @@
   (def argument (arguments "schedule-contacts"))
   (if argument
     (let [load-result (contacts_repository/load-contacts argument)
-          error (load-result :error)
+          errors (load-result :errors)
           contacts (load-result :contacts)]
-      (if error
-        {:errors [(string "--schedule-contacts " (string/ascii-lower error))]}
+      (if errors
+        {:errors (format-command-errors "--schedule-contacts" errors)}
         {:command [schedule-contacts contacts (date/today)]}))
     {}))
