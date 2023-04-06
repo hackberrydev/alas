@@ -191,8 +191,8 @@
     - [O] Talk to Mike
     ```)
   (def parse-result (parse plan-string))
-  (is (parse-result :error))
-  (is (= "Plan can not be parsed" (parse-result :error))))
+  (is (parse-result :errors))
+  (is (= "Plan can not be parsed" (first (parse-result :errors)))))
 
 (deftest parse-when-plan-can-partially-be-parsed
   (def plan-string
@@ -206,8 +206,8 @@
     ## Tomorrow
     ```)
   (def parse-result (parse plan-string))
-  (is (parse-result :error))
+  (is (parse-result :errors))
   (is (= "Plan can not be parsed: last parsed line is line 6"
-         (parse-result :error))))
+         (first (parse-result :errors)))))
 
 (run-tests!)
