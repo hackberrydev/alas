@@ -45,10 +45,10 @@
     (print-errors errors)
     (let [plan-string (load-file-result :text)
           parse-result (plan_parser/parse plan-string)
-          parse-error (parse-result :error)
+          parse-errors (parse-result :errors)
           plan (parse-result :plan)]
-      (if parse-error
-        (print parse-error)
+      (if parse-errors
+        (print-errors parse-errors)
         (let [serialize-empty-inbox (plan_parser/serialize-empty-inbox? plan-string)
               new-plan (run-commands plan file-path arguments)
               new-plan-string (plan_serializer/serialize
