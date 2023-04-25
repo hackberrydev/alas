@@ -43,6 +43,19 @@
   (def result (schedule_parser/parse schedule-string))
   (is (= "Schedule can not be parsed" (first (result :errors)))))
 
+(deftest parse-schedule-when-task-has-multiple-lines
+  (def schedule-string
+    ```
+    # Scheduled Tasks
+
+    - Weekly Meeting (every Tuesday)
+    - Puzzle Storm on Lichess
+    - Deploy the web app (every weekday)
+    ```)
+  (def result (schedule_parser/parse schedule-string))
+  (is (= "Schedule can not be parsed - last parsed task is \"Weekly Meeting\""
+         (first (result :errors)))))
+
 (deftest parse-schedule-when-schedule-is-empty
   (def schedule-string
     ```

@@ -1,4 +1,4 @@
-### ————————————————————————————————————————————————————————————————————————————
+### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a PEG parser that parses schedule string into
 ### task entities.
 
@@ -9,10 +9,18 @@
     :title (* "# " (some (+ :w+ :s+)))
     :tasks (group (any :task))
     :task (replace (* "- " :task-title :task-schedule (? "\n")) ,task/build-scheduled-task)
-    :task-title (replace (capture (some (if-not "(" 1))) ,string/trim)
+    :task-title (replace (capture (some (if-not (+ "(" "\n") 1))) ,string/trim)
     :task-schedule (* "(" (replace (capture (some (+ :w+ :s+ "-"))) ,string/trim) ")")})
 
-## —————————————————————————————————————————————————————————————————————————————
+(defn- task-lines-count
+  ```
+  Returns the number of lines that start with '-' in the schedule string.
+  ```
+  [schedule-string]
+  (length (filter (fn [line] (string/has-prefix? "-" line))
+                  (string/split "\n" schedule-string))))
+
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
 (defn parse
@@ -28,5 +36,10 @@
       (let [tasks (first parse-result)]
         (if (empty? tasks)
           {:errors ["Schedule is empty"]}
-          {:tasks tasks}))
+          (do
+            (if (= (length tasks) (task-lines-count schedule-string))
+              {:tasks tasks}
+              {:errors [(string "Schedule can not be parsed - last parsed task is \""
+                                ((last tasks) :title)
+                                "\"")]}))))
       {:errors ["Schedule can not be parsed"]})))
