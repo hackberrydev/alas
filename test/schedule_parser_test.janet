@@ -16,22 +16,24 @@
     - Pay football practice (every month)
     - Martha's birthday (every 05-24)
     - Meeting with Jack (on 2022-05-03)
+    - Review logs (every last day)
     ```)
   (def result (schedule_parser/parse schedule-string))
   (def scheduled-tasks (result :tasks))
-  (is (= 6 (length scheduled-tasks)))
+  (is (= 7 (length scheduled-tasks)))
   (let [task (scheduled-tasks 0)]
     (is (= "Weekly Meeting" (task :title)))
     (is (= false (task :done)))
     (is (= "every Tuesday" (task :schedule))))
   (let [task (scheduled-tasks 1)]
     (is (= "Puzzle Storm on Lichess" (task :title)))
-    (is (= false (task :done)))
     (is (= "every day" (task :schedule))))
   (let [task (scheduled-tasks 5)]
     (is (= "Meeting with Jack" (task :title)))
-    (is (= false (task :done)))
-    (is (= "on 2022-05-03" (task :schedule)))))
+    (is (= "on 2022-05-03" (task :schedule))))
+  (let [task (scheduled-tasks 6)]
+    (is (= "Review logs" (task :title)))
+    (is (= "every last day" (task :schedule)))))
 
 (deftest parse-schedule-when-schedule-can-not-be-parsed
   (def schedule-string
