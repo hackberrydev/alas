@@ -69,6 +69,26 @@
   (is (not (d/after-or-eq? (d/date 2021 7 1) (d/date 2021 7 15)))))
 
 ## ————————————————————————————————————————————————————————————————————————————————————————————————
+## Test last-day-of-month?
+
+(deftest last-day-of-month?
+  (is (d/last-day-of-month? (d/date 2022 1 31)))
+  (is (d/last-day-of-month? (d/date 2022 2 28)))
+  (is (d/last-day-of-month? (d/date 2022 3 31)))
+  (is (d/last-day-of-month? (d/date 2022 4 30)))
+  (is (d/last-day-of-month? (d/date 2022 5 31)))
+  (is (d/last-day-of-month? (d/date 2022 6 30)))
+  (is (d/last-day-of-month? (d/date 2022 7 31)))
+  (is (d/last-day-of-month? (d/date 2022 8 31)))
+  (is (d/last-day-of-month? (d/date 2022 9 30)))
+  (is (d/last-day-of-month? (d/date 2022 10 31)))
+  (is (d/last-day-of-month? (d/date 2022 11 30)))
+  (is (d/last-day-of-month? (d/date 2022 12 31)))
+  (is (d/last-day-of-month? (d/date 2023 1 31)))
+  (is (not (d/last-day-of-month? (d/date 2022 1 30)))))
+
+
+## ————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test +days
 
 (deftest +days
