@@ -66,6 +66,23 @@
   (is (not (scheduled-for? task (d/date 2022 2 1))))
   (is (not (scheduled-for? task (d/date 2023 1 27)))))
 
+(deftest scheduled-for-last-day-of-month
+  (def task (task/build-scheduled-task "Review logs" "every last day"))
+  (is (scheduled-for? task (d/date 2022 1 31)))
+  (is (scheduled-for? task (d/date 2022 2 28)))
+  (is (scheduled-for? task (d/date 2022 3 31)))
+  (is (scheduled-for? task (d/date 2022 4 30)))
+  (is (scheduled-for? task (d/date 2022 5 31)))
+  (is (scheduled-for? task (d/date 2022 6 30)))
+  (is (scheduled-for? task (d/date 2022 7 31)))
+  (is (scheduled-for? task (d/date 2022 8 31)))
+  (is (scheduled-for? task (d/date 2022 9 30)))
+  (is (scheduled-for? task (d/date 2022 10 31)))
+  (is (scheduled-for? task (d/date 2022 11 30)))
+  (is (scheduled-for? task (d/date 2022 12 31)))
+  (is (scheduled-for? task (d/date 2023 1 31)))
+  (is (not (scheduled-for? task (d/date 2022 1 30)))))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test missed?
 
