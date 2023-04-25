@@ -17,6 +17,10 @@
 (defn- remove-year [formatted-date]
   (string/join (drop 1 (string/split "-" formatted-date)) "-"))
 
+(defn- last-day-of-month? [date]
+  (def tomorrow (date/+days date 1))
+  (not= (date :month) (tomorrow :month)))
+
 # Public
 (defn scheduled-for? [task date]
   (def formatted-date (date/format date true))
@@ -27,7 +31,8 @@
         "every 3 months" (and (= (date :day) 1)
                               (index-of (date :month) [1 4 7 10]))
         (string "every year on " (remove-year formatted-date)) true
-        (string "on " formatted-date) true))
+        (string "on " formatted-date) true
+        "every last day" (last-day-of-month? date)))
 
 (defn- missed-on-day [plan task date]
   (find (fn [day] (and (scheduled-for? task (day :date))
