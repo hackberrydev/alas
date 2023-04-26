@@ -86,6 +86,17 @@
       :day (+ (today :month-day) 1)
       :week-day (week-day-string (today :week-day))}))
 
+(defn +days [date n]
+  (def new-date-time (+ (to-time date) (* n seconds-in-day)))
+  (from-os-date-struct (os/date new-date-time)))
+
+(defn -days [date n]
+  (def new-date-time (- (to-time date) (* n seconds-in-day)))
+  (from-os-date-struct (os/date new-date-time)))
+
+(defn days-from-now [n]
+  (+days (today) n))
+
 (defn equal?
   [d1 d2]
   (= (to-time d1) (to-time d2)))
@@ -112,13 +123,10 @@
  [d1 d2]
  (>= (to-time d1) (to-time d2)))
 
-(defn +days [date n]
-  (def new-date-time (+ (to-time date) (* n seconds-in-day)))
-  (from-os-date-struct (os/date new-date-time)))
-
-(defn -days [date n]
-  (def new-date-time (- (to-time date) (* n seconds-in-day)))
-  (from-os-date-struct (os/date new-date-time)))
-
-(defn days-from-now [n]
-  (+days (today) n))
+(defn last-day-of-month?
+  ```
+  Returns true if date is the last day of a month.
+  ```
+  [date]
+  (def tomorrow (+days date 1))
+  (not= (date :month) (tomorrow :month)))
