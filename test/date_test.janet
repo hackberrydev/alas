@@ -87,6 +87,18 @@
   (is (d/last-day-of-month? (d/date 2023 1 31)))
   (is (not (d/last-day-of-month? (d/date 2022 1 30)))))
 
+## ————————————————————————————————————————————————————————————————————————————————————————————————
+## Test last-Friday-of-month?
+
+(deftest last-friday-of-month?
+  (is (d/last-friday-of-month? (d/date 2022 1 28)))
+  (is (d/last-friday-of-month? (d/date 2022 2 25)))
+  (is (d/last-friday-of-month? (d/date 2022 3 25)))
+  (is (d/last-friday-of-month? (d/date 2022 4 29)))
+  (is (d/last-friday-of-month? (d/date 2022 5 27)))
+  (is (not (d/last-friday-of-month? (d/date 2022 1 31))))
+  (is (not (d/last-friday-of-month? (d/date 2022 1 21))))
+  (is (not (d/last-friday-of-month? (d/date 2022 2 11)))))
 
 ## ————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test +days

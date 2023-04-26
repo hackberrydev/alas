@@ -83,6 +83,15 @@
   (is (scheduled-for? task (d/date 2023 1 31)))
   (is (not (scheduled-for? task (d/date 2022 1 30)))))
 
+(deftest scheduled-for-last-Friday-of-month
+  (def task (task/build-scheduled-task "Review logs" "every last Friday"))
+  (is (scheduled-for? task (d/date 2022 1 28)))
+  (is (scheduled-for? task (d/date 2022 2 25)))
+  (is (scheduled-for? task (d/date 2022 3 25)))
+  (is (scheduled-for? task (d/date 2022 4 29)))
+  (is (scheduled-for? task (d/date 2022 5 27)))
+  (is (not (scheduled-for? task (d/date 2022 1 31)))))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test missed?
 
