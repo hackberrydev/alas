@@ -125,8 +125,17 @@
 
 (defn last-day-of-month?
   ```
-  Returns true if date is the last day of a month.
+  Returns true if the date is the last day of a month.
   ```
   [date]
   (def tomorrow (+days date 1))
   (not= (date :month) (tomorrow :month)))
+
+(defn last-friday-of-month?
+  ```
+  Returns true if the date is the last friday of a month.
+  ```
+  [date]
+  (def next-week (+days date 7))
+  (and (= (date :week-day) "Friday")
+       (not= (date :month) (next-week :month))))
