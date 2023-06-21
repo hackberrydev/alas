@@ -1,11 +1,12 @@
-(import testament :prefix "" :exit true)
+(use judge)
+
 (import ../src/date :as d)
 (import ../src/schedule_parser)
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test parse-schedule
 
-(deftest parse-schedule
+(deftest "parses the schedule"
   (def schedule-string
     ```
     # Scheduled Tasks
@@ -20,22 +21,22 @@
     ```)
   (def result (schedule_parser/parse schedule-string))
   (def scheduled-tasks (result :tasks))
-  (is (= 7 (length scheduled-tasks)))
+  (test (length scheduled-tasks) 7)
   (let [task (scheduled-tasks 0)]
-    (is (= "Weekly Meeting" (task :title)))
-    (is (= false (task :done)))
-    (is (= "every Tuesday" (task :schedule))))
+    (test (task :title) "Weekly Meeting")
+    (test (task :done) false)
+    (test (task :schedule) "every Tuesday"))
   (let [task (scheduled-tasks 1)]
-    (is (= "Puzzle Storm on Lichess" (task :title)))
-    (is (= "every day" (task :schedule))))
+    (test (task :title) "Puzzle Storm on Lichess")
+    (test (task :schedule) "every day"))
   (let [task (scheduled-tasks 5)]
-    (is (= "Meeting with Jack" (task :title)))
-    (is (= "on 2022-05-03" (task :schedule))))
+    (test (task :title) "Meeting with Jack")
+    (test (task :schedule) "on 2022-05-03"))
   (let [task (scheduled-tasks 6)]
-    (is (= "Review logs" (task :title)))
-    (is (= "every last day" (task :schedule)))))
+    (test (task :title) "Review logs")
+    (test (task :schedule) "every last day")))
 
-(deftest parse-schedule-when-schedule-can-not-be-parsed
+(deftest "returns an error when the schedule can't be parsed"
   (def schedule-string
     ```
     ## Schedule
@@ -43,9 +44,9 @@
     * One (always)
     ```)
   (def result (schedule_parser/parse schedule-string))
-  (is (= "Schedule can not be parsed" (first (result :errors)))))
+  (test (first (result :errors)) "Schedule can not be parsed"))
 
-(deftest parse-schedule-when-task-has-multiple-lines
+(deftest "returns an error when the schedule can be partially parsed"
   (def schedule-string
     ```
     # Scheduled Tasks
@@ -55,15 +56,14 @@
     - Deploy the web app (every weekday)
     ```)
   (def result (schedule_parser/parse schedule-string))
-  (is (= "Schedule can not be parsed - last parsed task is \"Weekly Meeting\""
-         (first (result :errors)))))
+  (test (first (result :errors))
+        "Schedule can not be parsed - last parsed task is \"Weekly Meeting\""))
 
-(deftest parse-schedule-when-schedule-is-empty
+
+(deftest "returns an error when the schedule is empty"
   (def schedule-string
     ```
     # Scheduled Tasks
     ```)
   (def result (schedule_parser/parse schedule-string))
-  (is (= "Schedule is empty" (first (result :errors)))))
-
-(run-tests!)
+  (test (first (result :errors)) "Schedule is empty"))

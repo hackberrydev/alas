@@ -23,4 +23,4 @@ blocks:
             - cd
             - checkout
             - sudo jpm deps
-            - jpm test
+            - judge

@@ -1,4 +1,4 @@
-(import testament :prefix "" :exit true)
+(use judge)
 
 (import ../src/contact :prefix "")
 (import ../src/date :as d)
@@ -6,59 +6,57 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-contact
 
-(deftest build-contact-with-name
+(deftest "builds contact with a name"
   (def contact (build-contact "John Doe"))
-  (is (= (contact :name) "John Doe"))
-  (is (nil? (contact :category)))
-  (is (nil? (contact :birthday)))
-  (is (nil? (contact :last-contact))))
+  (test (contact :name) "John Doe")
+  (test (nil? (contact :category)) true)
+  (test (nil? (contact :birthday)) true)
+  (test (nil? (contact :last-contact)) true))
 
-(deftest build-contact-with-category
+(deftest "builds contact with a category"
   (def contact (build-contact "John Doe" :category :b))
-  (is (= (contact :name) "John Doe"))
-  (is (= :b (contact :category)))
-  (is (nil? (contact :birthday)))
-  (is (nil? (contact :last-contact))))
+  (test (contact :name) "John Doe")
+  (test (contact :category) :b)
+  (test (nil? (contact :birthday)) true)
+  (test (nil? (contact :last-contact)) true))
 
-(deftest build-contact-with-string-category
+(deftest "builds contact with a string as category"
   (def contact (build-contact "John Doe" :category "B"))
-  (is (= :b (contact :category))))
+  (test (contact :category) :b))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test next-contact-date
 
-(deftest next-contact-date-with-category-a
+(deftest "calculates the next contact date when a category is :a"
   (def contact (build-contact "John Doe" :last-contact (d/date 2022 4 1) :category :a))
-  (is (d/equal? (d/date 2022 4 21) (next-contact-date contact))))
+  (test (d/equal? (d/date 2022 4 21) (next-contact-date contact)) true))
 
-(deftest next-contact-date-with-category-b
+(deftest "calculates the next contact date when a category is :b"
   (def contact (build-contact "John Doe" :last-contact (d/date 2022 4 1) :category :b))
-  (is (d/equal? (d/date 2022 5 31) (next-contact-date contact))))
+  (test (d/equal? (d/date 2022 5 31) (next-contact-date contact)) true))
 
-(deftest next-contact-date-without-category
+(deftest "returns nil when there's no category"
   (def contact (build-contact "John Doe" :last-contact (d/date 2022 4 1)))
-  (is (nil? (next-contact-date contact))))
+  (test (nil? (next-contact-date contact)) true))
 
-(deftest next-contact-date-without-last-contact
+(deftest "returns nil when the last contact is blank"
   (def contact (build-contact "John Doe" :category :b))
-  (is (nil? (next-contact-date contact))))
+  (test (nil? (next-contact-date contact)) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test contact-on-date?
 
-(deftest contact-on-date?
+(deftest "returns boolean that indicates if the contact should be contacted on the date"
   (def contact (build-contact "John Doe" :last-contact (d/date 2022 4 1) :category :a))
-  (is (contact-on-date? contact (d/date 2022 4 21)))
-  (is (contact-on-date? contact (d/date 2022 5 1)))
-  (is (not (contact-on-date? contact (d/date 2022 4 20))))
-  (is (not (contact-on-date? contact (d/date 2022 4 2)))))
+  (test (contact-on-date? contact (d/date 2022 4 21)) true)
+  (test (contact-on-date? contact (d/date 2022 5 1)) true)
+  (test (not (contact-on-date? contact (d/date 2022 4 20))) true)
+  (test (not (contact-on-date? contact (d/date 2022 4 2))) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test birthday?
 
-(deftest birthday?
+(deftest "returns boolean that indicates if the date is the contacts birthday"
   (def contact (build-contact "John Doe" :birthday "04-01"))
-  (is (birthday? contact (d/date 2022 4 1)))
-  (is (not (birthday? contact (d/date 2022 4 20)))))
-
-(run-tests!)
+  (test (birthday? contact (d/date 2022 4 1)) true)
+  (test (not (birthday? contact (d/date 2022 4 20))) true))

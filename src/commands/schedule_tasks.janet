@@ -22,10 +22,10 @@
   (def formatted-date (date/format date true))
   (case (task :schedule)
         (string "every " (date :week-day)) true
-        "every weekday" (index-of (date :week-day) weekdays)
+        "every weekday" (number? (index-of (date :week-day) weekdays))
         "every month" (= (date :day) 1)
         "every 3 months" (and (= (date :day) 1)
-                              (index-of (date :month) [1 4 7 10]))
+                              (number? (index-of (date :month) [1 4 7 10])))
         (string "every year on " (remove-year formatted-date)) true
         (string "on " formatted-date) true
         "every last day" (date/last-day-of-month? date)

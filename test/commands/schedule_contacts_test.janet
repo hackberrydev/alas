@@ -1,4 +1,4 @@
-(import testament :prefix "" :exit true)
+(use judge)
 
 (import ../../src/date :as d)
 (import ../../src/contact)
@@ -10,33 +10,33 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test schedule-contacts
 
-(deftest schedule-contacts-for-today
+(deftest "schedules contacts for today"
   (def contact (contact/build-contact "John Doe" :last-contact (d/date 2022 4 1) :category :a))
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2022 4 25))]))
   (schedule-contacts plan @[contact] (d/date 2022 4 25))
   (let [day ((plan :days) 0)
         task ((day :tasks) 0)]
-    (is (= "Contact John Doe" (task :title)))
-    (is (= false (task :done)))
-    (is (empty? (task :body)))))
+    (test (task :title) "Contact John Doe")
+    (test (task :done) false)
+    (test (empty? (task :body)) true)))
 
-(deftest schedule-contacts-for-future-day
+(deftest "schedules contacts for future"
   (def contact (contact/build-contact "John Doe" :last-contact (d/date 2022 4 1) :category :a))
   (def day-1 (day/build-day (d/date 2022 4 22)))
   (def day-2 (day/build-day (d/date 2022 4 21)))
   (def day-3 (day/build-day (d/date 2022 4 20)))
   (def plan (plan/build-plan :days @[day-1 day-2 day-3]))
   (schedule-contacts plan @[contact] (d/date 2022 4 20))
-  (is (empty? (day-1 :tasks)))
-  (is (not (empty? (day-2 :tasks))))
-  (is (empty? (day-3 :tasks)))
+  (test (empty? (day-1 :tasks)) true)
+  (test (not (empty? (day-2 :tasks))) true)
+  (test (empty? (day-3 :tasks)) true)
   (if (= 1 (length (day-2 :tasks)))
     (let [task ((day-2 :tasks) 0)]
-      (is (= "Contact John Doe" (task :title)))
-      (is (= false (task :done)))
-      (is (empty? (task :body))))))
+      (test (task :title) "Contact John Doe")
+      (test (task :done) false)
+      (test (empty? (task :body)) true))))
 
-(deftest schedule-contact-with-birthday
+(deftest "schedules contacts with birthday"
   (def contact (contact/build-contact "John Doe"
                                       :birthday "04-25"
                                       :last-contact (d/date 2022 4 21)
@@ -45,11 +45,11 @@
   (schedule-contacts plan @[contact] (d/date 2022 4 25))
   (let [day ((plan :days) 0)
         task ((day :tasks) 0)]
-    (is (= "Congratulate birthday to John Doe" (task :title)))
-    (is (= false (task :done)))
-    (is (empty? (task :body)))))
+    (test (task :title) "Congratulate birthday to John Doe")
+    (test (task :done) false)
+    (test (empty? (task :body)) true)))
 
-(deftest schedule-contact-with-missed-birthday
+(deftest "schedules contacts with missed birthday"
   (def contact (contact/build-contact "John Doe"
                                       :birthday "04-25"
                                       :last-contact (d/date 2022 4 21)
@@ -59,10 +59,10 @@
   (schedule-contacts plan @[contact] (d/date 2022 4 26))
   (let [day ((plan :days) 0)
         task ((day :tasks) 0)]
-    (is (= "Congratulate birthday to John Doe" (task :title)))
-    (is (d/equal? (d/date 2022 4 25) (task :missed-on)))))
+    (test (task :title) "Congratulate birthday to John Doe")
+    (test (d/equal? (d/date 2022 4 25) (task :missed-on)) true)))
 
-(deftest schedule-contact-with-birthday-on-a-missed-day
+(deftest "schedules a contact with the birthday on a missed day"
   (def contact (contact/build-contact "John Doe"
                                       :birthday "04-25"
                                       :last-contact (d/date 2022 4 21)
@@ -73,13 +73,13 @@
                             @[(task/build-task "Weekly meeting" false)]))
   (def plan (plan/build-plan :days @[day-1 day-2]))
   (schedule-contacts plan @[contact] (d/date 2022 4 26))
-  (is (not (empty? (day-1 :tasks))))
-  (is (= 1 (length (day-2 :tasks))))
+  (test (not (empty? (day-1 :tasks))) true)
+  (test (length (day-2 :tasks)) 1)
   (if (not (empty? (day-1 :tasks)))
     (let [task ((day-1 :tasks) 0)]
-      (is (= "Congratulate birthday to John Doe" (task :title))))))
+      (test (task :title) "Congratulate birthday to John Doe"))))
 
-(deftest schedule-contact-with-birthday-on-a-future-day
+(deftest "schedules contact with the birthday on a day in future"
   (def contact (contact/build-contact "John Doe"
                                       :birthday "04-26"
                                       :last-contact (d/date 2022 4 21)
@@ -88,14 +88,14 @@
   (def day-2 (day/build-day (d/date 2022 4 25)))
   (def plan (plan/build-plan :days @[day-1 day-2]))
   (schedule-contacts plan @[contact] (d/date 2022 4 25))
-  (is (not (empty? (day-1 :tasks))))
-  (is (empty? (day-2 :tasks)))
+  (test (not (empty? (day-1 :tasks))) true)
+  (test (empty? (day-2 :tasks)) true)
   (if (not (empty? (day-1 :tasks)))
     (let [task ((day-1 :tasks) 0)]
-      (is (= "Congratulate birthday to John Doe" (task :title)))
-      (is (not (task :missed-on))))))
+      (test (task :title) "Congratulate birthday to John Doe")
+      (test (not (task :missed-on)) true))))
 
-(deftest schedule-contact-does-not-schedule-after-missed-date-twice
+(deftest "doesn't schedule contact after missed date twice"
   (def contact (contact/build-contact "John Doe"
                                       :birthday "04-25"
                                       :last-contact (d/date 2022 4 21)
@@ -109,24 +109,22 @@
                             @[(task/build-task "Weekly meeting" false)]))
   (def plan (plan/build-plan :days @[day-1 day-2 day-3]))
   (schedule-contacts plan @[contact] (d/date 2022 4 27))
-  (is (empty? (day-1 :tasks))))
+  (test (empty? (day-1 :tasks)) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
 
-(deftest build-command-without-matching-argument
+(deftest "doesn't build the command when arguments are not matching"
   (def arguments {"stats" true})
-  (is (empty? (build-command arguments))))
+  (test (empty? (build-command arguments)) true))
 
-(deftest build-command-with-correct-arguments
+(deftest "builds the command when arguments are matching"
   (def arguments {"schedule-contacts" "test/examples/contacts"})
   (def result (build-command arguments))
-  (is (tuple? (result :command))))
+  (test (tuple? (result :command)) true))
 
-(deftest build-command-when-contacts-directory-does-not-exist
+(deftest "returns an error when the contacts directory doesn't exist"
   (def arguments {"schedule-contacts" "test/examples/people"})
   (def result (build-command arguments))
-  (is (nil? (result :command)))
-  (is (= "--schedule-contacts directory does not exist." (first (result :errors)))))
-
-(run-tests!)
+  (test (nil? (result :command)) true)
+  (test (first (result :errors)) "--schedule-contacts directory does not exist."))
