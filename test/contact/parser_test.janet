@@ -1,11 +1,12 @@
-(import testament :prefix "" :exit true)
+(use judge)
+
 (import ../../src/contact/parser :prefix "")
 (import ../../src/date :as d)
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test parse
 
-(deftest parse-contact
+(deftest "parses contacts"
   (def contact-string
     ```
     # John Doe
@@ -22,12 +23,12 @@
     Grabbed a beer and talked about stuff.
     ```)
   (def contact ((parse contact-string) :contact))
-  (is (= "John Doe" (contact :name)))
-  (is (= :a (contact :category)))
-  (is (= "04-23" (contact :birthday)))
-  (is (= (d/date 2022 2 15) (contact :last-contact))))
+  (test (contact :name) "John Doe")
+  (test (contact :category) :a)
+  (test (contact :birthday) "04-23")
+  (test (= (d/date 2022 2 15) (contact :last-contact)) true))
 
-(deftest parse-contact-without-details
+(deftest "parses contacts without details"
   (def contact-string
     ```
     # John Doe
@@ -37,10 +38,10 @@
     Talked over the phone about stuff.
     ```)
   (def contact ((parse contact-string) :contact))
-  (is (= "John Doe" (contact :name)))
-  (is (= (d/date 2022 2 19) (contact :last-contact))))
+  (test (contact :name) "John Doe")
+  (test (= (d/date 2022 2 19) (contact :last-contact)) true))
 
-(deftest parse-contact-with-extra-details
+(deftest "parses contacts with extra details"
   (def contact-string
     ```
     # John Doe
@@ -52,10 +53,10 @@
     Talked over the phone about stuff.
     ```)
   (def contact ((parse contact-string) :contact))
-  (is (= "John Doe" (contact :name)))
-  (is (= (d/date 2022 2 19) (contact :last-contact))))
+  (test (contact :name) "John Doe")
+  (test (= (d/date 2022 2 19) (contact :last-contact)) true))
 
-(deftest parse-contact-with-non-ascii-characters-in-name
+(deftest "parses contacts with non ASCII characters in the name"
   (def contact-string
     ```
     # Petar Petrović
@@ -65,9 +66,9 @@
     Talked over the phone about stuff.
     ```)
   (def contact ((parse contact-string) :contact))
-  (is (= "Petar Petrović" (contact :name))))
+  (test (contact :name) "Petar Petrović"))
 
-(deftest parse-contact-with-non-ascii-characters-in-extra-details
+(deftest "parses contacts with non ASCII characters in extra details"
   (def contact-string
     ```
     # John Doe
@@ -79,10 +80,10 @@
     Talked over the phone about stuff.
     ```)
   (def contact ((parse contact-string) :contact))
-  (is (= "John Doe" (contact :name)))
-  (is (= (d/date 2022 2 19) (contact :last-contact))))
+  (test (contact :name) "John Doe")
+  (test (= (d/date 2022 2 19) (contact :last-contact)) true))
 
-(deftest parse-contact-with-id-in-name-line
+(deftest "parses contacts with ID in the name line"
   (def contact-string
     ```
     # 202201081224 John Doe
@@ -92,7 +93,5 @@
     Talked over the phone about stuff.
     ```)
   (def contact ((parse contact-string) :contact))
-  (is (= "John Doe" (contact :name)))
-  (is (= (d/date 2022 2 19) (contact :last-contact))))
-
-(run-tests!)
+  (test (contact :name) "John Doe")
+  (test (= (d/date 2022 2 19) (contact :last-contact)) true))

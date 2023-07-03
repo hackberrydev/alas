@@ -1,4 +1,4 @@
-(import testament :prefix "" :exit true)
+(use judge)
 
 (import ../../src/date :as "d")
 (import ../../src/plan)
@@ -9,7 +9,7 @@
 ## ————————————————————————————————————————————————————————————————————————————————————————————————–
 ## Test report
 
-(deftest report
+(deftest "returns the specified number of tasks"
   (def plan
     (plan/build-plan
       :days @[(day/build-day (d/date 2020 8 7) @[]
@@ -23,27 +23,25 @@
               (day/build-day (d/date 2020 8 4) @[]
                              @([(task/build-task "Task 5" true)]))]))
   (def tasks (report plan (d/date 2020 8 7) 2))
-  (is (= 3 (length tasks)))
-  (is (= "Task 2" ((tasks 0) :title)))
-  (is (= "Task 3" ((tasks 1) :title)))
-  (is (= "Task 4" ((tasks 2) :title))))
+  (test (length tasks) 3)
+  (test ((tasks 0) :title) "Task 2")
+  (test ((tasks 1) :title) "Task 3")
+  (test ((tasks 2) :title) "Task 4"))
 
 ## ————————————————————————————————————————————————————————————————————————————————————————————————–
 ## Test build-command
 
-(deftest build-command-without-matching-argument
+(deftest "doesn't build the command when arguments are not matching"
   (def arguments {"stats" true})
-  (is (empty? (build-command arguments))))
+  (test (empty? (build-command arguments)) true))
 
-(deftest build-command-with-correct-arguments
+(deftest "builds the command when arguments are matching"
   (def arguments {"report" "7"})
   (def result (build-command arguments))
-  (is (tuple? (result :command))))
+  (test (tuple? (result :command)) true))
 
-(deftest build-command-with-incorrect-arguments
+(deftest "returns error when arguments are not correct"
   (def arguments {"report" "seven"})
   (def result (build-command arguments))
-  (is (nil? (result :command)))
-  (is (= "--report argument is not a number." (first (result :errors)))))
-
-(run-tests!)
+  (test (nil? (result :command)) true)
+  (test (first (result :errors)) "--report argument is not a number."))

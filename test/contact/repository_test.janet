@@ -1,19 +1,18 @@
-(import testament :prefix "" :exit true)
+(use judge)
+
 (import ../../src/contact/repository :prefix "")
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test load-contacts
 
-(deftest load-contacts-from-directory
+(deftest "loads contacts from a directory"
   (def path (os/realpath "test/examples/contacts"))
   (def contacts ((load-contacts path) :contacts))
   (def names (sort (map (fn [contact] (contact :name)) contacts)))
-  (is (= 2 (length contacts)))
-  (is (= "Jane Doe" (names 0)))
-  (is (= "John Doe" (names 1))))
+  (test (length contacts) 2)
+  (test (names 0) "Jane Doe")
+  (test (names 1) "John Doe"))
 
-(deftest load-contacts-when-directory-does-not-exist
+(deftest "returns an error when the directory doesn't exist"
   (def result (load-contacts "test/missing-directory"))
-  (is (= "Directory does not exist" (first (result :errors)))))
-
-(run-tests!)
+  (test (first (result :errors)) "Directory does not exist"))

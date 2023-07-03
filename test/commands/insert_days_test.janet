@@ -1,4 +1,5 @@
-(import testament :prefix "" :exit true)
+(use judge)
+
 (import ../../src/date :as "d")
 (import ../../src/day)
 (import ../../src/plan)
@@ -7,69 +8,72 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test insert-days
 
-(deftest insert-day-at-top
+(deftest "insert day at the top"
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2020 8 3))
                                      (day/build-day (d/date 2020 8 2))]))
   (def new-plan (insert-days plan (d/date 2020 8 4) (d/date 2020 8 4)))
   (def day-1 (first (new-plan :days)))
-  (is (= 3 (length (new-plan :days))))
-  (is (= (d/date 2020 8 4) (day-1 :date)))
-  (is (empty? (day-1 :tasks))))
+  (test (length (new-plan :days)) 3)
+  (test (day-1 :date)
+        {:day 4 :month 8 :week-day "Tuesday" :year 2020})
+  (test (empty? (day-1 :tasks)) true))
 
-(deftest insert-three-days-at-top
-  (print "insert-three-days-at-top")
+(deftest "insert three days at the top"
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2020 8 3))
                                      (day/build-day (d/date 2020 8 2))]))
   (def new-plan (insert-days plan (d/date 2020 8 7) (d/date 2020 8 5)))
   (def day-1 (first (new-plan :days)))
-  (is (= 5 (length (new-plan :days))))
-  (is (= (d/date 2020 8 7) (day-1 :date))))
+  (test (length (new-plan :days)) 5)
+  (test (day-1 :date)
+        {:day 7 :month 8 :week-day "Friday" :year 2020}))
 
-(deftest insert-days-in-middle
+(deftest "insert days in the middle"
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2020 8 6))
                                      (day/build-day (d/date 2020 8 2))]))
   (def new-plan (insert-days plan (d/date 2020 8 4) (d/date 2020 8 4)))
   (def day-2 ((new-plan :days) 1))
-  (is (= 3 (length (new-plan :days))))
-  (is (= (d/date 2020 8 4) (day-2 :date))))
+  (test (length (new-plan :days)) 3)
+  (test (day-2 :date)
+        {:day 4 :month 8 :week-day "Tuesday" :year 2020}))
 
-(deftest insert-days-when-today-already-exists
+(deftest "insert days when today already exists"
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2020 8 6))
                                      (day/build-day (d/date 2020 8 4))]))
   (def new-plan (insert-days plan (d/date 2020 8 6) (d/date 2020 8 4)))
   (def day-2 ((new-plan :days) 1))
-  (is (= 3 (length (new-plan :days))))
-  (is (= (d/date 2020 8 5) (day-2 :date))))
+  (test (length (new-plan :days)) 3)
+  (test (day-2 :date)
+        {:day 5 :month 8 :week-day "Wednesday" :year 2020}))
 
-(deftest insert-days-with-empty-todo
+(deftest "insert days with empty todo"
   (def plan (plan/build-plan))
   (def new-plan (insert-days plan (d/date 2020 8 4) (d/date 2020 8 4)))
-  (is (= 1 (length (new-plan :days))))
-  (is (= (d/date 2020 8 4) ((first (new-plan :days)) :date))))
+  (test (length (new-plan :days)) 1)
+  (test ((first (new-plan :days)) :date)
+        {:day 4 :month 8 :week-day "Tuesday" :year 2020}))
 
-(deftest insert-days-with-one-day-in-future
+(deftest "insert days with one day in the future"
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2020 8 6))]))
   (def new-plan (insert-days plan(d/date 2020 8 5) (d/date 2020 8 4)))
   (def day-2 ((new-plan :days) 1))
-  (is (= 3 (length (new-plan :days))))
-  (is (= (d/date 2020 8 5) (day-2 :date))))
+  (test (length (new-plan :days)) 3)
+  (test (day-2 :date)
+        {:day 5 :month 8 :week-day "Wednesday" :year 2020}))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
 
-(deftest build-command-without-matching-arguments
+(deftest "without matching arguments"
   (def arguments {"stats" true})
-  (is (empty? (build-command arguments))))
+  (test (empty? (build-command arguments)) true))
 
-(deftest build-command-with-correct-arguments
+(deftest "with correct arguments"
   (def arguments {"insert-days" "3"})
   (def result (build-command arguments))
-  (is (tuple? (result :command))))
+  (test (tuple? (result :command)) true))
 
-(deftest build-command-with-incorrect-arguments
+(deftest "with incorrect arguments"
   (def arguments {"insert-days" "three"})
   (def result (build-command arguments))
-  (is (nil? (result :command)))
-  (is (= "--insert-days argument is not a number." (first (result :errors)))))
-
-(run-tests!)
+  (test (nil? (result :command)) true)
+  (test (first (result :errors)) "--insert-days argument is not a number."))

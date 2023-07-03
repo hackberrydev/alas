@@ -10,9 +10,9 @@ blocks:
       jobs:
         - name: 'Tests'
           commands:
-            - wget https://github.com/janet-lang/janet/archive/refs/tags/v1.21.1.tar.gz
-            - tar xvf v1.21.1.tar.gz
-            - cd janet-1.21.1
+            - wget https://github.com/janet-lang/janet/archive/refs/tags/v1.28.0.tar.gz
+            - tar xvf v1.28.0.tar.gz
+            - cd janet-1.28.0
             - make
             - sudo make install
             - cd
@@ -23,4 +23,4 @@ blocks:
             - cd
             - checkout
             - sudo jpm deps
-            - jpm test
+            - judge

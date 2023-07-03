@@ -1,4 +1,4 @@
-(import testament :prefix "" :exit true)
+(use judge)
 
 (import ../../src/date :as "d")
 (import ../../src/plan)
@@ -9,7 +9,7 @@
 ## ————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test remove-empty-days
 
-(deftest remove-empty-days-in-past
+(deftest "removes empty days in the past"
   (def plan
     (plan/build-plan
       :days @[(day/build-day (d/date 2020 8 7))
@@ -18,20 +18,20 @@
               (day/build-day (d/date 2020 8 3) @[]
                              @[(task/build-task "Buy milk" true)])]))
   (def new-plan (remove-empty-days plan (d/date 2020 8 6)))
-  (is (= 2 (length (new-plan :days))))
-  (is (= (d/date 2020 8 7) (((new-plan :days) 0) :date)))
-  (is (= (d/date 2020 8 3) (((new-plan :days) 1) :date))))
+  (test (length (new-plan :days)) 2)
+  (test (((new-plan :days) 0) :date)
+        {:day 7 :month 8 :week-day "Friday" :year 2020})
+  (test (((new-plan :days) 1) :date)
+        {:day 3 :month 8 :week-day "Monday" :year 2020}))
 
 ## ————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
 
-(deftest build-command-without-matching-argument
+(deftest "doesn't build the command when arguments are not matching"
   (def arguments {"stats" true})
-  (is (empty? (build-command arguments))))
+  (test (empty? (build-command arguments)) true))
 
-(deftest build-command-with-correct-arguments
+(deftest "builds the command when arguments are matching"
   (def arguments {"remove-empty-days" true})
   (def result (build-command arguments))
-  (is (tuple? (result :command))))
-
-(run-tests!)
+  (test (tuple? (result :command)) true))

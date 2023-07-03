@@ -1,4 +1,5 @@
-(import testament :prefix "" :exit true)
+(use judge)
+
 (import ../../src/plan/serializer :prefix "")
 (import ../../src/date :as d)
 (import ../../src/day)
@@ -6,7 +7,7 @@
 (import ../../src/plan)
 (import ../../src/task)
 
-(deftest serialize-plan
+(deftest "serializes a plan"
   (def plan
     (plan/build-plan
       :title "Main TODO"
@@ -49,9 +50,9 @@
        - [X] Fix the flaky test
 
       ```)
-  (is (= plan-string (serialize plan))))
+  (test (= (serialize plan) plan-string) true))
 
-(deftest serialize-plan-with-empty-inbox
+(deftest "serializes a plan with an empty inbox"
   (def plan
     (plan/build-plan :title "My Plan"
                      :days @[(day/build-day (d/date 2020 8 1))]))
@@ -64,9 +65,9 @@
     ## 2020-08-01, Saturday
 
     ```)
-  (is (= plan-string (serialize plan {:serialize-empty-inbox true}))))
+  (test (= (serialize plan {:serialize-empty-inbox true}) plan-string) true))
 
-(deftest serialize-plan-without-inbox
+(deftest "serializes a plan without an inbox"
   (def plan
     (plan/build-plan :title "My Plan"
                      :days @[(day/build-day (d/date 2020 8 1))]))
@@ -77,6 +78,4 @@
     ## 2020-08-01, Saturday
 
     ```)
-  (is (= plan-string (serialize plan))))
-
-(run-tests!)
+  (test (= (serialize plan) plan-string) true))
