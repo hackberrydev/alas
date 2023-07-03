@@ -1,17 +1,15 @@
-(import testament :prefix "" :exit true)
+(use judge)
 
 (import ../../src/commands/stats :prefix "")
 
 ## ————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
 
-(deftest build-command-without-matching-argument
+(deftest "doesn't build the command when arguments are not matching"
   (def arguments {"report" true})
-  (is (empty? (build-command arguments))))
+  (test (empty? (build-command arguments)) true))
 
-(deftest build-command-with-correct-arguments
+(deftest "builds the command when arguments are matching"
   (def arguments {"stats" true})
   (def result (build-command arguments))
-  (is (tuple? (result :command))))
-
-(run-tests!)
+  (test (tuple? (result :command)) true))

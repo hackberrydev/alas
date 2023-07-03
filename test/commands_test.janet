@@ -1,4 +1,4 @@
-(import testament :prefix "" :exit true)
+(use judge)
 
 (import ../src/date :as d)
 (import ../src/day)
@@ -19,34 +19,34 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-commands
 
-(deftest build-commands-when-there-are-no-errors
+(deftest "when there are no errors"
   (def arguments {"skip-backup" true
                   "report" "7"
                   "stats" true
                   "list-contacts" "test/examples/contacts"})
   (def commands (build-commands arguments file-path))
-  (is (= 3 (length commands)))
+  (test (length commands) 3)
   (loop [command :in commands]
-    (is (command :command))
-    (is (not (command :errors)))))
+    (test (not (nil? (command :command))) true)
+    (test (nil? (command :errors)) true)))
 
-(deftest build-commands-when-there-are-errors
+(deftest "when there are errors"
   (def arguments {"skip-backup" true "report" "seven"})
   (def commands (build-commands arguments file-path))
-  (is (= 1 (length commands)))
-  (is ((first commands) :errors)))
+  (test (length commands) 1)
+  (test (not (nil? ((first commands) :errors))) true))
 
-(deftest build-commands-when-not-skipping-backup
+(deftest"when not skipping backup"
   (def arguments {"report" "7"})
   (def commands (build-commands arguments file-path))
-  (is (= 2 (length commands)))
-  (is ((commands 0) :command))
-  (is ((commands 1) :command)))
+  (test (length commands) 2)
+  (test (not (nil? ((commands 0) :command))) true)
+  (test (not (nil? ((commands 1) :command))) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test run-commands
 
-(deftest run-commands-with-valid-arguments
+(deftest "with valid arguments"
   (def today (d/today))
   (def plan (plan/build-plan
               :days @[(day/build-day today)
@@ -56,13 +56,13 @@
   (def arguments {"skip-backup" true "remove-empty-days" true "insert-days" "3"})
   (def new-plan (run-commands plan file-path arguments))
   (def days (new-plan :days))
-  (is (= 4 (length days)))
-  (is (= (d/+days today 2) ((days 0) :date)))
-  (is (= (d/+days today 1) ((days 1) :date)))
-  (is (= today ((days 2) :date)))
-  (is (= (d/date 2020 8 2) ((days 3) :date))))
+  (test (length days) 4)
+  (test (= (d/+days today 2) ((days 0) :date)) true)
+  (test (= (d/+days today 1) ((days 1) :date)) true)
+  (test (= today ((days 2) :date)) true)
+  (test (= (d/date 2020 8 2) ((days 3) :date)) true))
 
-(deftest run-commands-with-invalid-arguments
+(deftest "with invalid arguments"
   (def today (d/today))
   (def plan (plan/build-plan
               :days @[(day/build-day today)
@@ -72,9 +72,7 @@
   (def arguments {"skip-backup" true "remove-empty-days" true "insert-days" "three"})
   (def new-plan (run-commands plan file-path arguments))
   (def days (new-plan :days))
-  (is (= 3 (length days)))
-  (is (= today ((days 0) :date)))
-  (is (= (d/date 2020 8 4) ((days 1) :date)))
-  (is (= (d/date 2020 8 2) ((days 2) :date))))
-
-(run-tests!)
+  (test (length days) 3)
+  (test (= today ((days 0) :date)) true)
+  (test (= (d/date 2020 8 4) ((days 1) :date)) true)
+  (test (= (d/date 2020 8 2) ((days 2) :date)) true))

@@ -1,4 +1,4 @@
-(import testament :prefix "" :exit true)
+(use judge)
 
 (import ../../src/date :as "d")
 (import ../../src/plan)
@@ -9,119 +9,119 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test scheduled-for?
 
-(deftest scheduled-for-monday
+(deftest "every Monday"
   (def task (task/build-scheduled-task "Weekly meeting" "every Monday"))
-  (is (scheduled-for? task (d/date 2022 1 24)))
-  (is (not (scheduled-for? task (d/date 2022 1 25)))))
+  (test (scheduled-for? task (d/date 2022 1 24)) true)
+  (test (not (scheduled-for? task (d/date 2022 1 25))) true))
 
-(deftest scheduled-for-tuesday
+(deftest "every Tuesday"
   (def task (task/build-scheduled-task "Weekly meeting" "every Tuesday"))
-  (is (not (scheduled-for? task (d/date 2022 1 24))))
-  (is (scheduled-for? task (d/date 2022 1 25))))
+  (test (not (scheduled-for? task (d/date 2022 1 24))) true)
+  (test (scheduled-for? task (d/date 2022 1 25)) true))
 
-(deftest scheduled-for-every-month
+(deftest "every month"
   (def task (task/build-scheduled-task "Review logs" "every month"))
-  (is (scheduled-for? task (d/date 2022 1 1)))
-  (is (not (scheduled-for? task (d/date 2022 1 2))))
-  (is (scheduled-for? task (d/date 2022 6 1)))
-  (is (not (scheduled-for? task (d/date 2022 6 15)))))
+  (test (scheduled-for? task (d/date 2022 1 1)) true)
+  (test (not (scheduled-for? task (d/date 2022 1 2))) true)
+  (test (scheduled-for? task (d/date 2022 6 1)) true)
+  (test (not (scheduled-for? task (d/date 2022 6 15))) true))
 
-(deftest scheduled-for-every-3-months
+(deftest "every 3 months"
   (def task (task/build-scheduled-task "Review logs" "every 3 months"))
-  (is (scheduled-for? task (d/date 2022 1 1)))
-  (is (not (scheduled-for? task (d/date 2022 2 1))))
-  (is (not (scheduled-for? task (d/date 2022 3 1))))
-  (is (scheduled-for? task (d/date 2022 4 1)))
-  (is (not (scheduled-for? task (d/date 2022 5 1))))
-  (is (not (scheduled-for? task (d/date 2022 6 1))))
-  (is (scheduled-for? task (d/date 2022 7 1)))
-  (is (not (scheduled-for? task (d/date 2022 8 1))))
-  (is (not (scheduled-for? task (d/date 2022 9 1))))
-  (is (scheduled-for? task (d/date 2022 10 1))))
+  (test (scheduled-for? task (d/date 2022 1 1)) true)
+  (test (not (scheduled-for? task (d/date 2022 2 1))) true)
+  (test (not (scheduled-for? task (d/date 2022 3 1))) true)
+  (test (scheduled-for? task (d/date 2022 4 1)) true)
+  (test (not (scheduled-for? task (d/date 2022 5 1))) true)
+  (test (not (scheduled-for? task (d/date 2022 6 1))) true)
+  (test (scheduled-for? task (d/date 2022 7 1)) true)
+  (test (not (scheduled-for? task (d/date 2022 8 1))) true)
+  (test (not (scheduled-for? task (d/date 2022 9 1))) true)
+  (test (scheduled-for? task (d/date 2022 10 1)) true))
 
-(deftest scheduled-for-every-weekday
+(deftest "every weekday"
   (def task (task/build-scheduled-task "Review logs" "every weekday"))
-  (is (scheduled-for? task (d/date 2022 1 24)))        # Monday
-  (is (scheduled-for? task (d/date 2022 1 25)))        # Tuesday
-  (is (scheduled-for? task (d/date 2022 1 26)))        # Wednesday
-  (is (scheduled-for? task (d/date 2022 1 27)))        # Thursday
-  (is (scheduled-for? task (d/date 2022 1 28)))        # Friday
-  (is (not (scheduled-for? task (d/date 2022 1 29))))  # Saturday
-  (is (not (scheduled-for? task (d/date 2022 1 30))))) # Sunday
+  (test (scheduled-for? task (d/date 2022 1 24)) true)        # Monday
+  (test (scheduled-for? task (d/date 2022 1 25)) true)        # Tuesday
+  (test (scheduled-for? task (d/date 2022 1 26)) true)        # Wednesday
+  (test (scheduled-for? task (d/date 2022 1 27)) true)        # Thursday
+  (test (scheduled-for? task (d/date 2022 1 28)) true)        # Friday
+  (test (not (scheduled-for? task (d/date 2022 1 29))) true)  # Saturday
+  (test (not (scheduled-for? task (d/date 2022 1 30))) true)) # Sunday
 
-(deftest scheduled-for-specific-date-every-year
+(deftest "every year on some date"
   (def task (task/build-scheduled-task "Review logs" "every year on 01-27"))
-  (is (scheduled-for? task (d/date 2022 1 27)))
-  (is (scheduled-for? task (d/date 2023 1 27)))
-  (is (scheduled-for? task (d/date 2024 1 27)))
-  (is (not (scheduled-for? task (d/date 2022 1 26))))
-  (is (not (scheduled-for? task (d/date 2022 1 28))))
-  (is (not (scheduled-for? task (d/date 2022 2 1)))))
+  (test (scheduled-for? task (d/date 2022 1 27)) true)
+  (test (scheduled-for? task (d/date 2023 1 27)) true)
+  (test (scheduled-for? task (d/date 2024 1 27)) true)
+  (test (not (scheduled-for? task (d/date 2022 1 26))) true)
+  (test (not (scheduled-for? task (d/date 2022 1 28))) true)
+  (test (not (scheduled-for? task (d/date 2022 2 1))) true))
 
-(deftest scheduled-for-specific-date
+(deftest "on some date"
   (def task (task/build-scheduled-task "Review logs" "on 2022-01-27"))
-  (is (scheduled-for? task (d/date 2022 1 27)))
-  (is (not (scheduled-for? task (d/date 2022 1 26))))
-  (is (not (scheduled-for? task (d/date 2022 1 28))))
-  (is (not (scheduled-for? task (d/date 2022 2 1))))
-  (is (not (scheduled-for? task (d/date 2023 1 27)))))
+  (test (scheduled-for? task (d/date 2022 1 27)) true)
+  (test (not (scheduled-for? task (d/date 2022 1 26))) true)
+  (test (not (scheduled-for? task (d/date 2022 1 28))) true)
+  (test (not (scheduled-for? task (d/date 2022 2 1))) true)
+  (test (not (scheduled-for? task (d/date 2023 1 27))) true))
 
-(deftest scheduled-for-last-day-of-month
+(deftest "every last day"
   (def task (task/build-scheduled-task "Review logs" "every last day"))
-  (is (scheduled-for? task (d/date 2022 1 31)))
-  (is (scheduled-for? task (d/date 2022 2 28)))
-  (is (scheduled-for? task (d/date 2022 3 31)))
-  (is (scheduled-for? task (d/date 2022 4 30)))
-  (is (scheduled-for? task (d/date 2022 5 31)))
-  (is (scheduled-for? task (d/date 2022 6 30)))
-  (is (scheduled-for? task (d/date 2022 7 31)))
-  (is (scheduled-for? task (d/date 2022 8 31)))
-  (is (scheduled-for? task (d/date 2022 9 30)))
-  (is (scheduled-for? task (d/date 2022 10 31)))
-  (is (scheduled-for? task (d/date 2022 11 30)))
-  (is (scheduled-for? task (d/date 2022 12 31)))
-  (is (scheduled-for? task (d/date 2023 1 31)))
-  (is (not (scheduled-for? task (d/date 2022 1 30)))))
+  (test (scheduled-for? task (d/date 2022 1 31)) true)
+  (test (scheduled-for? task (d/date 2022 2 28)) true)
+  (test (scheduled-for? task (d/date 2022 3 31)) true)
+  (test (scheduled-for? task (d/date 2022 4 30)) true)
+  (test (scheduled-for? task (d/date 2022 5 31)) true)
+  (test (scheduled-for? task (d/date 2022 6 30)) true)
+  (test (scheduled-for? task (d/date 2022 7 31)) true)
+  (test (scheduled-for? task (d/date 2022 8 31)) true)
+  (test (scheduled-for? task (d/date 2022 9 30)) true)
+  (test (scheduled-for? task (d/date 2022 10 31)) true)
+  (test (scheduled-for? task (d/date 2022 11 30)) true)
+  (test (scheduled-for? task (d/date 2022 12 31)) true)
+  (test (scheduled-for? task (d/date 2023 1 31)) true)
+  (test (not (scheduled-for? task (d/date 2022 1 30))) true))
 
-(deftest scheduled-for-last-Friday-of-month
+(deftest "every last Friday"
   (def task (task/build-scheduled-task "Review logs" "every last Friday"))
-  (is (scheduled-for? task (d/date 2022 1 28)))
-  (is (scheduled-for? task (d/date 2022 2 25)))
-  (is (scheduled-for? task (d/date 2022 3 25)))
-  (is (scheduled-for? task (d/date 2022 4 29)))
-  (is (scheduled-for? task (d/date 2022 5 27)))
-  (is (not (scheduled-for? task (d/date 2022 1 31)))))
+  (test (scheduled-for? task (d/date 2022 1 28)) true)
+  (test (scheduled-for? task (d/date 2022 2 25)) true)
+  (test (scheduled-for? task (d/date 2022 3 25)) true)
+  (test (scheduled-for? task (d/date 2022 4 29)) true)
+  (test (scheduled-for? task (d/date 2022 5 27)) true)
+  (test (not (scheduled-for? task (d/date 2022 1 31))) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test missed?
 
 (def scheduled-task (task/build-scheduled-task "Weekly meeting" "on 2022-08-01"))
 
-(deftest missed-returns-true-when-task-is-missed
+(deftest "returns true when the task is missed"
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 8 2))
                       (day/build-day (d/date 2022 8 1))]))
-  (is (missed? plan scheduled-task (d/date 2022 8 3))))
+  (test (missed? plan scheduled-task (d/date 2022 8 3)) true))
 
-(deftest missed-returns-true-when-day-does-not-exist
+(deftest "returns true when the task is missed and the day doesn't exist"
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 8 2))
                       (day/build-day (d/date 2022 7 15))]))
-  (is (missed? plan scheduled-task (d/date 2022 8 3))))
+  (test (missed? plan scheduled-task (d/date 2022 8 3)) true))
 
-(deftest missed-returns-false-when-task-was-scheduled-for-another-day
+(deftest "returns false when the task is scheduled for another day"
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 8 2)
                                      @[]
                                      @[(task/build-task "Weekly meeting" true)])
                       (day/build-day (d/date 2022 8 1))]))
-  (is (not (missed? plan scheduled-task (d/date 2022 8 3)))))
+  (test (not (missed? plan scheduled-task (d/date 2022 8 3))) true))
 
-(deftest missed-returns-false-when-task-will-be-scheduled-in-future
+(deftest "returns false when the task will be scheduled in future"
   (def plan (plan/build-plan
              :days @[(day/build-day (d/date 2022 8 2))
                      (day/build-day (d/date 2022 7 31))]))
-  (is (not (missed? plan scheduled-task (d/date 2022 7 31)))))
+  (test (not (missed? plan scheduled-task (d/date 2022 7 31))) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test schedule-tasks
@@ -130,107 +130,105 @@
   @[(task/build-scheduled-task "Weekly meeting" "every Monday")
     (task/build-scheduled-task "Check logs" "every Wednesday")])
 
-(deftest schedule-task-on-specific-weekday
+(deftest "schedules tasks scheduled on specific weekdays"
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 1 18))
                       (day/build-day (d/date 2022 1 17))]))
   (schedule-tasks plan scheduled-tasks (d/date 2022 1 17))
-  (is (empty? (((plan :days) 0) :tasks)))
+  (test (empty? (((plan :days) 0) :tasks)) true)
   (let [day ((plan :days) 1)
         task ((day :tasks) 0)]
-    (is (= "Weekly meeting" (task :title)))
-    (is (= false (task :done)))
-    (is (= "every Monday" (task :schedule)))))
+    (test (task :title) "Weekly meeting")
+    (test (task :done) false)
+    (test (task :schedule) "every Monday")))
 
-(deftest schedule-tasks-does-not-insert-duplicate-tasks
+(deftest "doesn't insert duplicate tasks"
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 1 18))
                       (day/build-day (d/date 2022 1 17))]))
   (schedule-tasks plan scheduled-tasks (d/date 2022 1 17))
   (schedule-tasks plan scheduled-tasks (d/date 2022 1 17))
-  (is (empty? (((plan :days) 0) :tasks)))
-  (is (= 1 (length (((plan :days) 1) :tasks)))))
+  (test (empty? (((plan :days) 0) :tasks)) true)
+  (test (length (((plan :days) 1) :tasks)) 1))
 
-(deftest schedule-missed-task
+(deftest "schedules missed tasks"
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 1 18))
                       (day/build-day (d/date 2022 1 17))]))
   (schedule-tasks plan scheduled-tasks (d/date 2022 1 18))
-  (is (empty? (((plan :days) 1) :tasks)))
+  (test (empty? (((plan :days) 1) :tasks)) true)
   (let [day ((plan :days) 0)]
-    (is (not (empty? (day :tasks))))
+    (test (not (empty? (day :tasks))) true)
     (if (not (empty? (day :tasks)))
       (let [task ((day :tasks) 0)]
-        (is (= "Weekly meeting" (task :title)))
-        (is (d/equal? (d/date 2022 1 17) (task :missed-on)))
-        (is (= false (task :done)))
-        (is (= "every Monday" (task :schedule)))))))
+        (test (task :title) "Weekly meeting")
+        (test (d/equal? (d/date 2022 1 17) (task :missed-on)) true)
+        (test (task :done) false)
+        (test (task :schedule) "every Monday")))))
 
-(deftest schedule-missed-monthly-task
+(deftest "schedules missed monthly tasks"
   (def scheduled-tasks
     @[(task/build-scheduled-task "Review logs" "every month")])
   (def day-1 (day/build-day (d/date 2022 7 5)))
   (def day-2 (day/build-day (d/date 2022 6 15)))
   (def plan (plan/build-plan :days @[day-1 day-2]))
   (schedule-tasks plan scheduled-tasks (d/date 2022 7 5))
-  (is (not (empty? (day-1 :tasks))))
+  (test (not (empty? (day-1 :tasks))) true)
   (if (not (empty? (day-1 :tasks)))
-    (is (= "Review logs" (((day-1 :tasks) 0) :title)))))
+    (test (((day-1 :tasks) 0) :title) "Review logs")))
 
-(deftest does-not-schedule-tasks-today-that-are-not-yet-scheduled-for-future
+(deftest "doesn't schedule tasks that are not yet scheduled for future"
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 1 19))
                       (day/build-day (d/date 2022 1 18))
                       (day/build-day (d/date 2022 1 17))]))
   (schedule-tasks plan scheduled-tasks (d/date 2022 1 18))
-  (is (= 1 (length (((plan :days) 0) :tasks))))
-  (is (= 1 (length (((plan :days) 1) :tasks))))
-  (is (empty? (((plan :days) 2) :tasks)))
+  (test (length (((plan :days) 0) :tasks)) 1)
+  (test (length (((plan :days) 1) :tasks)) 1)
+  (test (empty? (((plan :days) 2) :tasks)) true)
   (let [day ((plan :days) 1)]
     (if (not (empty? (day :tasks)))
       (let [task ((day :tasks) 0)]
-        (is (= "Weekly meeting" (task :title)))
-        (is (= false (task :done)))
-        (is (= "every Monday" (task :schedule)))))))
+        (test (task :title) "Weekly meeting")
+        (test (task :done) false)
+        (test (task :schedule) "every Monday")))))
 
-(deftest does-not-schedule-tasks-today-that-are-not-scheduled-for-future-day-that-is-not-in-plan
+(deftest "doesn't schedule tasks that are not scheduled for future day that is not in the plan"
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 1 19))
                       (day/build-day (d/date 2022 1 18))
                       (day/build-day (d/date 2022 1 16))]))
   (schedule-tasks plan scheduled-tasks (d/date 2022 1 16))
-  (is (= 1 (length (((plan :days) 0) :tasks))))
-  (is (empty? (((plan :days) 1) :tasks)))
-  (is (empty? (((plan :days) 2) :tasks))))
+  (test (length (((plan :days) 0) :tasks)) 1)
+  (test (empty? (((plan :days) 1) :tasks)) true)
+  (test (empty? (((plan :days) 2) :tasks)) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
 
-(deftest build-command-without-matching-argument
+(deftest "doesn't build the command when arguments are not matching"
   (def arguments {"stats" true})
-  (is (empty? (build-command arguments))))
+  (test (empty? (build-command arguments)) true))
 
-(deftest build-command-with-correct-arguments
+(deftest "builds the command when arguments are matching"
   (def arguments {"schedule-tasks" "test/examples/schedule.md"})
   (def result (build-command arguments))
-  (is (tuple? (result :command))))
+  (test (tuple? (result :command)) true))
 
-(deftest build-command-when-schedule-does-not-exist
+(deftest "returns an error when the schedule doesn't exist"
   (def arguments {"schedule-tasks" "test/examples/missing-schedule.md"})
   (def result (build-command arguments))
-  (is (nil? (result :command)))
-  (is (= "--schedule-tasks file does not exist." (first (result :errors)))))
+  (test (nil? (result :command)) true)
+  (test (first (result :errors)) "--schedule-tasks file does not exist."))
 
-(deftest build-command-when-schedule-can-not-be-parsed
+(deftest "returns an error when the schedule cannot be parsed"
   (def arguments {"schedule-tasks" "test/examples/unparsable-schedule.md"})
   (def result (build-command arguments))
-  (is (nil? (result :command)))
-  (is (= "--schedule-tasks schedule can not be parsed." (first (result :errors)))))
+  (test (nil? (result :command)) true)
+  (test (first (result :errors)) "--schedule-tasks schedule can not be parsed."))
 
-(deftest build-command-when-schedule-is-empty
+(deftest "returns an error when the schedule is empty"
   (def arguments {"schedule-tasks" "test/examples/empty-schedule.md"})
   (def result (build-command arguments))
-  (is (nil? (result :command)))
-  (is (= "--schedule-tasks schedule is empty." (first (result :errors)))))
-
-(run-tests!)
+  (test (nil? (result :command)) true)
+  (test (first (result :errors)) "--schedule-tasks schedule is empty."))

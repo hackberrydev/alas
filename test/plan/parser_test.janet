@@ -1,12 +1,12 @@
-(import testament :prefix "" :exit true)
+(use judge)
 
 (import ../../src/plan/parser :prefix "")
 (import ../../src/date :as d)
 
-## ————————————————————————————————————————————————————————————————————————————————————————————————
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test parse
 
-(deftest parse-plan
+(deftest "parses a plan string"
   (def plan-string
     ```
     # Main TODO
@@ -32,34 +32,34 @@
   (def inbox (plan :inbox))
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
-  (is (= "Main TODO" (plan :title)))
+  (test (plan :title) "Main TODO")
   (let [task (inbox 0)]
-    (is (= "#home - Fix the lamp" (task :title)))
-    (is (not (task :done))))
+    (test (task :title) "#home - Fix the lamp")
+    (test (not (task :done)) true))
   (let [task (inbox 1)]
-    (is (= "Update Rust" (task :title)))
-    (is (not (task :done))))
-  (is (= (d/date 2020 8 1) (day-1 :date)))
+    (test (task :title) "Update Rust")
+    (test (not (task :done)) true))
+  (test (= (d/date 2020 8 1) (day-1 :date)) true)
   (let [task ((day-1 :tasks) 0)]
-    (is (= "Develop photos" (task :title)))
-    (is (not (task :done))))
+    (test (task :title) "Develop photos")
+    (test (not (task :done)) true))
   (let [task ((day-1 :tasks) 1)]
-    (is (= "Pay bills" (task :title)))
-    (is (task :done)))
+    (test (task :title) "Pay bills")
+    (test (task :done) true))
   (let [task ((day-1 :tasks) 2)]
-    (is (= "Fix the lamp" (task :title)))
-    (is (not (task :done)))
-    (is (d/equal? (d/date 2020 7 30) (task :missed-on))))
-  (is (= (d/date 2020 7 31) (day-2 :date)))
-  (is (= {:text "Talked to Mike & Molly"} ((day-2 :events) 0)))
+    (test (task :title) "Fix the lamp")
+    (test (not (task :done)) true)
+    (test (d/equal? (d/date 2020 7 30) (task :missed-on)) true))
+  (test (= (d/date 2020 7 31) (day-2 :date)) true)
+  (test (= {:text "Talked to Mike & Molly"} ((day-2 :events) 0)) true)
   (let [task ((day-2 :tasks) 0)]
-    (is (= "#work - Review open pull requests" (task :title)))
-    (is (task :done)))
+    (test (task :title) "#work - Review open pull requests")
+    (test (task :done) true))
   (let [task ((day-2 :tasks) 1)]
-    (is (= "#work - Fix the flaky test" (task :title)))
-    (is (task :done))))
+    (test (task :title) "#work - Fix the flaky test")
+    (test (task :done) true)))
 
-(deftest parse-template-plan
+(deftest "parses a template plan"
   (def plan-string
     ```
     # Main TODO
@@ -69,10 +69,10 @@
     ## 2022-05-12, Thursday
     ```)
   (def plan ((parse plan-string) :plan))
-  (is (= 1 (length (plan :days))))
-  (is (= (d/date 2022 5 12) (((plan :days) 0) :date))))
+  (test  (length (plan :days)) 1)
+  (test (= (d/date 2022 5 12) (((plan :days) 0) :date)) true))
 
-(deftest parse-plan-with-one-task
+(deftest "parses a plan with one task"
   (def plan-string
     ```
     # Main TODO
@@ -82,14 +82,14 @@
     - [ ] Pay bills
     ```)
   (def plan ((parse plan-string) :plan))
-  (is (= 1 (length (plan :days))))
+  (test  (length (plan :days)) 1)
   (let [day ((plan :days) 0)
         task ((day :tasks) 0)]
-    (is (= (d/date 2020 7 30) (day :date)))
-    (is (= "Pay bills" (task :title)))
-    (is (not (task :done)))))
+    (test (= (d/date 2020 7 30) (day :date)) true)
+    (test (task :title) "Pay bills")
+    (test (not (task :done)) true)))
 
-(deftest parse-plan-with-one-task-with-body
+(deftest "parses a plan with one task that has a body"
   (def plan-string
     ```
     # Main TODO
@@ -101,17 +101,17 @@
       - Water
     ```)
   (def plan ((parse plan-string) :plan))
-  (is (= 1 (length (plan :days))))
+  (test  (length (plan :days)) 1)
   (let [day ((plan :days) 0)
         task ((day :tasks) 0)
         task-body (task :body)]
-    (is (= (d/date 2020 7 30) (day :date)))
-    (is (= "Pay bills" (task :title)))
-    (is (not (task :done)))
-    (is (= "- Electricity" (task-body 0)))
-    (is (= "- Water" (task-body 1)))))
+    (test (= (d/date 2020 7 30) (day :date)) true)
+    (test (task :title) "Pay bills")
+    (test (not (task :done)) true)
+    (test (task-body 0) "- Electricity")
+    (test (task-body 1) "- Water")))
 
-(deftest parse-plan-with-two-tasks
+(deftest "parses a plan with 2 tasks"
   (def plan-string
     ```
     # Main TODO
@@ -122,17 +122,17 @@
     - [x] Fix the lamp
     ```)
   (def plan ((parse plan-string) :plan))
-  (is (= 1 (length (plan :days))))
+  (test  (length (plan :days)) 1)
   (let [day ((plan :days) 0)
         task-1 ((day :tasks) 0)
         task-2 ((day :tasks) 1)]
-    (is (= (d/date 2020 7 30) (day :date)))
-    (is (= "Pay bills" (task-1 :title)))
-    (is (not (task-1 :done)))
-    (is (= "Fix the lamp" (task-2 :title)))
-    (is (task-2 :done))))
+    (test (= (d/date 2020 7 30) (day :date)) true)
+    (test (task-1 :title) "Pay bills")
+    (test (not (task-1 :done)) true)
+    (test (task-2 :title) "Fix the lamp")
+    (test (task-2 :done) true)))
 
-(deftest parse-plan-without-inbox
+(deftest "parses a plan without inbox"
   (def plan-string
     ```
     # Main TODO
@@ -151,12 +151,12 @@
   (def plan ((parse plan-string) :plan))
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
-  (is (= "Main TODO" (plan :title)))
-  (is (empty? (plan :inbox)))
-  (is (= (d/date 2020 8 1) (day-1 :date)))
-  (is (= (d/date 2020 7 31) (day-2 :date))))
+  (test (plan :title) "Main TODO")
+  (test (empty? (plan :inbox)) true)
+  (test (= (d/date 2020 8 1) (day-1 :date)) true)
+  (test (= (d/date 2020 7 31) (day-2 :date)) true))
 
-(deftest parse-plan-with-empty-inbox
+(deftest "parses a plan with empty inbox"
   (def plan-string
     ```
     # Main TODO
@@ -177,12 +177,12 @@
   (def plan ((parse plan-string) :plan))
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
-  (is (= "Main TODO" (plan :title)))
-  (is (empty? (plan :inbox)))
-  (is (= (d/date 2020 8 1) (day-1 :date)))
-  (is (= (d/date 2020 7 31) (day-2 :date))))
+  (test (plan :title) "Main TODO")
+  (test (empty? (plan :inbox)) true)
+  (test (= (d/date 2020 8 1) (day-1 :date)) true)
+  (test (= (d/date 2020 7 31) (day-2 :date)) true))
 
-(deftest parse-when-plan-can-not-be-parsed
+(deftest "returns an error when the plan can't be parsed"
   (def plan-string
     ```
     ## Main TODO
@@ -191,10 +191,10 @@
     - [O] Talk to Mike
     ```)
   (def parse-result (parse plan-string))
-  (is (parse-result :errors))
-  (is (= "Plan can not be parsed" (first (parse-result :errors)))))
+  (test (parse-result :errors)
+        ["Plan can not be parsed"]))
 
-(deftest parse-when-plan-can-partially-be-parsed
+(deftest "returns an error when the plan can be partially parsed"
   (def plan-string
     ```
     # Main TODO
@@ -206,8 +206,5 @@
     ## Tomorrow
     ```)
   (def parse-result (parse plan-string))
-  (is (parse-result :errors))
-  (is (= "Plan can not be parsed: last parsed line is line 6"
-         (first (parse-result :errors)))))
-
-(run-tests!)
+  (test (parse-result :errors)
+        ["Plan can not be parsed: last parsed line is line 6"]))

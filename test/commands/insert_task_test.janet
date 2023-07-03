@@ -1,4 +1,4 @@
-(import testament :prefix "" :exit true)
+(use judge)
 
 (import ../../src/date :as "d")
 (import ../../src/day)
@@ -9,39 +9,37 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test insert-task
 
-(deftest insert-task-when-day-exists-and-task-does-not-exist
+(deftest "when the day exists and the task doesn't exist"
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2020 8 10))]))
   (def new-plan (insert-task plan (d/date 2020 8 10) "Upgrade OS"))
   (def day (first (new-plan :days)))
-  (is (= 1 (length (day :tasks))))
-  (is (= "Upgrade OS" ((first (day :tasks)) :title))))
+  (test (length (day :tasks)) 1)
+  (test ((first (day :tasks)) :title) "Upgrade OS"))
 
-(deftest insert-task-when-day-does-not-exist
+(deftest "when the day doesn't exist"
   (def plan (plan/build-plan :days @[(day/build-day (d/date 2020 8 10))]))
   (def new-plan (insert-task plan (d/date 2020 8 11) "Upgrade OS"))
-  (is (= 1 (length (plan :days))))
-  (is (empty? ((first (plan :days)) :tasks))))
+  (test (length (plan :days)) 1)
+  (test (empty? ((first (plan :days)) :tasks)) true))
 
-(deftest insert-taks-when-task-already-exists
+(deftest "when the task already exists"
   (def day (day/build-day (d/date 2020 8 10)
                           @[]
                           @[(task/build-task "Upgrade OS" false)]))
   (def plan (plan/build-plan :days @[day]))
   (def new-plan (insert-task plan (d/date 2020 8 10) "Upgrade OS"))
   (def new-day (first (new-plan :days)))
-  (is (= 1 (length (new-day :tasks))))
-  (is (= "Upgrade OS" ((first (new-day :tasks)) :title))))
+  (test (length (new-day :tasks)) 1)
+  (test ((first (new-day :tasks)) :title) "Upgrade OS"))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-command
 
-(deftest build-command-without-matching-arguments
+(deftest "without matching arguments"
   (def arguments {"stats" true})
-  (is (empty? (build-command arguments))))
+  (test (empty? (build-command arguments)) true))
 
-(deftest build-command-with-correct-arguments
+(deftest "with correct arguments"
   (def arguments {"insert-task" "Upgrade OS"})
   (def result (build-command arguments))
-  (is (tuple? (result :command))))
-
-(run-tests!)
+  (test (tuple? (result :command)) true))
