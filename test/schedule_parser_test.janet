@@ -57,7 +57,7 @@
     ```)
   (def result (schedule_parser/parse schedule-string))
   (test (first (result :errors))
-        "Schedule can not be parsed - last parsed task is \"Weekly Meeting\""))
+        "Schedule can not be parsed - last parsed task is \"Weekly Meeting\" on line 3"))
 
 
 (deftest "returns an error when the schedule is empty"
