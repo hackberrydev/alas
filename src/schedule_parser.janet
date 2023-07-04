@@ -44,5 +44,7 @@
               {:tasks tasks}
               {:errors [(string "Schedule can not be parsed - last parsed task is \""
                                 ((last tasks) :title)
-                                "\"")]}))))
+                                "\""
+                                " on line "
+                                ((last tasks) :line))]}))))
       {:errors ["Schedule can not be parsed"]})))
