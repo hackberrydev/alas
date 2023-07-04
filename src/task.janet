@@ -7,8 +7,8 @@
   (default body @[])
   {:title title :body body :done done})
 
-(defn build-scheduled-task [title schedule]
-  {:title title :done false :schedule schedule})
+(defn build-scheduled-task [line title schedule]
+  {:line line :title title :done false :schedule schedule})
 
 (defn build-missed-task [title date &opt body]
   (default body @[])
