@@ -10,7 +10,7 @@
     :tasks
       {:main (group (any :task))
        :task
-         {:main (replace (* "- " :task-title :task-schedule (? "\n"))
+         {:main (replace (* "- " (line) :task-title :task-schedule (? "\n"))
                          ,task/build-scheduled-task)
           :task-title (replace (capture (some (if-not (+ "(" "\n") 1))) ,string/trim)
           :task-schedule (* "(" (replace (capture (some (+ :w+ :s+ "-"))) ,string/trim) ")")}}})
