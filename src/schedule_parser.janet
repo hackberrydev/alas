@@ -7,10 +7,12 @@
 (def schedule-grammar
   ~{:main (* (drop :title) :tasks)
     :title (* "# " (some (+ :w+ :s+)))
-    :tasks (group (any :task))
-    :task (replace (* "- " :task-title :task-schedule (? "\n")) ,task/build-scheduled-task)
-    :task-title (replace (capture (some (if-not (+ "(" "\n") 1))) ,string/trim)
-    :task-schedule (* "(" (replace (capture (some (+ :w+ :s+ "-"))) ,string/trim) ")")})
+    :tasks
+      {:main (group (any :task))
+       :task
+         {:main (replace (* "- " :task-title :task-schedule (? "\n")) ,task/build-scheduled-task)
+          :task-title (replace (capture (some (if-not (+ "(" "\n") 1))) ,string/trim)
+          :task-schedule (* "(" (replace (capture (some (+ :w+ :s+ "-"))) ,string/trim) ")")}}})
 
 (defn- task-lines-count
   ```
