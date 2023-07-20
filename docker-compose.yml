@@ -5,4 +5,4 @@ services:
     image: alas:1.0
     tty: true
     volumes:
-      - ./build:/home/alas/build
+      - .:/home/alas
