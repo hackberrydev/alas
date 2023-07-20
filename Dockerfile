@@ -16,7 +16,10 @@ RUN cd /home/jpm && janet bootstrap.janet
 
 RUN mkdir -p /home/alas
 
-COPY . /home/alas
+COPY ./build.sh /home/alas/build.sh
+COPY ./project.janet /home/alas/project.janet
+COPY ./src /home/alas/src
+COPY ./test /home/alas/test
 
 RUN cd /home/alas && jpm deps
 
