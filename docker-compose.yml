@@ -1,0 +1,6 @@
+services:
+  alas:
+    build:
+      context: .
+    image: alas:1.0
+    tty: true
