@@ -2,6 +2,8 @@ services:
   alas:
     build:
       context: .
+      args:
+        JANET_VERSION: 1.29.1
     image: alas:1.0
     tty: true
     volumes:
