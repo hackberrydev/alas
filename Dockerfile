@@ -16,4 +16,6 @@ RUN cd /home && git clone https://github.com/janet-lang/jpm.git
 
 RUN cd /home/jpm && janet bootstrap.janet
 
-CMD ["janet"]
+WORKDIR /home/alas
+
+CMD ["/usr/bin/bash"]
