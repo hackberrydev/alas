@@ -3,7 +3,9 @@ services:
     build:
       context: .
       args:
-        JANET_VERSION: 1.29.1
+        JANET_VERSION: 1.28.0
+        JPM_VERSION: v1.1.0
+    container_name: alas
     image: alas:1.0
     tty: true
     volumes:
