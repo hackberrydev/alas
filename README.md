@@ -44,5 +44,5 @@ jpm deps
 Run tests with:
 
 ```sh
-jpm test
+judge
 ```
