@@ -38,7 +38,7 @@ website](https://www.hackberry.dev/alas/).
 Install dependencies with:
 
 ```sh
-jpm deps
+jpm deps --local
 ```
 
 Run tests with:
