@@ -10,9 +10,9 @@ blocks:
       jobs:
         - name: 'Tests'
           commands:
-            - wget https://github.com/janet-lang/janet/archive/refs/tags/v1.29.1.tar.gz
-            - tar xvf v1.29.1.tar.gz
-            - cd janet-1.29.1
+            - wget https://github.com/janet-lang/janet/archive/refs/tags/v1.32.1.tar.gz
+            - tar xvf v1.32.1.tar.gz
+            - cd janet-1.32.1
             - make
             - sudo make install
             - cd
