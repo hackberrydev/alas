@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-jpm clean && jpm build && strip build/alas
+jpm clean && jpm build --local && strip build/alas
