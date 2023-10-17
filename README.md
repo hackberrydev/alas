@@ -44,5 +44,5 @@ jpm deps --local
 Run tests with:
 
 ```sh
-judge
+./test.sh
 ```
