@@ -38,7 +38,7 @@ website](https://www.hackberry.dev/alas/).
 Install dependencies with:
 
 ```sh
-jpm deps --local
+jpm load-lockfile --local
 ```
 
 Run tests with:

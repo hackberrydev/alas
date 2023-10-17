@@ -22,5 +22,5 @@ blocks:
             - sudo janet bootstrap.janet
             - cd
             - checkout
-            - sudo jpm deps
-            - judge
+            - jpm load-lockfile --local
+            - ./test.sh
