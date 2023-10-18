@@ -1,0 +1,3 @@
+@[{:url "https://github.com/ianthehenry/cmd" :tag "7551225818a8a5f6665a918f1862db0c7704a1f4" :type :git}
+  {:url "https://github.com/ianthehenry/judge.git" :tag "a380c85753cb720adfd4fdac6a1393cac955359b" :type :git}
+  {:url "https://github.com/janet-lang/argparse" :tag "a18ae94a3c2cfcf2071b1130fd533d0b6b1ee00d" :type :git}]
