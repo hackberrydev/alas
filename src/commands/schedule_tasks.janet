@@ -36,16 +36,25 @@
                        (not (day/has-task? day task))))
         (plan/all-days-before plan date)))
 
+(defn- older-than-30-days? [date today]
+  (date/before? date (date/-days today 30)))
+
 # Public
 (defn missed?
   ```
   Checks if the task was missed in the plan up to the passed date.
 
   Returns true or false.
+
+  plan - The plan.
+  task - The scheduled task.
+  date - A date. Typically today.
   ```
   [plan task date]
   (def day (missed-on-day plan task date))
-  (and day (not (plan/has-task-after? plan task (day :date)))))
+  (and day
+       (not (older-than-30-days? (day :date) date))
+       (not (plan/has-task-after? plan task (day :date)))))
 
 (defn- mark-tasks-as-missed [plan tasks date]
   (map (fn [task]

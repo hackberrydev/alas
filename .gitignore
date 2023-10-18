@@ -2,3 +2,4 @@
 /jpm_tree
 /tags*
 /test/examples/*.bkp
+*.tested
