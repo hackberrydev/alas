@@ -109,6 +109,12 @@
                       (day/build-day (d/date 2022 7 15))]))
   (test (missed? plan scheduled-task (d/date 2022 8 3)) true))
 
+(deftest "returns false when the task is missed, but it's older than 30 days"
+  (def plan (plan/build-plan
+              :days @[(day/build-day (d/date 2022 9 11))
+                      (day/build-day (d/date 2022 8 1))]))
+  (test (not (missed? plan scheduled-task (d/date 2022 9 11))) true))
+
 (deftest "returns false when the task is scheduled for another day"
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 8 2)
