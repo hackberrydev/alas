@@ -12,6 +12,10 @@
 (defn- print-errors [errors]
   (each error errors (print (string error "."))))
 
+(def exit-status-codes
+  {:error 1
+   :plan-path-missing 2})
+
 # Keep commands sorted alphabetically.
 (def argparse-params
   ["A command line utility for planning your days"
@@ -64,7 +68,7 @@
       (print-version)
       (do
         (print "Plan file path missing.")
-        (os/exit 2)))))
+        (os/exit (exit-status-codes :plan-path-missing))))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
