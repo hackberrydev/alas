@@ -12,7 +12,7 @@
        :task
          {:main (replace (* "- " (line) :task-title :task-schedule (? "\n"))
                          ,task/build-scheduled-task)
-          :task-title (replace (capture (some (if-not (+ "(" "\n") 1))) ,string/trim)
+          :task-title (replace (capture (some (to (+ "(" "\n")))) ,string/trim)
           :task-schedule (* "(" (replace (capture (some (+ :w+ :s+ "-"))) ,string/trim) ")")}}})
 
 (defn- task-lines-count

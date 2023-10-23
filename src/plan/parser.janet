@@ -14,7 +14,7 @@
                       (constant :days) :days)
                    ,plan/build-plan)
     :title (* "# " :text-line "\n")
-    :text-line (capture (some (if-not "\n" 1)))
+    :text-line (capture (to (+ "\n" -1)))
     :inbox
       {:main (* :inbox-title (? "\n") :tasks (? "\n"))
        :inbox-title (* "## Inbox" (? "\n"))}
@@ -28,7 +28,7 @@
             {:main (group (any :event))
              :event
                {:main (replace (* :event-begin :text-line (? "\n")) ,event/build-event)
-                :event-begin (* "- " (if-not "[" 0))}}}}
+                :event-begin (* "- " (not "["))}}}}
     :tasks
       {:main (group (any :task))
        :task
