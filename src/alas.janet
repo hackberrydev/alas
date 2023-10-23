@@ -62,7 +62,9 @@
     (run-with-file-path arguments file-path)
     (if (arguments "version")
       (print-version)
-      (print "Plan file path missing."))))
+      (do
+        (print "Plan file path missing.")
+        (os/exit 2)))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
