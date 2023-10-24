@@ -10,10 +10,6 @@
 (import ./plan/parser :as plan_parser)
 (import ./plan/serializer :as plan_serializer)
 
-(defn- print-errors [errors exit-status-code]
-  (each error errors (print (string error ".")))
-  (os/exit exit-status-code))
-
 # Keep commands sorted alphabetically.
 (def argparse-params
   ["A command line utility for planning your days"
@@ -44,13 +40,13 @@
   (def load-file-result (file_repository/load file-path))
   (def errors (load-file-result :errors))
   (if errors
-    (print-errors errors (errors/exit-status-codes :file-error))
+    (errors/print-errors errors (errors/exit-status-codes :file-error))
     (let [plan-string (load-file-result :text)
           parse-result (plan_parser/parse plan-string)
           parse-errors (parse-result :errors)
           plan (parse-result :plan)]
       (if parse-errors
-        (print-errors parse-errors (errors/exit-status-codes :parse-error))
+        (errors/print-errors parse-errors (errors/exit-status-codes :parse-error))
         (let [serialize-empty-inbox (plan_parser/serialize-empty-inbox? plan-string)
               new-plan (run-commands plan file-path arguments)
               new-plan-string (plan_serializer/serialize

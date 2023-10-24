@@ -9,3 +9,7 @@
    :plan-path-missing 2
    :file-error 3
    :parse-error 4})
+
+(defn print-errors [errors exit-status-code]
+  (each error errors (print (string error ".")))
+  (os/exit exit-status-code))
