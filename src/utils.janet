@@ -13,6 +13,3 @@
   (if (string/has-suffix? "/" path)
     (string/trimr path "/")
     path))
-
-(defn format-command-errors [command errors]
-  (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
