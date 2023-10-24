@@ -5,6 +5,7 @@
 
 (import ./commands :prefix "")
 
+(import ./errors)
 (import ./file_repository)
 (import ./plan/parser :as plan_parser)
 (import ./plan/serializer :as plan_serializer)
@@ -12,12 +13,6 @@
 (defn- print-errors [errors exit-status-code]
   (each error errors (print (string error ".")))
   (os/exit exit-status-code))
-
-(def exit-status-codes
-  {:error 1
-   :plan-path-missing 2
-   :file-error 3
-   :parse-error 4})
 
 # Keep commands sorted alphabetically.
 (def argparse-params
@@ -49,13 +44,13 @@
   (def load-file-result (file_repository/load file-path))
   (def errors (load-file-result :errors))
   (if errors
-    (print-errors errors (exit-status-codes :file-error))
+    (print-errors errors (errors/exit-status-codes :file-error))
     (let [plan-string (load-file-result :text)
           parse-result (plan_parser/parse plan-string)
           parse-errors (parse-result :errors)
           plan (parse-result :plan)]
       (if parse-errors
-        (print-errors parse-errors (exit-status-codes :parse-error))
+        (print-errors parse-errors (errors/exit-status-codes :parse-error))
         (let [serialize-empty-inbox (plan_parser/serialize-empty-inbox? plan-string)
               new-plan (run-commands plan file-path arguments)
               new-plan-string (plan_serializer/serialize
@@ -71,7 +66,7 @@
       (print-version)
       (do
         (print "Plan file path missing.")
-        (os/exit (exit-status-codes :plan-path-missing))))))
+        (os/exit (errors/exit-status-codes :plan-path-missing))))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
