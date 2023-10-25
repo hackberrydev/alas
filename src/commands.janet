@@ -43,16 +43,16 @@
           (map (fn [build-command] (build-command arguments file-path))
                commands)))
 
+# TODO: Replace reduce with something else.
 (defn run-commands [plan file-path arguments]
   (def commands (build-commands arguments file-path))
   (def errors (filter identity (flatten (map (fn [c] (c :errors)) commands))))
-  (if (any? errors)
-    (do
-      (errors/print-errors-without-status-code errors)
-      plan)
-    (reduce (fn [new-plan command-and-arguments]
-              (def command (first (command-and-arguments :command)))
-              (def arguments (drop 1 (command-and-arguments :command)))
-              (apply command new-plan arguments))
-            plan
-            commands)))
+  (var new-plan plan)
+  (if (empty? errors)
+    (set new-plan (reduce (fn [new-plan command-and-arguments]
+                            (def command (first (command-and-arguments :command)))
+                            (def arguments (drop 1 (command-and-arguments :command)))
+                            (apply command new-plan arguments))
+                         plan
+                         commands)))
+  {:plan new-plan :errors errors})
