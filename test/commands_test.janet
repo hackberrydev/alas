@@ -54,8 +54,9 @@
                       (day/build-day (d/date 2020 8 2) @[]
                                      @[(task/build-task "Buy milk" true)])]))
   (def arguments {"skip-backup" true "remove-empty-days" true "insert-days" "3"})
-  (def new-plan (run-commands plan file-path arguments))
+  (def {:plan new-plan :errors errors} (run-commands plan file-path arguments))
   (def days (new-plan :days))
+  (test (empty? errors) true)
   (test (length days) 4)
   (test (= (d/+days today 2) ((days 0) :date)) true)
   (test (= (d/+days today 1) ((days 1) :date)) true)
@@ -70,9 +71,10 @@
                       (day/build-day (d/date 2020 8 2) @[]
                                      @[(task/build-task "Buy milk" true)])]))
   (def arguments {"skip-backup" true "remove-empty-days" true "insert-days" "three"})
-  (def new-plan (run-commands plan file-path arguments))
+  (def {:plan new-plan :errors errors} (run-commands plan file-path arguments))
   (def days (new-plan :days))
   (test (length days) 3)
   (test (= today ((days 0) :date)) true)
   (test (= (d/date 2020 8 4) ((days 1) :date)) true)
-  (test (= (d/date 2020 8 2) ((days 2) :date)) true))
+  (test (= (d/date 2020 8 2) ((days 2) :date)) true)
+  (test (= (first errors) "--insert-days argument is not a number.") true))

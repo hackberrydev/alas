@@ -1,6 +1,7 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements a command for scheduling contacts for today in a plan.
 
+(import ../errors)
 (import ../utils :prefix "")
 
 (import ../contact)
@@ -69,6 +70,6 @@
           errors (load-result :errors)
           contacts (load-result :contacts)]
       (if errors
-        {:errors (format-command-errors "--schedule-contacts" errors)}
+        {:errors (errors/format-command-errors "--schedule-contacts" errors)}
         {:command [schedule-contacts contacts (date/today)]}))
     {}))

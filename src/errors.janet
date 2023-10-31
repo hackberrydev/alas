@@ -1,15 +1,24 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
-### This module implements various utilites.
+### Errors.
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
 
-(defn pluralize [n word]
-  (if (= n 1)
-    (string n " " word)
-    (string n " " word "s")))
+(def exit-status-codes
+  {:error 1
+   :plan-path-missing 2
+   :file-error 3
+   :parse-error 4
+   :command-error 5})
 
-(defn dirname [path]
-  (if (string/has-suffix? "/" path)
-    (string/trimr path "/")
-    path))
+(defn format-command-errors [command errors]
+  (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
+
+# TODO: This function should go away.
+(defn print-errors-without-status-code [errors]
+  (loop [error :in errors]
+    (print error)))
+
+(defn print-errors [errors exit-status-code]
+  (each error errors (print (string error ".")))
+  (os/exit exit-status-code))
