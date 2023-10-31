@@ -62,9 +62,8 @@
     (run-with-file-path arguments file-path)
     (if (arguments "version")
       (print-version)
-      (do
-        (print "Plan file path missing.")
-        (os/exit (errors/exit-status-codes :plan-path-missing))))))
+      (errors/print-errors ["Plan file path is missing"]
+                           (errors/exit-status-codes :plan-path-missing)))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface
