@@ -12,7 +12,7 @@
    :command-error 5})
 
 (defn format-command-errors [command errors]
-  (map (fn [error] (string command " " (string/ascii-lower error) ".")) errors))
+  (map (fn [error] (string command " " (string/ascii-lower error))) errors))
 
 (defn print-errors [errors exit-status-code]
   (each error errors (print (string error ".")))
