@@ -127,4 +127,4 @@
   (def arguments {"schedule-contacts" "test/examples/people"})
   (def result (build-command arguments))
   (test (nil? (result :command)) true)
-  (test (first (result :errors)) "--schedule-contacts directory does not exist."))
+  (test (first (result :errors)) "--schedule-contacts directory does not exist"))

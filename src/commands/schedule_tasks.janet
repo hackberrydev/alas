@@ -8,6 +8,7 @@
 (import ../plan)
 (import ../task)
 
+(import ../errors)
 (import ../file_repository)
 (import ../schedule_parser)
 
@@ -84,10 +85,10 @@
     (let [load-file-result (file_repository/load argument)
           errors (load-file-result :errors)]
       (if errors
-        {:errors (format-command-errors command errors)}
+        {:errors (errors/format-command-errors command errors)}
         (let [parse-result (schedule_parser/parse (load-file-result :text))
               errors (parse-result :errors)]
           (if errors
-            {:errors (format-command-errors command errors)}
+            {:errors (errors/format-command-errors command errors)}
             {:command [schedule-tasks (parse-result :tasks) (date/today)]}))))
     {}))

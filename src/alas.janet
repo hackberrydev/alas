@@ -5,12 +5,10 @@
 
 (import ./commands :prefix "")
 
+(import ./errors)
 (import ./file_repository)
 (import ./plan/parser :as plan_parser)
 (import ./plan/serializer :as plan_serializer)
-
-(defn- print-errors [errors]
-  (each error errors (print (string error "."))))
 
 # Keep commands sorted alphabetically.
 (def argparse-params
@@ -42,19 +40,21 @@
   (def load-file-result (file_repository/load file-path))
   (def errors (load-file-result :errors))
   (if errors
-    (print-errors errors)
+    (errors/print-errors errors (errors/exit-status-codes :file-error))
     (let [plan-string (load-file-result :text)
           parse-result (plan_parser/parse plan-string)
           parse-errors (parse-result :errors)
           plan (parse-result :plan)]
       (if parse-errors
-        (print-errors parse-errors)
-        (let [serialize-empty-inbox (plan_parser/serialize-empty-inbox? plan-string)
-              new-plan (run-commands plan file-path arguments)
-              new-plan-string (plan_serializer/serialize
+        (errors/print-errors parse-errors (errors/exit-status-codes :parse-error))
+        (let [{:plan new-plan :errors run-errors} (run-commands plan file-path arguments)]
+          (if (empty? run-errors)
+            (let [serialize-empty-inbox (plan_parser/serialize-empty-inbox? plan-string)
+                  new-plan-string (plan_serializer/serialize
                                 new-plan
                                 {:serialize-empty-inbox serialize-empty-inbox})]
-          (file_repository/save new-plan-string file-path))))))
+              (file_repository/save new-plan-string file-path))
+            (errors/print-errors run-errors (errors/exit-status-codes :command-error))))))))
 
 (defn- run-with-arguments [arguments]
   (def file-path (arguments :default))
@@ -62,7 +62,8 @@
     (run-with-file-path arguments file-path)
     (if (arguments "version")
       (print-version)
-      (print "Plan file path missing."))))
+      (errors/print-errors ["Plan file path is missing"]
+                           (errors/exit-status-codes :plan-path-missing)))))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Public Interface

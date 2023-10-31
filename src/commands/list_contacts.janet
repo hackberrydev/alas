@@ -3,6 +3,7 @@
 
 (import ../utils :prefix "")
 (import ../date :as d)
+(import ../errors)
 (import ../contact/repository :as contacts_repository)
 
 (defn- to-csv-line [contact]
@@ -35,6 +36,6 @@
     (let [load-result (contacts_repository/load-contacts argument)
           errors (load-result :errors)]
       (if errors
-        {:errors (format-command-errors "--list-contacts" errors)}
+        {:errors (errors/format-command-errors "--list-contacts" errors)}
         {:command [print-contacts (load-result :contacts)]}))
     {}))

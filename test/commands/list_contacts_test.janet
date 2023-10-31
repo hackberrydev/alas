@@ -32,4 +32,4 @@
 (deftest "when the directory doesn't exist"
   (def arguments {"list-contacts" "test/missing-directory"})
   (def result (build-command arguments))
-  (test (first (result :errors)) "--list-contacts directory does not exist."))
+  (test (first (result :errors)) "--list-contacts directory does not exist"))
