@@ -80,7 +80,7 @@
   {:year 2021 :month 12 :day 31 :week-day "Friday"}
   ```
   []
-  (let [today (os/date)]
+  (let [today (os/date (os/time) false)]
     @{:year (today :year)
       :month (+ (today :month) 1)
       :day (+ (today :month-day) 1)
