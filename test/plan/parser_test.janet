@@ -51,7 +51,7 @@
     (test (not (task :done)) true)
     (test (d/equal? (d/date 2020 7 30) (task :missed-on)) true))
   (test (= (d/date 2020 7 31) (day-2 :date)) true)
-  (test (= {:text "Talked to Mike & Molly"} ((day-2 :events) 0)) true)
+  (test (= {:title "Talked to Mike & Molly"} ((day-2 :events) 0)) true)
   (let [task ((day-2 :tasks) 0)]
     (test (task :title) "#work - Review open pull requests")
     (test (task :done) true))

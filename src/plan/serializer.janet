@@ -12,7 +12,7 @@
   (if done "[X]" "[ ]"))
 
 (defn- serialize-event [event]
-  (string "- " (event :text)))
+  (string "- " (event :title)))
 
 (defn- task-mark [task]
   (if (task :missed-on)
