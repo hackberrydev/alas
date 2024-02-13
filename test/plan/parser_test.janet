@@ -204,6 +204,21 @@
     (test (task :title) "Fix the lamp")
     (test (task :done) true)))
 
+(deftest "parses a plan with an event without any tasks"
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## 2020-07-30, Thursday
+
+    - Talked to Mike & Molly
+    ```)
+  (def plan ((parse plan-string) :plan))
+  (test  (length (plan :days)) 1)
+  (let [day ((plan :days) 0)
+        event ((day :events) 0)]
+    (test (event :title) "Talked to Mike & Molly")))
+
 (deftest "returns an error when the plan can't be parsed"
   (def plan-string
     ```
