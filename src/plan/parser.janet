@@ -27,8 +27,15 @@
           :events
             {:main (group (any :event))
              :event
-               {:main (replace (* :event-begin :text-line (? "\n")) ,event/build-event)
-                :event-begin (* "- " (not "["))}}}}
+               {:main (replace (* :event-begin
+                                  :text-line
+                                  (? "\n")
+                                  :event-body
+                                  (? "\n"))
+                               ,event/build-event)
+                :event-begin (* "- " (not "["))
+                :event-body {:main (group (any :event-body-line))
+                             :event-body-line (* "  " :text-line (? "\n"))}}}}}
     :tasks
       {:main (group (any :task))
        :task
@@ -78,7 +85,7 @@
                                plan
                                {:serialize-empty-inbox serialize-empty-inbox})]
       (if (= (lines-count parsed-plan-string) (lines-count plan-string))
-        {:plan plan}
+        {:plan plan :errors []}
         {:errors [(string "Plan can not be parsed: last parsed line is line "
                           (lines-count parsed-plan-string {:ignore-whitespace false}))]}))
     {:errors ["Plan can not be parsed"]}))

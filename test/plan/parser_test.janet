@@ -28,7 +28,8 @@
     - [x] #work - Review open pull requests
     - [x] #work - Fix the flaky test
     ```)
-  (def plan ((parse plan-string) :plan))
+  (def parse-result (parse plan-string))
+  (def plan (parse-result :plan))
   (def inbox (plan :inbox))
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
@@ -51,7 +52,9 @@
     (test (not (task :done)) true)
     (test (d/equal? (d/date 2020 7 30) (task :missed-on)) true))
   (test (= (d/date 2020 7 31) (day-2 :date)) true)
-  (test (= {:title "Talked to Mike & Molly"} ((day-2 :events) 0)) true)
+  (let [event ((day-2 :events) 0)]
+    (test (event :title) "Talked to Mike & Molly")
+    (test (empty? (event :body)) true))
   (let [task ((day-2 :tasks) 0)]
     (test (task :title) "#work - Review open pull requests")
     (test (task :done) true))
@@ -193,14 +196,15 @@
       - They moved to a new apartment
     - [x] Fix the lamp
     ```)
-  (def plan ((parse plan-string) :plan))
+  (def parse-result (parse plan-string))
+  (def plan (parse-result :plan))
   (test  (length (plan :days)) 1)
   (let [day ((plan :days) 0)
         event ((day :events) 0)
         task ((day :tasks) 0)]
+    (test (= (d/date 2020 7 30) (day :date)) true)
     (test (event :title) "Talked to Mike & Molly")
     (test ((event :body) 0) "- They moved to a new apartment")
-    (test (= (d/date 2020 7 30) (day :date)) true)
     (test (task :title) "Fix the lamp")
     (test (task :done) true)))
 
