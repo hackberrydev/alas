@@ -28,7 +28,8 @@
     - [x] #work - Review open pull requests
     - [x] #work - Fix the flaky test
     ```)
-  (def plan ((parse plan-string) :plan))
+  (def parse-result (parse plan-string))
+  (def plan (parse-result :plan))
   (def inbox (plan :inbox))
   (def day-1 ((plan :days) 0))
   (def day-2 ((plan :days) 1))
@@ -51,7 +52,9 @@
     (test (not (task :done)) true)
     (test (d/equal? (d/date 2020 7 30) (task :missed-on)) true))
   (test (= (d/date 2020 7 31) (day-2 :date)) true)
-  (test (= {:text "Talked to Mike & Molly"} ((day-2 :events) 0)) true)
+  (let [event ((day-2 :events) 0)]
+    (test (event :title) "Talked to Mike & Molly")
+    (test (empty? (event :body)) true))
   (let [task ((day-2 :tasks) 0)]
     (test (task :title) "#work - Review open pull requests")
     (test (task :done) true))
@@ -181,6 +184,44 @@
   (test (empty? (plan :inbox)) true)
   (test (= (d/date 2020 8 1) (day-1 :date)) true)
   (test (= (d/date 2020 7 31) (day-2 :date)) true))
+
+(deftest "parses a plan with an event that has a body"
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## 2020-07-30, Thursday
+
+    - Talked to Mike & Molly
+      - They moved to a new apartment
+    - [x] Fix the lamp
+    ```)
+  (def parse-result (parse plan-string))
+  (def plan (parse-result :plan))
+  (test  (length (plan :days)) 1)
+  (let [day ((plan :days) 0)
+        event ((day :events) 0)
+        task ((day :tasks) 0)]
+    (test (= (d/date 2020 7 30) (day :date)) true)
+    (test (event :title) "Talked to Mike & Molly")
+    (test ((event :body) 0) "- They moved to a new apartment")
+    (test (task :title) "Fix the lamp")
+    (test (task :done) true)))
+
+(deftest "parses a plan with an event without any tasks"
+  (def plan-string
+    ```
+    # Main TODO
+
+    ## 2020-07-30, Thursday
+
+    - Talked to Mike & Molly
+    ```)
+  (def plan ((parse plan-string) :plan))
+  (test  (length (plan :days)) 1)
+  (let [day ((plan :days) 0)
+        event ((day :events) 0)]
+    (test (event :title) "Talked to Mike & Molly")))
 
 (deftest "returns an error when the plan can't be parsed"
   (def plan-string

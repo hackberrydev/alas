@@ -15,7 +15,7 @@
       :days @[(day/build-day (d/date 2020 8 3))
               (day/build-day (d/date 2020 8 2))
               (day/build-day (d/date 2020 8 1)
-                             @[(event/build-event "Talked to Mike")]
+                             @[(event/build-event "Talked to Mike" @["- He has a new car"])]
                              @[(task/build-task "Develop photos" false)
                                (task/build-task "Pay bills" true @["- Electricity" "- Water"])
                                (task/build-missed-task "Organize photos" (d/date 2020 7 20))])
@@ -38,6 +38,7 @@
        ## 2020-08-01, Saturday
 
        - Talked to Mike
+         - He has a new car
        - [ ] Develop photos
        - [X] Pay bills
          - Electricity
