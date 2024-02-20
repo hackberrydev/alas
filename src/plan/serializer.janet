@@ -3,7 +3,7 @@
 
 (import ../date)
 
-(def task-body-indentation "  ")
+(def body-indentation "  ")
 
 (defn- plan-title [plan]
   (string "# " (plan :title)))
@@ -11,8 +11,22 @@
 (defn- checkbox [done]
   (if done "[X]" "[ ]"))
 
+(defn- serialize-event-title [event]
+  (string "- " (event :title)))
+
+(defn- serialize-event-body [event]
+  (def body (event :body))
+  (if (or (nil? body) (empty? body))
+    ""
+    (string "\n"
+            (string/join
+              (map (fn [line] (string body-indentation line)) body)
+              "\n"))))
+
 (defn- serialize-event [event]
-  (string "- " (event :text)))
+  (string
+    (serialize-event-title event)
+    (serialize-event-body event)))
 
 (defn- task-mark [task]
   (if (task :missed-on)
@@ -28,11 +42,12 @@
     ""
     (string "\n"
             (string/join
-              (map (fn [line] (string task-body-indentation line)) body)
+              (map (fn [line] (string body-indentation line)) body)
               "\n"))))
 
 (defn- serialize-task [task]
-  (string (serialize-task-title task)
+  (string
+    (serialize-task-title task)
     (serialize-task-body task)))
 
 (defn- plan-inbox [plan serialize-empty-inbox]
