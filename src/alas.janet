@@ -45,8 +45,7 @@
           parse-result (plan_parser/parse plan-string)
           parse-errors (parse-result :errors)
           plan (parse-result :plan)]
-      (if parse-errors
-        (errors/print-errors parse-errors (errors/exit-status-codes :parse-error))
+      (if (empty? parse-errors)
         (let [{:plan new-plan :errors run-errors} (run-commands plan file-path arguments)]
           (if (empty? run-errors)
             (let [serialize-empty-inbox (plan_parser/serialize-empty-inbox? plan-string)
@@ -54,7 +53,8 @@
                                 new-plan
                                 {:serialize-empty-inbox serialize-empty-inbox})]
               (file_repository/save new-plan-string file-path))
-            (errors/print-errors run-errors (errors/exit-status-codes :command-error))))))))
+            (errors/print-errors run-errors (errors/exit-status-codes :command-error)))
+        (errors/print-errors parse-errors (errors/exit-status-codes :parse-error)))))))
 
 (defn- run-with-arguments [arguments]
   (def file-path (arguments :default))
