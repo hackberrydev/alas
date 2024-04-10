@@ -57,7 +57,7 @@
               (file_repository/save new-plan-string file-path)
               errors/no-error)))))))
 
-(defn- run-with-arguments [arguments]
+(defn run-with-arguments [arguments]
   (def file-path (arguments :default))
   (if file-path
     (run-with-file-path arguments file-path)
