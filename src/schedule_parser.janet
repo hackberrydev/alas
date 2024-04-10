@@ -41,7 +41,7 @@
           {:errors ["Schedule is empty"]}
           (do
             (if (= (length tasks) (task-lines-count schedule-string))
-              {:tasks tasks}
+              {:tasks tasks :errors []}
               {:errors [(string "Schedule can not be parsed - last parsed task is \""
                                 ((last tasks) :title)
                                 "\""

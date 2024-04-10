@@ -83,12 +83,13 @@
   (def argument (arguments "schedule-tasks"))
   (if argument
     (let [load-file-result (file_repository/load argument)
-          errors (load-file-result :errors)]
-      (if errors
-        {:errors (errors/format-command-errors command errors)}
+          file-errors (load-file-result :errors)]
+      (if (any? file-errors)
+        {:errors (errors/format-command-errors command file-errors)}
         (let [parse-result (schedule_parser/parse (load-file-result :text))
-              errors (parse-result :errors)]
-          (if errors
-            {:errors (errors/format-command-errors command errors)}
-            {:command [schedule-tasks (parse-result :tasks) (date/today)]}))))
+              parse-errors (parse-result :errors)]
+          (if (any? parse-errors)
+            {:errors (errors/format-command-errors command parse-errors)}
+            {:command [schedule-tasks (parse-result :tasks) (date/today)]
+             :errors []}))))
     {}))
