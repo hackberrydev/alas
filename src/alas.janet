@@ -75,4 +75,4 @@
   (def arguments (argparse ;argparse-params))
   (if arguments
     (let [[errors exit-code] (run-with-arguments arguments)]
-      (errors/print-errors errors (errors/exit-status-codes exit-code)))))
+      (errors/print-errors errors exit-code))))
