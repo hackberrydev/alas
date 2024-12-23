@@ -46,3 +46,23 @@ Run tests with:
 ```sh
 ./test.sh
 ```
+
+### Development With Docker
+
+Run the following command to start the Docker container:
+
+```sh
+docker compose up --build -d
+```
+
+Run the following command to run Bash inside the container:
+
+```sh
+docker compose exec alas bash
+```
+
+Then run tests with:
+
+```sh
+./test.sh
+```
