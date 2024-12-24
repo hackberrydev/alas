@@ -83,6 +83,22 @@
   (test (scheduled-for? task (d/date 2023 1 31)) true)
   (test (not (scheduled-for? task (d/date 2022 1 30))) true))
 
+(deftest "every last weekday"
+  (def task (task/build-scheduled-task 42 "Review logs" "every last weekday"))
+  (test (scheduled-for? task (d/date 2022 1 31)) true)
+  (test (scheduled-for? task (d/date 2022 2 28)) true)
+  (test (scheduled-for? task (d/date 2022 3 31)) true)
+  (test (scheduled-for? task (d/date 2022 4 29)) true)
+  (test (scheduled-for? task (d/date 2022 5 31)) true)
+  (test (scheduled-for? task (d/date 2022 6 30)) true)
+  (test (scheduled-for? task (d/date 2022 7 29)) true)
+  (test (scheduled-for? task (d/date 2022 8 31)) true)
+  (test (scheduled-for? task (d/date 2022 9 29)) true)
+  (test (scheduled-for? task (d/date 2022 10 31)) true)
+  (test (scheduled-for? task (d/date 2022 11 30)) true)
+  (test (scheduled-for? task (d/date 2022 12 30)) true)
+  (test (not (scheduled-for? task (d/date 2022 1 30))) true))
+
 (deftest "every last Friday"
   (def task (task/build-scheduled-task 42 "Review logs" "every last Friday"))
   (test (scheduled-for? task (d/date 2022 1 28)) true)
