@@ -123,6 +123,14 @@
  [d1 d2]
  (>= (to-time d1) (to-time d2)))
 
+(defn weekday?
+  ```
+  Returns true if the date is a week day (Monday-Friday).
+  ```
+  [date]
+  (has-value? ["Monday" "Tuesday" "Wednesday" "Thursday" "Friday"]
+              (date :week-day)))
+
 (defn last-day-of-month?
   ```
   Returns true if the date is the last day of a month.
@@ -139,3 +147,11 @@
   (def next-week (+days date 7))
   (and (= (date :week-day) "Friday")
        (not= (date :month) (next-week :month))))
+
+(defn last-weekday-of-month?
+  ```
+  Return true if the date is the last week day of a month.
+  ```
+  [date]
+  (or (and (weekday? date) (last-day-of-month? date))
+      (last-friday-of-month? date)))

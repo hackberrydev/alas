@@ -93,7 +93,7 @@
   (test (scheduled-for? task (d/date 2022 6 30)) true)
   (test (scheduled-for? task (d/date 2022 7 29)) true)
   (test (scheduled-for? task (d/date 2022 8 31)) true)
-  (test (scheduled-for? task (d/date 2022 9 29)) true)
+  (test (scheduled-for? task (d/date 2022 9 30)) true)
   (test (scheduled-for? task (d/date 2022 10 31)) true)
   (test (scheduled-for? task (d/date 2022 11 30)) true)
   (test (scheduled-for? task (d/date 2022 12 30)) true)
