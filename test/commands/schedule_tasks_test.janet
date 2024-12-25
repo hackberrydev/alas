@@ -12,31 +12,31 @@
 (deftest "every Monday"
   (def task (task/build-scheduled-task 42 "Weekly meeting" "every Monday"))
   (test (scheduled-for? task (d/date 2022 1 24)) true)
-  (test (not (scheduled-for? task (d/date 2022 1 25))) true))
+  (test (scheduled-for? task (d/date 2022 1 25)) false))
 
 (deftest "every Tuesday"
   (def task (task/build-scheduled-task 42 "Weekly meeting" "every Tuesday"))
-  (test (not (scheduled-for? task (d/date 2022 1 24))) true)
+  (test (scheduled-for? task (d/date 2022 1 24)) false)
   (test (scheduled-for? task (d/date 2022 1 25)) true))
 
 (deftest "every month"
   (def task (task/build-scheduled-task 42 "Review logs" "every month"))
   (test (scheduled-for? task (d/date 2022 1 1)) true)
-  (test (not (scheduled-for? task (d/date 2022 1 2))) true)
+  (test (scheduled-for? task (d/date 2022 1 2)) false)
   (test (scheduled-for? task (d/date 2022 6 1)) true)
-  (test (not (scheduled-for? task (d/date 2022 6 15))) true))
+  (test (scheduled-for? task (d/date 2022 6 15)) false))
 
 (deftest "every 3 months"
   (def task (task/build-scheduled-task 42 "Review logs" "every 3 months"))
   (test (scheduled-for? task (d/date 2022 1 1)) true)
-  (test (not (scheduled-for? task (d/date 2022 2 1))) true)
-  (test (not (scheduled-for? task (d/date 2022 3 1))) true)
+  (test (scheduled-for? task (d/date 2022 2 1)) false)
+  (test (scheduled-for? task (d/date 2022 3 1)) false)
   (test (scheduled-for? task (d/date 2022 4 1)) true)
-  (test (not (scheduled-for? task (d/date 2022 5 1))) true)
-  (test (not (scheduled-for? task (d/date 2022 6 1))) true)
+  (test (scheduled-for? task (d/date 2022 5 1)) false)
+  (test (scheduled-for? task (d/date 2022 6 1)) false)
   (test (scheduled-for? task (d/date 2022 7 1)) true)
-  (test (not (scheduled-for? task (d/date 2022 8 1))) true)
-  (test (not (scheduled-for? task (d/date 2022 9 1))) true)
+  (test (scheduled-for? task (d/date 2022 8 1)) false)
+  (test (scheduled-for? task (d/date 2022 9 1)) false)
   (test (scheduled-for? task (d/date 2022 10 1)) true))
 
 (deftest "every weekday"
@@ -46,33 +46,33 @@
   (test (scheduled-for? task (d/date 2022 1 26)) true)        # Wednesday
   (test (scheduled-for? task (d/date 2022 1 27)) true)        # Thursday
   (test (scheduled-for? task (d/date 2022 1 28)) true)        # Friday
-  (test (not (scheduled-for? task (d/date 2022 1 29))) true)  # Saturday
-  (test (not (scheduled-for? task (d/date 2022 1 30))) true)) # Sunday
+  (test (scheduled-for? task (d/date 2022 1 29)) false)  # Saturday
+  (test (scheduled-for? task (d/date 2022 1 30)) false)) # Sunday
 
 (deftest "every month on some date"
   (def task (task/build-scheduled-task 42 "Review logs" "every month on 15"))
   (test (scheduled-for? task (d/date 2022 1 15)) true)
   (test (scheduled-for? task (d/date 2022 2 15)) true)
   (test (scheduled-for? task (d/date 2022 10 15)) true)
-  (test (not (scheduled-for? task (d/date 2022 1 14))) true)
-  (test (not (scheduled-for? task (d/date 2022 1 16))) true))
+  (test (scheduled-for? task (d/date 2022 1 14)) false)
+  (test (scheduled-for? task (d/date 2022 1 16)) false))
 
 (deftest "every year on some date"
   (def task (task/build-scheduled-task 42 "Review logs" "every year on 01-27"))
   (test (scheduled-for? task (d/date 2022 1 27)) true)
   (test (scheduled-for? task (d/date 2023 1 27)) true)
   (test (scheduled-for? task (d/date 2024 1 27)) true)
-  (test (not (scheduled-for? task (d/date 2022 1 26))) true)
-  (test (not (scheduled-for? task (d/date 2022 1 28))) true)
-  (test (not (scheduled-for? task (d/date 2022 2 1))) true))
+  (test (scheduled-for? task (d/date 2022 1 26)) false)
+  (test (scheduled-for? task (d/date 2022 1 28)) false)
+  (test (scheduled-for? task (d/date 2022 2 1)) false))
 
 (deftest "on some date"
   (def task (task/build-scheduled-task 42 "Review logs" "on 2022-01-27"))
   (test (scheduled-for? task (d/date 2022 1 27)) true)
-  (test (not (scheduled-for? task (d/date 2022 1 26))) true)
-  (test (not (scheduled-for? task (d/date 2022 1 28))) true)
-  (test (not (scheduled-for? task (d/date 2022 2 1))) true)
-  (test (not (scheduled-for? task (d/date 2023 1 27))) true))
+  (test (scheduled-for? task (d/date 2022 1 26)) false)
+  (test (scheduled-for? task (d/date 2022 1 28)) false)
+  (test (scheduled-for? task (d/date 2022 2 1)) false)
+  (test (scheduled-for? task (d/date 2023 1 27)) false))
 
 (deftest "every last day"
   (def task (task/build-scheduled-task 42 "Review logs" "every last day"))
@@ -89,7 +89,7 @@
   (test (scheduled-for? task (d/date 2022 11 30)) true)
   (test (scheduled-for? task (d/date 2022 12 31)) true)
   (test (scheduled-for? task (d/date 2023 1 31)) true)
-  (test (not (scheduled-for? task (d/date 2022 1 30))) true))
+  (test (scheduled-for? task (d/date 2022 1 30)) false))
 
 (deftest "every last weekday"
   (def task (task/build-scheduled-task 42 "Review logs" "every last weekday"))
@@ -105,7 +105,7 @@
   (test (scheduled-for? task (d/date 2022 10 31)) true)
   (test (scheduled-for? task (d/date 2022 11 30)) true)
   (test (scheduled-for? task (d/date 2022 12 30)) true)
-  (test (not (scheduled-for? task (d/date 2022 1 30))) true))
+  (test (scheduled-for? task (d/date 2022 1 30)) false))
 
 (deftest "every last Friday"
   (def task (task/build-scheduled-task 42 "Review logs" "every last Friday"))
@@ -114,7 +114,7 @@
   (test (scheduled-for? task (d/date 2022 3 25)) true)
   (test (scheduled-for? task (d/date 2022 4 29)) true)
   (test (scheduled-for? task (d/date 2022 5 27)) true)
-  (test (not (scheduled-for? task (d/date 2022 1 31))) true))
+  (test (scheduled-for? task (d/date 2022 1 31)) false))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test missed?

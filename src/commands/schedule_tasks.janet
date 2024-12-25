@@ -32,7 +32,8 @@
         (string "on " formatted-date) true
         "every last day" (date/last-day-of-month? date)
         "every last weekday" (date/last-weekday-of-month? date)
-        "every last Friday" (date/last-friday-of-month? date)))
+        "every last Friday" (date/last-friday-of-month? date)
+        false))
 
 (defn- missed-on-day [plan task date]
   (find (fn [day] (and (scheduled-for? task (day :date))
