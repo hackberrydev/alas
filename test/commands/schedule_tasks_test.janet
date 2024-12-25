@@ -49,6 +49,14 @@
   (test (not (scheduled-for? task (d/date 2022 1 29))) true)  # Saturday
   (test (not (scheduled-for? task (d/date 2022 1 30))) true)) # Sunday
 
+(deftest "every month on some date"
+  (def task (task/build-scheduled-task 42 "Review logs" "every month on 15"))
+  (test (scheduled-for? task (d/date 2022 1 15)) true)
+  (test (scheduled-for? task (d/date 2022 2 15)) true)
+  (test (scheduled-for? task (d/date 2022 10 15)) true)
+  (test (not (scheduled-for? task (d/date 2022 1 14))) true)
+  (test (not (scheduled-for? task (d/date 2022 1 16))) true))
+
 (deftest "every year on some date"
   (def task (task/build-scheduled-task 42 "Review logs" "every year on 01-27"))
   (test (scheduled-for? task (d/date 2022 1 27)) true)
