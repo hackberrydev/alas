@@ -30,6 +30,7 @@
         (string "every year on " (remove-year formatted-date)) true
         (string "on " formatted-date) true
         "every last day" (date/last-day-of-month? date)
+        "every last weekday" (date/last-weekday-of-month? date)
         "every last Friday" (date/last-friday-of-month? date)))
 
 (defn- missed-on-day [plan task date]
