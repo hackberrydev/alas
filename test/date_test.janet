@@ -69,6 +69,18 @@
   (test (not (d/after-or-eq? (d/date 2021 7 1) (d/date 2021 7 15))) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Test weekday?
+
+(deftest "returns true if the date is a weekday"
+  (test (d/weekday? (d/date 2022 1 3)) true)
+  (test (d/weekday? (d/date 2022 1 4)) true)
+  (test (d/weekday? (d/date 2022 1 5)) true)
+  (test (d/weekday? (d/date 2022 1 6)) true)
+  (test (d/weekday? (d/date 2022 1 7)) true)
+  (test (d/weekday? (d/date 2022 1 8)) false)
+  (test (d/weekday? (d/date 2022 1 9)) false))
+
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test last-day-of-month?
 
 (deftest "returns true when the date is the last date of the month"
@@ -88,7 +100,25 @@
   (test (not (d/last-day-of-month? (d/date 2022 1 30))) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
-## Test last-Friday-of-month?
+## Test last-weekday-of-month?
+
+(deftest "returns true when the date is the last week day of the month"
+  (test (d/last-weekday-of-month? (d/date 2022 1 31)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 2 28)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 3 31)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 4 29)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 5 31)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 6 30)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 7 29)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 8 31)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 9 30)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 10 31)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 11 30)) true)
+  (test (d/last-weekday-of-month? (d/date 2022 12 30)) true)
+  (test (not (d/last-weekday-of-month? (d/date 2022 1 30))) true))
+
+## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Test last-friday-of-month?
 
 (deftest "returns true when the date is the last friday of the month"
   (test (d/last-friday-of-month? (d/date 2022 1 28)) true)
