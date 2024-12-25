@@ -27,11 +27,13 @@
         "every month" (= (date :day) 1)
         "every 3 months" (and (= (date :day) 1)
                               (number? (index-of (date :month) [1 4 7 10])))
+        (string "every month on " (date :day)) true
         (string "every year on " (remove-year formatted-date)) true
         (string "on " formatted-date) true
         "every last day" (date/last-day-of-month? date)
         "every last weekday" (date/last-weekday-of-month? date)
-        "every last Friday" (date/last-friday-of-month? date)))
+        "every last Friday" (date/last-friday-of-month? date)
+        false))
 
 (defn- missed-on-day [plan task date]
   (find (fn [day] (and (scheduled-for? task (day :date))
