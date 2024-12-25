@@ -19,10 +19,11 @@
     - Meeting with Jack (on 2022-05-03)
     - Review logs (every last day)
     - Send invoice (every last weekday)
+    - Pay bills (every month on 15)
     ```)
   (def result (schedule_parser/parse schedule-string))
   (def scheduled-tasks (result :tasks))
-  (test (length scheduled-tasks) 8)
+  (test (length scheduled-tasks) 9)
   (let [task (scheduled-tasks 0)]
     (test (task :title) "Weekly Meeting")
     (test (task :done) false)
@@ -38,7 +39,10 @@
     (test (task :schedule) "every last day"))
   (let [task (scheduled-tasks 7)]
     (test (task :title) "Send invoice")
-    (test (task :schedule) "every last weekday")))
+    (test (task :schedule) "every last weekday"))
+  (let [task (scheduled-tasks 8)]
+    (test (task :title) "Pay bills")
+    (test (task :schedule) "every month on 15")))
 
 (deftest "returns an error when the schedule can't be parsed"
   (def schedule-string
