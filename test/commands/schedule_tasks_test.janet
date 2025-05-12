@@ -105,7 +105,8 @@
   (test (scheduled-for? task (d/date 2022 10 31)) true)
   (test (scheduled-for? task (d/date 2022 11 30)) true)
   (test (scheduled-for? task (d/date 2022 12 30)) true)
-  (test (scheduled-for? task (d/date 2022 1 30)) false))
+  (test (scheduled-for? task (d/date 2022 1 30)) false)
+  (test (scheduled-for? task (d/date 2025 4 25)) false))
 
 (deftest "every last Friday"
   (def task (task/build-scheduled-task 42 "Review logs" "every last Friday"))
