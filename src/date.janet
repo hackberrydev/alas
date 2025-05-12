@@ -154,4 +154,5 @@
   ```
   [date]
   (or (and (weekday? date) (last-day-of-month? date))
-      (last-friday-of-month? date)))
+      (and (last-friday-of-month? date)
+           (not= (date :month) ((+days date 3) :month)))))

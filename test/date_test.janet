@@ -115,6 +115,7 @@
   (test (d/last-weekday-of-month? (d/date 2022 10 31)) true)
   (test (d/last-weekday-of-month? (d/date 2022 11 30)) true)
   (test (d/last-weekday-of-month? (d/date 2022 12 30)) true)
+  (test (not (d/last-weekday-of-month? (d/date 2025 4 25))) true)
   (test (not (d/last-weekday-of-month? (d/date 2022 1 30))) true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
