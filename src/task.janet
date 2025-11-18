@@ -5,7 +5,7 @@
 
 (defn build-task [title done &opt body]
   (default body @[])
-  {:title title :body body :done done})
+  {:title title :body body :done done :state (if done :checked :open)})
 
 (defn build-scheduled-task [line title schedule]
   {:line line :title title :done false :schedule schedule})
