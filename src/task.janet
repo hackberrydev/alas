@@ -8,7 +8,8 @@
   {:title title :body body :done done :state (if done :checked :open)})
 
 (defn build-scheduled-task [line title schedule]
-  {:line line :title title :done false :schedule schedule})
+  (def task (build-task title false))
+  (merge task {:line line :schedule schedule}))
 
 (defn build-missed-task [title date &opt body]
   (default body @[])

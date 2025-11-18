@@ -18,6 +18,14 @@
   (test (task :state) :checked))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Test build-scheduled-task
+(deftest "builds a new scheduled task"
+  (def task (task/build-scheduled-task 15 "Weekly meeting" "every Tuesday"))
+  (test (task :title) "Weekly meeting")
+  (test (task :done) false)
+  (test (task :state) :open))
+
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test mark-as-missed
 
 (deftest "marks task as missed"
