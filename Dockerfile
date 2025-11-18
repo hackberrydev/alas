@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:trixie-slim
 
 ARG JANET_VERSION
 ARG JPM_VERSION
