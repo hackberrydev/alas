@@ -27,7 +27,7 @@
         true)
   (test (not (empty-day? (build-day (d/date 2020 8 1)
                                     @[]
-                                    @[(task/build-task "Buy milk" true)])))
+                                    @[(task/build-task "Buy milk" :checked)])))
         true))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
@@ -35,8 +35,8 @@
 
 (deftest "adds tasks to the day"
   (def day (build-day (d/date 2020 8 1)))
-  (add-tasks day @[(task/build-task "Buy milk" true)
-                   (task/build-task "Fix the lamp" false)])
+  (add-tasks day @[(task/build-task "Buy milk" :checked)
+                   (task/build-task "Fix the lamp" :open)])
   (test (length (day :tasks)) 2)
   (test (((day :tasks) 0) :title) "Buy milk")
   (test (((day :tasks) 1) :title) "Fix the lamp"))
@@ -44,9 +44,9 @@
 (deftest "doesn't add duplicate tasks"
   (def day (build-day (d/date 2020 8 1)
                       @[]
-                      @[(task/build-task "Fix the lamp" false)]))
-  (add-tasks day @[(task/build-task "Buy milk" true)
-                   (task/build-task "Fix the lamp" false)])
+                      @[(task/build-task "Fix the lamp" :open)]))
+  (add-tasks day @[(task/build-task "Buy milk" :checked)
+                   (task/build-task "Fix the lamp" :open)])
   (test (length (day :tasks)) 2)
   (test (((day :tasks) 0) :title) "Fix the lamp")
   (test (((day :tasks) 1) :title) "Buy milk"))

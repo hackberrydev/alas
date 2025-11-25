@@ -144,7 +144,7 @@
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 8 2)
                                      @[]
-                                     @[(task/build-task "Weekly meeting" true)])
+                                     @[(task/build-task "Weekly meeting" :checked)])
                       (day/build-day (d/date 2022 8 1))]))
   (test (not (missed? plan scheduled-task (d/date 2022 8 3))) true))
 

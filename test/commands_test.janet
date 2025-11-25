@@ -52,7 +52,7 @@
               :days @[(day/build-day today)
                       (day/build-day (d/date 2020 8 4))
                       (day/build-day (d/date 2020 8 2) @[]
-                                     @[(task/build-task "Buy milk" true)])]))
+                                     @[(task/build-task "Buy milk" :checked)])]))
   (def arguments {"skip-backup" true "remove-empty-days" true "insert-days" "3"})
   (def {:plan new-plan :errors errors} (run-commands plan file-path arguments))
   (def days (new-plan :days))
@@ -69,7 +69,7 @@
               :days @[(day/build-day today)
                       (day/build-day (d/date 2020 8 4))
                       (day/build-day (d/date 2020 8 2) @[]
-                                     @[(task/build-task "Buy milk" true)])]))
+                                     @[(task/build-task "Buy milk" :checked)])]))
   (def arguments {"skip-backup" true "remove-empty-days" true "insert-days" "three"})
   (def {:plan new-plan :errors errors} (run-commands plan file-path arguments))
   (def days (new-plan :days))

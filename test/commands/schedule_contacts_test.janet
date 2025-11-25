@@ -70,7 +70,7 @@
   (def day-1 (day/build-day (d/date 2022 4 26)))
   (def day-2 (day/build-day (d/date 2022 4 25)
                             @[]
-                            @[(task/build-task "Weekly meeting" false)]))
+                            @[(task/build-task "Weekly meeting" :open)]))
   (def plan (plan/build-plan :days @[day-1 day-2]))
   (schedule-contacts plan @[contact] (d/date 2022 4 26))
   (test (not (empty? (day-1 :tasks))) true)
@@ -103,10 +103,10 @@
   (def day-1 (day/build-day (d/date 2022 4 27)))
   (def day-2 (day/build-day (d/date 2022 4 26)
                             @[]
-                            @[(task/build-task "Congratulate birthday to John Doe" true)]))
+                            @[(task/build-task "Congratulate birthday to John Doe" :checked)]))
   (def day-3 (day/build-day (d/date 2022 4 25)
                             @[]
-                            @[(task/build-task "Weekly meeting" false)]))
+                            @[(task/build-task "Weekly meeting" :open)]))
   (def plan (plan/build-plan :days @[day-1 day-2 day-3]))
   (schedule-contacts plan @[contact] (d/date 2022 4 27))
   (test (empty? (day-1 :tasks)) true))
