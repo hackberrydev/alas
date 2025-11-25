@@ -11,18 +11,18 @@
   (def plan
     (plan/build-plan
       :title "Main TODO"
-      :inbox @[(task/build-task "Fix the lamp" false)]
+      :inbox @[(task/build-task "Fix the lamp" :open)]
       :days @[(day/build-day (d/date 2020 8 3))
               (day/build-day (d/date 2020 8 2))
               (day/build-day (d/date 2020 8 1)
                              @[(event/build-event "Talked to Mike" @["- He has a new car"])]
-                             @[(task/build-task "Develop photos" false)
-                               (task/build-task "Pay bills" true @["- Electricity" "- Water"])
+                             @[(task/build-task "Develop photos" :open)
+                               (task/build-task "Pay bills" :checked @["- Electricity" "- Water"])
                                (task/build-missed-task "Organize photos" (d/date 2020 7 20))])
               (day/build-day (d/date 2020 7 31)
                              @[]
-                             @[(task/build-task "Review open pull requests" true)
-                               (task/build-task "Fix the flaky test" true)])]))
+                             @[(task/build-task "Review open pull requests" :checked)
+                               (task/build-task "Fix the flaky test" :checked)])]))
   (def plan-string
        ```
        # Main TODO

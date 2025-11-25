@@ -8,14 +8,10 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-task
 (deftest "builds a new task"
-  (def task (task/build-task "Weekly meeting" false "Meeting agenda"))
+  (def task (task/build-task "Weekly meeting" :open "Meeting agenda"))
   (test (task :title) "Weekly meeting")
   (test (task :body) "Meeting agenda")
   (test (task :state) :open))
-
-(deftest "sets the correct state for tasks that are done"
-  (def task (task/build-task "Weekly meeting" true))
-  (test (task :state) :checked))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-scheduled-task
