@@ -26,6 +26,15 @@
   (test (task :state) :open))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Test build-missed-task
+(deftest "builds a new missed task"
+  (def task (task/build-missed-task "Weekly meeting" date))
+  (test (task :title) "Weekly meeting")
+  (test (task :done) false)
+  (test (d/equal? (task :missed-on) date) true)
+  (test (task :state) :open))
+
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test mark-as-missed
 
 (deftest "marks task as missed"
