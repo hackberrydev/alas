@@ -8,9 +8,10 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-task
 (deftest "builds a new task"
-  (def task (task/build-task "Weekly meeting" false))
+  (def task (task/build-task "Weekly meeting" false "Meeting agenda"))
   (test (task :title) "Weekly meeting")
   (test (task :done) false)
+  (test (task :body) "Meeting agenda")
   (test (task :state) :open))
 
 (deftest "sets the correct state for tasks that are done"
@@ -28,19 +29,21 @@
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-missed-task
 (deftest "builds a new missed task"
-  (def task (task/build-missed-task "Weekly meeting" date))
+  (def task (task/build-missed-task "Weekly meeting" date "Meeting agenda"))
   (test (task :title) "Weekly meeting")
-  (test (task :done) false)
+  (test (task :body) "Meeting agenda")
   (test (d/equal? (task :missed-on) date) true)
+  (test (task :done) false)
   (test (task :state) :open))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-contact-task
 (deftest "builds a new contact task"
-  (def task (task/build-contact-task "Weekly meeting" "John Doe"))
+  (def task (task/build-contact-task "Weekly meeting" "John Doe" "Meeting agenda"))
   (test (task :title) "Weekly meeting")
-  (test (task :done) false)
   (test (task :contact) "John Doe")
+  (test (task :body) "Meeting agenda")
+  (test (task :done) false)
   (test (task :state) :open))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
