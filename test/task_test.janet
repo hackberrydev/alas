@@ -35,6 +35,15 @@
   (test (task :state) :open))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
+## Test build-contact-task
+(deftest "builds a new contact task"
+  (def task (task/build-contact-task "Weekly meeting" "John Doe"))
+  (test (task :title) "Weekly meeting")
+  (test (task :done) false)
+  (test (task :contact) "John Doe")
+  (test (task :state) :open))
+
+## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test mark-as-missed
 
 (deftest "marks task as missed"

@@ -16,8 +16,8 @@
   (merge task {:missed-on date}))
 
 (defn build-contact-task [title contact &opt body]
-  (default body @[])
-  {:title title :body body :done false :contact contact})
+  (def task (build-task title false body))
+  (merge task {:contact contact}))
 
 (defn mark-as-missed
   ```
