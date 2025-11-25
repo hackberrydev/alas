@@ -10,7 +10,6 @@
 (deftest "builds a new task"
   (def task (task/build-task "Weekly meeting" false "Meeting agenda"))
   (test (task :title) "Weekly meeting")
-  (test (task :done) false)
   (test (task :body) "Meeting agenda")
   (test (task :state) :open))
 
@@ -23,7 +22,6 @@
 (deftest "builds a new scheduled task"
   (def task (task/build-scheduled-task 15 "Weekly meeting" "every Tuesday"))
   (test (task :title) "Weekly meeting")
-  (test (task :done) false)
   (test (task :state) :open))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
@@ -33,7 +31,6 @@
   (test (task :title) "Weekly meeting")
   (test (task :body) "Meeting agenda")
   (test (d/equal? (task :missed-on) date) true)
-  (test (task :done) false)
   (test (task :state) :open))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
@@ -43,7 +40,6 @@
   (test (task :title) "Weekly meeting")
   (test (task :contact) "John Doe")
   (test (task :body) "Meeting agenda")
-  (test (task :done) false)
   (test (task :state) :open))
 
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
