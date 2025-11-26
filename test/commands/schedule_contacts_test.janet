@@ -17,7 +17,7 @@
   (let [day ((plan :days) 0)
         task ((day :tasks) 0)]
     (test (task :title) "Contact John Doe")
-    (test (task :done) false)
+    (test (task :state) :open)
     (test (empty? (task :body)) true)))
 
 (deftest "schedules contacts for future"
@@ -33,7 +33,7 @@
   (if (= 1 (length (day-2 :tasks)))
     (let [task ((day-2 :tasks) 0)]
       (test (task :title) "Contact John Doe")
-      (test (task :done) false)
+      (test (task :state) :open)
       (test (empty? (task :body)) true))))
 
 (deftest "schedules contacts with birthday"
@@ -46,7 +46,7 @@
   (let [day ((plan :days) 0)
         task ((day :tasks) 0)]
     (test (task :title) "Congratulate birthday to John Doe")
-    (test (task :done) false)
+    (test (task :state) :open)
     (test (empty? (task :body)) true)))
 
 (deftest "schedules contacts with missed birthday"

@@ -1,22 +1,25 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements task entity and related functions.
+###
+### A task can have the following states: :checked, :open.
 
 (import ./date)
 
-(defn build-task [title done &opt body]
+(defn build-task [title state &opt body]
   (default body @[])
-  {:title title :body body :done done})
+  {:title title :body body :state state})
 
 (defn build-scheduled-task [line title schedule]
-  {:line line :title title :done false :schedule schedule})
+  (def task (build-task title :open))
+  (merge task {:line line :schedule schedule}))
 
 (defn build-missed-task [title date &opt body]
-  (default body @[])
-  {:title title :body body :done false :missed-on date})
+  (def task (build-task title :open body))
+  (merge task {:missed-on date}))
 
 (defn build-contact-task [title contact &opt body]
-  (default body @[])
-  {:title title :body body :done false :contact contact})
+  (def task (build-task title :open body))
+  (merge task {:contact contact}))
 
 (defn mark-as-missed
   ```

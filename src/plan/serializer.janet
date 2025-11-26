@@ -8,8 +8,8 @@
 (defn- plan-title [plan]
   (string "# " (plan :title)))
 
-(defn- checkbox [done]
-  (if done "[X]" "[ ]"))
+(defn- checkbox [task]
+  (if (= (task :state) :checked) "[X]" "[ ]"))
 
 (defn- serialize-event-title [event]
   (string "- " (event :title)))
@@ -34,7 +34,7 @@
     ""))
 
 (defn- serialize-task-title [task]
-  (string "- " (checkbox (task :done)) " " (task :title) (task-mark task)))
+  (string "- " (checkbox task) " " (task :title) (task-mark task)))
 
 (defn- serialize-task-body [task]
   (def body (task :body))

@@ -39,7 +39,7 @@
     :tasks
       {:main (group (any :task))
        :task
-         {:main (replace (* (constant :done) :task-begin
+         {:main (replace (* (constant :state) :task-begin
                             " "
                             (constant :title) (capture (some (if-not (+ "\n" " (missed on") 1)))
                             (? :task-missed-on-date)
@@ -51,8 +51,8 @@
             {:main (* "- " :checkbox)
              :checkbox
                {:main (+ :checkbox-done :checkbox-pending)
-                :checkbox-done (* (+ "[x]" "[X]") (constant true))
-                :checkbox-pending (* "[ ]" (constant false))}}
+                :checkbox-done (* (+ "[x]" "[X]") (constant :checked))
+                :checkbox-pending (* "[ ]" (constant :open))}}
           :task-missed-on-date (* " (missed on " (constant :missed-on) :date ")")
           :task-body
             {:main (group (any :task-body-line))

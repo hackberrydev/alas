@@ -36,20 +36,20 @@
   (test (plan :title) "Main TODO")
   (let [task (inbox 0)]
     (test (task :title) "#home - Fix the lamp")
-    (test (not (task :done)) true))
+    (test (task :state) :open))
   (let [task (inbox 1)]
     (test (task :title) "Update Rust")
-    (test (not (task :done)) true))
+    (test (task :state) :open))
   (test (= (d/date 2020 8 1) (day-1 :date)) true)
   (let [task ((day-1 :tasks) 0)]
     (test (task :title) "Develop photos")
-    (test (not (task :done)) true))
+    (test (task :state) :open))
   (let [task ((day-1 :tasks) 1)]
     (test (task :title) "Pay bills")
-    (test (task :done) true))
+    (test (task :state) :checked))
   (let [task ((day-1 :tasks) 2)]
     (test (task :title) "Fix the lamp")
-    (test (not (task :done)) true)
+    (test (task :state) :open)
     (test (d/equal? (d/date 2020 7 30) (task :missed-on)) true))
   (test (= (d/date 2020 7 31) (day-2 :date)) true)
   (let [event ((day-2 :events) 0)]
@@ -57,10 +57,10 @@
     (test (empty? (event :body)) true))
   (let [task ((day-2 :tasks) 0)]
     (test (task :title) "#work - Review open pull requests")
-    (test (task :done) true))
+    (test (task :state) :checked))
   (let [task ((day-2 :tasks) 1)]
     (test (task :title) "#work - Fix the flaky test")
-    (test (task :done) true)))
+    (test (task :state) :checked)))
 
 (deftest "parses a template plan"
   (def plan-string
@@ -90,7 +90,7 @@
         task ((day :tasks) 0)]
     (test (= (d/date 2020 7 30) (day :date)) true)
     (test (task :title) "Pay bills")
-    (test (not (task :done)) true)))
+    (test (task :state) :open)))
 
 (deftest "parses a plan with one task that has a body"
   (def plan-string
@@ -110,7 +110,7 @@
         task-body (task :body)]
     (test (= (d/date 2020 7 30) (day :date)) true)
     (test (task :title) "Pay bills")
-    (test (not (task :done)) true)
+    (test (task :state) :open)
     (test (task-body 0) "- Electricity")
     (test (task-body 1) "- Water")))
 
@@ -131,9 +131,9 @@
         task-2 ((day :tasks) 1)]
     (test (= (d/date 2020 7 30) (day :date)) true)
     (test (task-1 :title) "Pay bills")
-    (test (not (task-1 :done)) true)
+    (test (task-1 :state) :open)
     (test (task-2 :title) "Fix the lamp")
-    (test (task-2 :done) true)))
+    (test (task-2 :state) :checked)))
 
 (deftest "parses a plan without inbox"
   (def plan-string
@@ -206,7 +206,7 @@
     (test (event :title) "Talked to Mike & Molly")
     (test ((event :body) 0) "- They moved to a new apartment")
     (test (task :title) "Fix the lamp")
-    (test (task :done) true)))
+    (test (task :state) :checked)))
 
 (deftest "parses a plan with an event without any tasks"
   (def plan-string

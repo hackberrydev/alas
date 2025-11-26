@@ -114,10 +114,10 @@
   (tasks-from-days (days-between plan start-date end-date)))
 
 (defn completed-tasks [plan]
-  (filter (fn [t] (t :done)) (all-tasks plan)))
+  (filter (fn [t] (= (t :state) :checked)) (all-tasks plan)))
 
 (defn pending-tasks [plan]
-  (filter (fn [t] (not (t :done))) (all-tasks plan)))
+  (filter (fn [t] (= (t :state) :open)) (all-tasks plan)))
 
 (defn has-task-after?
   ```
