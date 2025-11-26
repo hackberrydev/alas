@@ -26,7 +26,7 @@
   (test (length scheduled-tasks) 9)
   (let [task (scheduled-tasks 0)]
     (test (task :title) "Weekly Meeting")
-    (test (task :done) false)
+    (test (task :state) :open)
     (test (task :schedule) "every Tuesday"))
   (let [task (scheduled-tasks 1)]
     (test (task :title) "Puzzle Storm on Lichess")

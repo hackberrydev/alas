@@ -20,7 +20,7 @@
   task-title - Task title.
   ```
   [plan date task-title]
-  (def task (task/build-task task-title false))
+  (def task (task/build-task task-title :open))
   (def day (plan/day-with-date plan date))
   (if day
     (day/add-task day task))

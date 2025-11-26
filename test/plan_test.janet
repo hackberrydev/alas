@@ -31,7 +31,7 @@
   (def day-1 (day/build-day (d/date 2020 8 5)))
   (def day-2 (day/build-day (d/date 2020 8 4)
                             @[]
-                            @[(task/build-task "Buy milk" true)]))
+                            @[(task/build-task "Buy milk" :checked)]))
   (def day-3 (day/build-day (d/date 2020 8 3)
                             @[(event/build-event "Visited museum")]
                             @[]))
@@ -81,7 +81,7 @@
   (def day-1 (day/build-day (d/date 2020 8 5)))
   (def day-2 (day/build-day (d/date 2020 8 4)
                             @[]
-                            @[(task/build-task "Buy milk" true)]))
+                            @[(task/build-task "Buy milk" :checked)]))
   (def day-3 (day/build-day (d/date 2020 8 3)
                             @[(event/build-event "Visited museum")]
                             @[]))
@@ -175,10 +175,10 @@
 (deftest "returns all tasks from the plan"
   (def day-1 (day/build-day (d/date 2020 8 4)
                             @[]
-                            @[(task/build-task "Buy milk" true)]))
+                            @[(task/build-task "Buy milk" :checked)]))
   (def day-2 (day/build-day (d/date 2020 8 3)
                             @[(event/build-event "Visited museum")]
-                            @[(task/build-task "Review PRs" false)]))
+                            @[(task/build-task "Review PRs" :open)]))
   (def plan (plan/build-plan :days @[day-1 day-2]))
   (def tasks (plan/all-tasks plan))
   (test (length tasks) 2)
@@ -191,16 +191,16 @@
 (deftest "returns all tasks from the days between 2 dates"
   (def day-1 (day/build-day (d/date 2020 8 4)
                             @[]
-                            @[(task/build-task "Task 1" true)]))
+                            @[(task/build-task "Task 1" :checked)]))
   (def day-2 (day/build-day (d/date 2020 8 3)
                             @[]
-                            @[(task/build-task "Task 2" false)]))
+                            @[(task/build-task "Task 2" :open)]))
   (def day-3 (day/build-day (d/date 2020 8 2)
                             @[]
-                            @[(task/build-task "Task 3" false)]))
+                            @[(task/build-task "Task 3" :open)]))
   (def day-4 (day/build-day (d/date 2020 8 1)
                             @[]
-                            @[(task/build-task "Task 4" false)]))
+                            @[(task/build-task "Task 4" :open)]))
   (def plan (plan/build-plan :days @[day-1 day-2 day-3 day-4]))
   (def tasks (plan/tasks-between plan (d/date 2020 8 2) (d/date 2020 8 3)))
   (test (length tasks) 2)

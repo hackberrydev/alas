@@ -16,7 +16,7 @@
               (day/build-day (d/date 2020 8 5))
               (day/build-day (d/date 2020 8 4))
               (day/build-day (d/date 2020 8 3) @[]
-                             @[(task/build-task "Buy milk" true)])]))
+                             @[(task/build-task "Buy milk" :checked)])]))
   (def new-plan (remove-empty-days plan (d/date 2020 8 6)))
   (test (length (new-plan :days)) 2)
   (test (((new-plan :days) 0) :date)

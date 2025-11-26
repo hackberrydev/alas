@@ -144,7 +144,7 @@
   (def plan (plan/build-plan
               :days @[(day/build-day (d/date 2022 8 2)
                                      @[]
-                                     @[(task/build-task "Weekly meeting" true)])
+                                     @[(task/build-task "Weekly meeting" :checked)])
                       (day/build-day (d/date 2022 8 1))]))
   (test (not (missed? plan scheduled-task (d/date 2022 8 3))) true))
 
@@ -170,7 +170,7 @@
   (let [day ((plan :days) 1)
         task ((day :tasks) 0)]
     (test (task :title) "Weekly meeting")
-    (test (task :done) false)
+    (test (task :state) :open)
     (test (task :schedule) "every Monday")))
 
 (deftest "doesn't insert duplicate tasks"
@@ -194,7 +194,7 @@
       (let [task ((day :tasks) 0)]
         (test (task :title) "Weekly meeting")
         (test (d/equal? (d/date 2022 1 17) (task :missed-on)) true)
-        (test (task :done) false)
+        (test (task :state) :open)
         (test (task :schedule) "every Monday")))))
 
 (deftest "schedules missed monthly tasks"
@@ -221,7 +221,7 @@
     (if (not (empty? (day :tasks)))
       (let [task ((day :tasks) 0)]
         (test (task :title) "Weekly meeting")
-        (test (task :done) false)
+        (test (task :state) :open)
         (test (task :schedule) "every Monday")))))
 
 (deftest "doesn't schedule tasks that are not scheduled for future day that is not in the plan"

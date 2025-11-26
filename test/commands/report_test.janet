@@ -13,15 +13,15 @@
   (def plan
     (plan/build-plan
       :days @[(day/build-day (d/date 2020 8 7) @[]
-                             @[(task/build-task "Task 1" true)])
+                             @[(task/build-task "Task 1" :checked)])
               (day/build-day (d/date 2020 8 6) @[]
-                             @[(task/build-task "Task 2" true)
-                               (task/build-task "Task 3" true)])
+                             @[(task/build-task "Task 2" :checked)
+                               (task/build-task "Task 3" :checked)])
               (day/build-day (d/date 2020 8 5) @[]
-                             @[(task/build-task "Task 3" true)
-                               (task/build-task "Task 4" true)])
+                             @[(task/build-task "Task 3" :checked)
+                               (task/build-task "Task 4" :checked)])
               (day/build-day (d/date 2020 8 4) @[]
-                             @([(task/build-task "Task 5" true)]))]))
+                             @([(task/build-task "Task 5" :checked)]))]))
   (def tasks (report plan (d/date 2020 8 7) 2))
   (test (length tasks) 3)
   (test ((tasks 0) :title) "Task 2")
