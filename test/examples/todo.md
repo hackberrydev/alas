@@ -5,9 +5,9 @@
 ## 2020-08-01, Saturday
 
 - [ ] Develop photos for the grandmother
-- [ ] Pay bills
+- [X] Pay bills
 
 ## 2020-07-31, Friday
 
-- [ ] Review open pull requests
-- [ ] Fix flaky test
+- [X] Review open pull requests
+- [X] Fix flaky test
