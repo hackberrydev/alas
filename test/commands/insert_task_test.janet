@@ -25,7 +25,7 @@
 (deftest "when the task already exists"
   (def day (day/build-day (d/date 2020 8 10)
                           @[]
-                          @[(task/build-task "Upgrade OS" false)]))
+                          @[(task/build-task "Upgrade OS" :open)]))
   (def plan (plan/build-plan :days @[day]))
   (def new-plan (insert-task plan (d/date 2020 8 10) "Upgrade OS"))
   (def new-day (first (new-plan :days)))
