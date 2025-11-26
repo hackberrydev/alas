@@ -1,13 +1,15 @@
 ### ————————————————————————————————————————————————————————————————————————————————————————————————
 ### This module implements task entity and related functions.
-###
-### A task can have the following states: :checked, :open.
 
 (import ./date)
 
+(def states [:open :checked])
+
 (defn build-task [title state &opt body]
   (default body @[])
-  {:title title :body body :state state})
+  (if (index-of state states)
+    {:title title :body body :state state}
+    (error (string "task doesn't support the state '" state "'"))))
 
 (defn build-scheduled-task [line title schedule]
   (def task (build-task title :open))

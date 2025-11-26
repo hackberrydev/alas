@@ -13,6 +13,11 @@
   (test (task :body) "Meeting agenda")
   (test (task :state) :open))
 
+(deftest "raises an error when the state is not valid"
+  (test-error
+    (task/build-task "Weekly meeting" :closed)
+    "task doesn't support the state 'closed'"))
+
 ## —————————————————————————————————————————————————————————————————————————————————————————————————
 ## Test build-scheduled-task
 (deftest "builds a new scheduled task"
