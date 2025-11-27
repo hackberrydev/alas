@@ -17,6 +17,7 @@
               (day/build-day (d/date 2020 8 1)
                              @[(event/build-event "Talked to Mike" @["- He has a new car"])]
                              @[(task/build-task "Develop photos" :open)
+                               (task/build-task "Fix the lamp" :obsolete)
                                (task/build-task "Pay bills" :checked @["- Electricity" "- Water"])
                                (task/build-missed-task "Organize photos" (d/date 2020 7 20))])
               (day/build-day (d/date 2020 7 31)
@@ -40,6 +41,7 @@
        - Talked to Mike
          - He has a new car
        - [ ] Develop photos
+       - [~] Fix the lamp
        - [X] Pay bills
          - Electricity
          - Water

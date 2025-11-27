@@ -9,7 +9,10 @@
   (string "# " (plan :title)))
 
 (defn- checkbox [task]
-  (if (= (task :state) :checked) "[X]" "[ ]"))
+  (case (task :state)
+    :open "[ ]"
+    :checked "[X]"
+    :obsolete "[~]"))
 
 (defn- serialize-event-title [event]
   (string "- " (event :title)))
