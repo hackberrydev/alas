@@ -25,7 +25,8 @@
     ## 2020-07-31, Friday
 
     - Talked to Mike & Molly
-    - [x] #work - Review open pull requests
+    - [X] #work - Review open pull requests
+    - [~] #work - Review logs
     - [x] #work - Fix the flaky test
     ```)
   (def parse-result (parse plan-string))
@@ -59,6 +60,9 @@
     (test (task :title) "#work - Review open pull requests")
     (test (task :state) :checked))
   (let [task ((day-2 :tasks) 1)]
+    (test (task :title) "#work - Review logs")
+    (test (task :state) :obsolete))
+  (let [task ((day-2 :tasks) 2)]
     (test (task :title) "#work - Fix the flaky test")
     (test (task :state) :checked)))
 
