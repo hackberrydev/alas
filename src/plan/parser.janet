@@ -50,9 +50,10 @@
           :task-begin
             {:main (* "- " :checkbox)
              :checkbox
-               {:main (+ :checkbox-done :checkbox-pending)
+               {:main (+ :checkbox-done :checkbox-pending :checkbox-obsolete)
                 :checkbox-done (* (+ "[x]" "[X]") (constant :checked))
-                :checkbox-pending (* "[ ]" (constant :open))}}
+                :checkbox-pending (* "[ ]" (constant :open))
+                :checkbox-obsolete(* "[~]" (constant :obsolete))}}
           :task-missed-on-date (* " (missed on " (constant :missed-on) :date ")")
           :task-body
             {:main (group (any :task-body-line))

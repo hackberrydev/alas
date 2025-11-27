@@ -3,7 +3,7 @@
 
 (import ./date)
 
-(def states [:open :checked])
+(def states [:open :checked :obsolete])
 
 (defn build-task [title state &opt body]
   (default body @[])
