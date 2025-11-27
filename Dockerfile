@@ -3,7 +3,7 @@ FROM debian:trixie-slim
 ARG JANET_VERSION
 ARG JPM_VERSION
 
-RUN apt update && apt install -y git make build-essential libssl-dev wget
+RUN apt update && apt install -y git make build-essential libssl-dev wget musl-dev musl-tools
 
 RUN mkdir -p /home/janet
 

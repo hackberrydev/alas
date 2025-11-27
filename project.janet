@@ -6,4 +6,5 @@
 
 (declare-executable
  :name "alas"
- :entry "src/alas.janet")
+ :entry "src/alas.janet"
+ :lflags ["-static"])
